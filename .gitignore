@@ -1,0 +1,23 @@
+# Dependências
+node_modules/
+.pnpm-store/
+
+# Builds
+dist/
+.next/
+out/
+build/
+.turbo/
+
+# Ambiente — nunca versionar segredos
+.env
+.env.local
+.env.*.local
+
+# Prisma
+packages/database/prisma/*.db
+
+# Logs e caches
+*.log
+coverage/
+.DS_Store
