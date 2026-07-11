@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistente IA · PeopleFlow</title>
+  <meta name="description" content="Chat com o AI Engine da PeopleFlow.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <script>if(localStorage.getItem('pf-theme')==='dark'||(!localStorage.getItem('pf-theme')&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')</script>
+  <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/css/peopleflow.css">
+  <script src="assets/vendor/tailwind.js"></script>
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+    @theme { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  </style>
+  <script defer src="assets/vendor/alpine.min.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100"
+      x-data="{ collapsed: false, mobileNav: false }">
+
+<div class="flex min-h-screen">
+  <!-- ══ SIDEBAR (desktop) ══ -->
+  <aside class="pf-no-print sticky top-0 z-40 hidden h-screen shrink-0 flex-col border-r border-slate-200 bg-white transition-all duration-300 dark:border-slate-800 dark:bg-slate-900 lg:flex"
+         :class="collapsed ? 'w-[76px]' : 'w-64'">
+    <div class="flex h-16 items-center gap-2 border-b border-slate-200 px-4 dark:border-slate-800">
+      <img src="assets/img/favicon.svg" alt="" class="h-8 w-8 shrink-0" width="32" height="32">
+      <span x-show="!collapsed" x-transition.opacity class="text-lg font-bold">PeopleFlow</span>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Menu principal">
+      <a href="portal.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-grip w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Portal</span></a>
+      <a href="dashboard.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-pie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Dashboard</span></a>
+      <a href="rh.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-users w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>RH</span></a>
+      <a href="dp.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>DP</span></a>
+      <a href="colaborador.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-id-badge w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Colaborador</span></a>
+      <a href="gestor.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-user-tie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Gestor</span></a>
+      <a href="analytics.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-line w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Analytics</span></a>
+      <a href="ia.html" aria-current="page" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"><i class="fa-solid fa-wand-magic-sparkles w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Assistente IA</span></a>
+      <a href="empresa.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-building w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Administração</span></a>
+      <a href="configuracoes.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-gear w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Configurações</span></a>
+    </nav>
+    <div class="border-t border-slate-200 p-3 dark:border-slate-800">
+      <button @click="collapsed = !collapsed" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" :aria-label="collapsed ? 'Expandir menu' : 'Recolher menu'">
+        <i class="fa-solid w-4 text-center" :class="collapsed ? 'fa-angles-right' : 'fa-angles-left'" aria-hidden="true"></i>
+        <span x-show="!collapsed" x-transition.opacity>Recolher</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══ SIDEBAR (mobile drawer) ══ -->
+  <div x-show="mobileNav" x-transition.opacity x-cloak class="fixed inset-0 z-50 bg-slate-950/50 lg:hidden" @click="mobileNav = false" aria-hidden="true"></div>
+  <aside x-show="mobileNav" x-cloak x-transition:enter="transition-transform duration-300" x-transition:enter-start="-translate-x-full" x-transition:leave="transition-transform duration-300" x-transition:leave-end="-translate-x-full"
+         class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 lg:hidden" aria-label="Menu móvel">
+    <div class="flex h-16 items-center justify-between border-b border-slate-200 px-4 dark:border-slate-800">
+      <span class="flex items-center gap-2 font-bold"><img src="assets/img/favicon.svg" alt="" class="h-8 w-8">PeopleFlow</span>
+      <button @click="mobileNav = false" class="h-9 w-9 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Fechar menu"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3" x-data="{ collapsed: false }">
+      <a href="portal.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-grip w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Portal</span></a>
+      <a href="dashboard.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-pie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Dashboard</span></a>
+      <a href="rh.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-users w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>RH</span></a>
+      <a href="dp.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>DP</span></a>
+      <a href="colaborador.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-id-badge w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Colaborador</span></a>
+      <a href="gestor.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-user-tie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Gestor</span></a>
+      <a href="analytics.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-line w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Analytics</span></a>
+      <a href="ia.html" aria-current="page" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"><i class="fa-solid fa-wand-magic-sparkles w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Assistente IA</span></a>
+      <a href="empresa.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-building w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Administração</span></a>
+      <a href="configuracoes.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-gear w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Configurações</span></a>
+    </nav>
+  </aside>
+
+  <!-- ══ ÁREA PRINCIPAL ══ -->
+  <div class="flex min-w-0 flex-1 flex-col">
+    <!-- Topbar -->
+    <header class="pf-no-print pf-glass sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 px-4 dark:border-slate-800 sm:px-6">
+      <button @click="mobileNav = true" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <!-- Breadcrumb -->
+      <nav class="hidden items-center gap-2 text-sm sm:flex" aria-label="Breadcrumb">
+        <a href="portal.html" class="text-slate-400 transition-colors hover:text-blue-600"><i class="fa-solid fa-house text-xs" aria-hidden="true"></i></a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+        <span class="font-semibold text-slate-700 dark:text-slate-200">Assistente IA</span>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-1.5">
+        <!-- Busca global -->
+        <label class="relative hidden md:block">
+          <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400" aria-hidden="true"></i>
+          <input type="search" placeholder="Buscar…" aria-label="Buscar na plataforma"
+                 class="w-56 rounded-xl border border-slate-200 bg-white py-2 pl-8 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 dark:border-slate-700 dark:bg-slate-900">
+        </label>
+
+        <!-- Notificações -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" aria-label="Notificações" :aria-expanded="open">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i>
+            <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" aria-hidden="true"></span>
+          </button>
+          <div x-show="open" @click.outside="open = false" x-transition x-cloak
+               class="absolute right-0 mt-2 w-80 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <p class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Notificações</p>
+            <a href="gestor.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-umbrella-beach mt-0.5 text-blue-500" aria-hidden="true"></i><span>Férias de <strong>Ana Souza</strong> aguardam sua aprovação.</span></a>
+            <a href="dp.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-clock mt-0.5 text-amber-500" aria-hidden="true"></i><span>3 ajustes de ponto pendentes na equipe Comercial.</span></a>
+            <a href="ia.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-wand-magic-sparkles mt-0.5 text-violet-500" aria-hidden="true"></i><span>IA terminou de resumir 8 currículos.</span></a>
+          </div>
+        </div>
+
+        <!-- Tema -->
+        <button @click="pfToggleTheme()" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" aria-label="Alternar tema claro/escuro">
+          <i class="fa-solid fa-moon pf-show-light" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun pf-show-dark" aria-hidden="true"></i>
+        </button>
+
+        <!-- Usuário -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="flex items-center gap-2 rounded-xl p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Menu do usuário" :aria-expanded="open">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">MA</span>
+            <i class="fa-solid fa-chevron-down hidden text-[10px] text-slate-400 sm:block" aria-hidden="true"></i>
+          </button>
+          <div x-show="open" @click.outside="open = false" x-transition x-cloak
+               class="absolute right-0 mt-2 w-56 rounded-2xl border border-slate-200 bg-white p-2 text-sm shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <div class="border-b border-slate-100 px-3 py-2.5 dark:border-slate-800">
+              <p class="font-bold">Misael Araújo</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Empresa Demonstração</p>
+            </div>
+            <a href="colaborador.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-regular fa-user w-4 text-slate-400" aria-hidden="true"></i>Meu perfil</a>
+            <a href="empresa.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-rotate w-4 text-slate-400" aria-hidden="true"></i>Trocar empresa</a>
+            <a href="configuracoes.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-gear w-4 text-slate-400" aria-hidden="true"></i>Configurações</a>
+            <a href="login.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"><i class="fa-solid fa-arrow-right-from-bracket w-4" aria-hidden="true"></i>Sair</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cabeçalho da página -->
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 pt-6 sm:px-6">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight">Assistente IA</h1>
+      </div>
+      
+    </div>
+
+    <!-- Conteúdo -->
+    <main id="conteudo" class="flex-1 px-4 py-6 sm:px-6">
+
+      <div class="flex gap-6" style="height: calc(100vh - 220px); min-height: 480px"
+           x-data="{
+             input: '',
+             messages: [],
+             history: ['Advertência — João (atrasos)', 'Dúvida: férias proporcionais', 'Vaga: Dev Front-end Sênior', 'Resumo de 8 currículos'],
+             scroll() { this.$nextTick(() => this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight); },
+             send(text) {
+               const content = (text ?? this.input).trim();
+               if (!content) return;
+               this.messages.push({ role: 'user', content });
+               this.input = '';
+               this.scroll();
+               setTimeout(() => {
+                 this.messages.push({ role: 'ai', content: '✅ Documento criado com sucesso. Preparei uma minuta fundamentada na CLT com os dados do colaborador — revise antes de enviar para assinatura. Posso encaminhar ao workflow de aprovação do gestor? (Resposta demonstrativa: na versão final o AI Engine responde com RAG sobre a base CLT e cita os artigos consultados.)' });
+                 this.scroll();
+               }, 500);
+             }
+           }">
+
+        <!-- Histórico de conversas -->
+        <aside class="pf-no-print hidden w-64 shrink-0 flex-col rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900 lg:flex" aria-label="Histórico de conversas">
+          <button @click="messages = []" class="flex items-center justify-center gap-2 rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-violet-700">
+            <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i> Nova conversa
+          </button>
+          <p class="mt-4 px-2 text-xs font-bold uppercase tracking-wide text-slate-400">Recentes</p>
+          <nav class="mt-1 flex-1 space-y-0.5 overflow-y-auto">
+            <template x-for="item in history" :key="item">
+              <button class="w-full truncate rounded-xl px-3 py-2 text-left text-sm text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" x-text="item"></button>
+            </template>
+          </nav>
+          <p class="border-t border-slate-100 px-2 pt-3 text-[10px] leading-relaxed text-slate-400 dark:border-slate-800">A IA nunca executa ações sem a sua confirmação. Uso registrado para auditoria.</p>
+        </aside>
+
+        <!-- Chat -->
+        <section class="flex min-w-0 flex-1 flex-col rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+          <header class="flex items-center gap-3 border-b border-slate-200 px-5 py-3.5 dark:border-slate-800">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 text-white"><i class="fa-solid fa-wand-magic-sparkles text-sm" aria-hidden="true"></i></span>
+            <div><p class="text-sm font-bold">Assistente PeopleFlow</p><p class="text-xs text-slate-400">Especialista em CLT, DP e RH</p></div>
+            <span class="ml-auto flex items-center gap-1.5 text-xs font-medium text-emerald-600"><span class="pf-pulse-dot h-2 w-2 rounded-full bg-emerald-500"></span>online</span>
+          </header>
+
+          <div x-ref="chat" class="flex-1 space-y-4 overflow-y-auto p-5" role="log" aria-live="polite">
+            <!-- Estado vazio com sugestões -->
+            <div x-show="messages.length === 0" class="mx-auto max-w-2xl pt-6 text-center">
+              <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-100 text-2xl text-violet-600 dark:bg-violet-950"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></span>
+              <h2 class="mt-4 text-xl font-extrabold">Como posso ajudar hoje?</h2>
+              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Escolha uma sugestão ou escreva livremente.</p>
+              <div class="mt-6 grid grid-cols-2 gap-3 text-left lg:grid-cols-4">
+              <button @click="send('Gerar contrato: de trabalho CLT para novo colaborador')" class="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-violet-700">
+                <i class="fa-solid fa-file-signature text-violet-500" aria-hidden="true"></i>
+                <p class="mt-2 text-sm font-bold">Gerar contrato</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">de trabalho CLT para novo colaborador</p>
+              </button>
+              <button @click="send('Criar advertência: por atraso recorrente, art. 482')" class="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-violet-700">
+                <i class="fa-solid fa-triangle-exclamation text-violet-500" aria-hidden="true"></i>
+                <p class="mt-2 text-sm font-bold">Criar advertência</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">por atraso recorrente, art. 482</p>
+              </button>
+              <button @click="send('Explicar CLT: regras de banco de horas e art. 59')" class="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-violet-700">
+                <i class="fa-solid fa-scale-balanced text-violet-500" aria-hidden="true"></i>
+                <p class="mt-2 text-sm font-bold">Explicar CLT</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">regras de banco de horas e art. 59</p>
+              </button>
+              <button @click="send('Gerar vaga: descrição para Analista de DP Pleno')" class="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-violet-700">
+                <i class="fa-solid fa-briefcase text-violet-500" aria-hidden="true"></i>
+                <p class="mt-2 text-sm font-bold">Gerar vaga</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">descrição para Analista de DP Pleno</p>
+              </button>
+              <button @click="send('Criar comunicado: sobre a nova política de home office')" class="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-violet-700">
+                <i class="fa-solid fa-bullhorn text-violet-500" aria-hidden="true"></i>
+                <p class="mt-2 text-sm font-bold">Criar comunicado</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">sobre a nova política de home office</p>
+              </button>
+              <button @click="send('Resumir currículo: dos candidatos da vaga de Front-end')" class="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-violet-700">
+                <i class="fa-solid fa-file-lines text-violet-500" aria-hidden="true"></i>
+                <p class="mt-2 text-sm font-bold">Resumir currículo</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">dos candidatos da vaga de Front-end</p>
+              </button>
+              <button @click="send('Gerar relatório: de turnover do último trimestre')" class="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-violet-700">
+                <i class="fa-solid fa-chart-pie text-violet-500" aria-hidden="true"></i>
+                <p class="mt-2 text-sm font-bold">Gerar relatório</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">de turnover do último trimestre</p>
+              </button>
+              <button @click="send('Descrição de cargo: para Coordenador de Benefícios')" class="rounded-2xl border border-slate-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-violet-700">
+                <i class="fa-solid fa-id-badge text-violet-500" aria-hidden="true"></i>
+                <p class="mt-2 text-sm font-bold">Descrição de cargo</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">para Coordenador de Benefícios</p>
+              </button></div>
+            </div>
+
+            <!-- Mensagens -->
+            <template x-for="(m, i) in messages" :key="i">
+              <div class="flex" :class="m.role === 'user' && 'justify-end'">
+                <div class="max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed"
+                     :class="m.role === 'user' ? 'rounded-br-md bg-blue-600 text-white' : 'rounded-bl-md bg-slate-100 dark:bg-slate-800'"
+                     x-text="m.content"></div>
+              </div>
+            </template>
+          </div>
+
+          <form @submit.prevent="send()" class="border-t border-slate-200 p-4 dark:border-slate-800">
+            <div class="flex items-end gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-2 focus-within:border-violet-400 dark:border-slate-700 dark:bg-slate-800">
+              <textarea x-model="input" @keydown.enter.prevent="send()" rows="1" placeholder="Pergunte sobre CLT, gere documentos, peça relatórios…" aria-label="Mensagem para o assistente"
+                        class="max-h-32 w-full resize-none bg-transparent px-2 py-1.5 text-sm outline-none placeholder:text-slate-400"></textarea>
+              <button type="submit" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-600 text-white transition-colors hover:bg-violet-700 disabled:opacity-40" :disabled="!input.trim()" aria-label="Enviar mensagem">
+                <i class="fa-solid fa-paper-plane text-xs" aria-hidden="true"></i>
+              </button>
+            </div>
+            <p class="mt-2 text-center text-[10px] text-slate-400">A IA pode cometer erros — revise documentos antes de usar. Suporta OpenAI, Gemini, Claude e Ollama.</p>
+          </form>
+        </section>
+      </div>
+
+    </main>
+
+    <footer class="pf-no-print border-t border-slate-200 px-6 py-4 text-center text-xs text-slate-400 dark:border-slate-800 dark:text-slate-600">
+      © 2026 PeopleFlow · Plataforma HCM · <a href="index.html" class="hover:text-blue-600">peopleflow.com.br</a>
+    </footer>
+  </div>
+</div>
+
+</body>
+</html>

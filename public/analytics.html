@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics · PeopleFlow</title>
+  <meta name="description" content="Dashboards e indicadores de pessoas.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <script>if(localStorage.getItem('pf-theme')==='dark'||(!localStorage.getItem('pf-theme')&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')</script>
+  <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/css/peopleflow.css">
+  <script src="assets/vendor/tailwind.js"></script>
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+    @theme { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  </style>
+  <script defer src="assets/vendor/alpine.min.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100"
+      x-data="{ collapsed: false, mobileNav: false }">
+
+<div class="flex min-h-screen">
+  <!-- ══ SIDEBAR (desktop) ══ -->
+  <aside class="pf-no-print sticky top-0 z-40 hidden h-screen shrink-0 flex-col border-r border-slate-200 bg-white transition-all duration-300 dark:border-slate-800 dark:bg-slate-900 lg:flex"
+         :class="collapsed ? 'w-[76px]' : 'w-64'">
+    <div class="flex h-16 items-center gap-2 border-b border-slate-200 px-4 dark:border-slate-800">
+      <img src="assets/img/favicon.svg" alt="" class="h-8 w-8 shrink-0" width="32" height="32">
+      <span x-show="!collapsed" x-transition.opacity class="text-lg font-bold">PeopleFlow</span>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Menu principal">
+      <a href="portal.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-grip w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Portal</span></a>
+      <a href="dashboard.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-pie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Dashboard</span></a>
+      <a href="rh.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-users w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>RH</span></a>
+      <a href="dp.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>DP</span></a>
+      <a href="colaborador.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-id-badge w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Colaborador</span></a>
+      <a href="gestor.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-user-tie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Gestor</span></a>
+      <a href="analytics.html" aria-current="page" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"><i class="fa-solid fa-chart-line w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Analytics</span></a>
+      <a href="ia.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-wand-magic-sparkles w-4 text-center text-violet-600 dark:text-violet-400" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Assistente IA</span></a>
+      <a href="empresa.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-building w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Administração</span></a>
+      <a href="configuracoes.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-gear w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Configurações</span></a>
+    </nav>
+    <div class="border-t border-slate-200 p-3 dark:border-slate-800">
+      <button @click="collapsed = !collapsed" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" :aria-label="collapsed ? 'Expandir menu' : 'Recolher menu'">
+        <i class="fa-solid w-4 text-center" :class="collapsed ? 'fa-angles-right' : 'fa-angles-left'" aria-hidden="true"></i>
+        <span x-show="!collapsed" x-transition.opacity>Recolher</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══ SIDEBAR (mobile drawer) ══ -->
+  <div x-show="mobileNav" x-transition.opacity x-cloak class="fixed inset-0 z-50 bg-slate-950/50 lg:hidden" @click="mobileNav = false" aria-hidden="true"></div>
+  <aside x-show="mobileNav" x-cloak x-transition:enter="transition-transform duration-300" x-transition:enter-start="-translate-x-full" x-transition:leave="transition-transform duration-300" x-transition:leave-end="-translate-x-full"
+         class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 lg:hidden" aria-label="Menu móvel">
+    <div class="flex h-16 items-center justify-between border-b border-slate-200 px-4 dark:border-slate-800">
+      <span class="flex items-center gap-2 font-bold"><img src="assets/img/favicon.svg" alt="" class="h-8 w-8">PeopleFlow</span>
+      <button @click="mobileNav = false" class="h-9 w-9 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Fechar menu"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3" x-data="{ collapsed: false }">
+      <a href="portal.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-grip w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Portal</span></a>
+      <a href="dashboard.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-pie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Dashboard</span></a>
+      <a href="rh.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-users w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>RH</span></a>
+      <a href="dp.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>DP</span></a>
+      <a href="colaborador.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-id-badge w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Colaborador</span></a>
+      <a href="gestor.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-user-tie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Gestor</span></a>
+      <a href="analytics.html" aria-current="page" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"><i class="fa-solid fa-chart-line w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Analytics</span></a>
+      <a href="ia.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-wand-magic-sparkles w-4 text-center text-violet-600 dark:text-violet-400" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Assistente IA</span></a>
+      <a href="empresa.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-building w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Administração</span></a>
+      <a href="configuracoes.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-gear w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Configurações</span></a>
+    </nav>
+  </aside>
+
+  <!-- ══ ÁREA PRINCIPAL ══ -->
+  <div class="flex min-w-0 flex-1 flex-col">
+    <!-- Topbar -->
+    <header class="pf-no-print pf-glass sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 px-4 dark:border-slate-800 sm:px-6">
+      <button @click="mobileNav = true" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <!-- Breadcrumb -->
+      <nav class="hidden items-center gap-2 text-sm sm:flex" aria-label="Breadcrumb">
+        <a href="portal.html" class="text-slate-400 transition-colors hover:text-blue-600"><i class="fa-solid fa-house text-xs" aria-hidden="true"></i></a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+        <span class="font-semibold text-slate-700 dark:text-slate-200">Analytics</span>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-1.5">
+        <!-- Busca global -->
+        <label class="relative hidden md:block">
+          <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400" aria-hidden="true"></i>
+          <input type="search" placeholder="Buscar…" aria-label="Buscar na plataforma"
+                 class="w-56 rounded-xl border border-slate-200 bg-white py-2 pl-8 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 dark:border-slate-700 dark:bg-slate-900">
+        </label>
+
+        <!-- Notificações -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" aria-label="Notificações" :aria-expanded="open">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i>
+            <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" aria-hidden="true"></span>
+          </button>
+          <div x-show="open" @click.outside="open = false" x-transition x-cloak
+               class="absolute right-0 mt-2 w-80 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <p class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Notificações</p>
+            <a href="gestor.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-umbrella-beach mt-0.5 text-blue-500" aria-hidden="true"></i><span>Férias de <strong>Ana Souza</strong> aguardam sua aprovação.</span></a>
+            <a href="dp.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-clock mt-0.5 text-amber-500" aria-hidden="true"></i><span>3 ajustes de ponto pendentes na equipe Comercial.</span></a>
+            <a href="ia.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-wand-magic-sparkles mt-0.5 text-violet-500" aria-hidden="true"></i><span>IA terminou de resumir 8 currículos.</span></a>
+          </div>
+        </div>
+
+        <!-- Tema -->
+        <button @click="pfToggleTheme()" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" aria-label="Alternar tema claro/escuro">
+          <i class="fa-solid fa-moon pf-show-light" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun pf-show-dark" aria-hidden="true"></i>
+        </button>
+
+        <!-- Usuário -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="flex items-center gap-2 rounded-xl p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Menu do usuário" :aria-expanded="open">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">MA</span>
+            <i class="fa-solid fa-chevron-down hidden text-[10px] text-slate-400 sm:block" aria-hidden="true"></i>
+          </button>
+          <div x-show="open" @click.outside="open = false" x-transition x-cloak
+               class="absolute right-0 mt-2 w-56 rounded-2xl border border-slate-200 bg-white p-2 text-sm shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <div class="border-b border-slate-100 px-3 py-2.5 dark:border-slate-800">
+              <p class="font-bold">Misael Araújo</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Empresa Demonstração</p>
+            </div>
+            <a href="colaborador.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-regular fa-user w-4 text-slate-400" aria-hidden="true"></i>Meu perfil</a>
+            <a href="empresa.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-rotate w-4 text-slate-400" aria-hidden="true"></i>Trocar empresa</a>
+            <a href="configuracoes.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-gear w-4 text-slate-400" aria-hidden="true"></i>Configurações</a>
+            <a href="login.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"><i class="fa-solid fa-arrow-right-from-bracket w-4" aria-hidden="true"></i>Sair</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cabeçalho da página -->
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 pt-6 sm:px-6">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight">Analytics</h1>
+      </div>
+      
+    </div>
+
+    <!-- Conteúdo -->
+    <main id="conteudo" class="flex-1 px-4 py-6 sm:px-6">
+
+      <!-- Filtros -->
+      <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 pf-no-print flex flex-wrap items-center gap-3 p-4" aria-label="Filtros">
+        <label class="flex items-center gap-2 text-sm font-medium"><i class="fa-regular fa-calendar text-slate-400" aria-hidden="true"></i>
+          <select aria-label="Período" class="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 dark:border-slate-700 dark:bg-slate-800"><option>Últimos 12 meses</option><option>Este ano</option><option>Este trimestre</option></select>
+        </label>
+        <label class="flex items-center gap-2 text-sm font-medium"><i class="fa-solid fa-building text-slate-400" aria-hidden="true"></i>
+          <select aria-label="Empresa" class="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 dark:border-slate-700 dark:bg-slate-800"><option>Todas as empresas</option><option>Matriz</option><option>Filial Nordeste</option></select>
+        </label>
+        <label class="flex items-center gap-2 text-sm font-medium"><i class="fa-solid fa-sitemap text-slate-400" aria-hidden="true"></i>
+          <select aria-label="Departamento" class="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 dark:border-slate-700 dark:bg-slate-800"><option>Todos os departamentos</option><option>Tecnologia</option><option>Comercial</option></select>
+        </label>
+        <button onclick="window.print()" class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/25 transition-colors hover:bg-blue-700 ml-auto"><i class="fa-solid fa-file-pdf mr-1.5" aria-hidden="true"></i>Exportar PDF</button>
+      </section>
+
+      <div class="mt-6 grid gap-6 xl:grid-cols-2">
+        <!-- Pizza (donut SVG): headcount por área -->
+        <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-6">
+          <h2 class="font-bold">Headcount por área</h2>
+          <div class="mt-4 flex flex-wrap items-center justify-center gap-8">
+            <svg viewBox="0 0 42 42" class="h-44 w-44" role="img" aria-label="Distribuição: Operações 35%, Comercial 25%, Tecnologia 20%, Administrativo 12%, RH e DP 8%">
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#2563eb" stroke-width="6" stroke-dasharray="35 65" stroke-dashoffset="25"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#60a5fa" stroke-width="6" stroke-dasharray="25 75" stroke-dashoffset="-10"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#7c3aed" stroke-width="6" stroke-dasharray="20 80" stroke-dashoffset="-35"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#94a3b8" stroke-width="6" stroke-dasharray="12 88" stroke-dashoffset="-55"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#059669" stroke-width="6" stroke-dasharray="8 92" stroke-dashoffset="-67"/>
+              <text x="21" y="20" text-anchor="middle" class="fill-current" font-size="6" font-weight="800">1.248</text>
+              <text x="21" y="26.5" text-anchor="middle" fill="#94a3b8" font-size="3">colaboradores</text>
+            </svg>
+            <ul class="space-y-2 text-sm">
+              <li class="flex items-center gap-2"><span class="h-3 w-3 rounded-sm bg-blue-600"></span>Operações · <strong>35%</strong></li>
+              <li class="flex items-center gap-2"><span class="h-3 w-3 rounded-sm bg-blue-400"></span>Comercial · <strong>25%</strong></li>
+              <li class="flex items-center gap-2"><span class="h-3 w-3 rounded-sm bg-violet-600"></span>Tecnologia · <strong>20%</strong></li>
+              <li class="flex items-center gap-2"><span class="h-3 w-3 rounded-sm bg-slate-400"></span>Administrativo · <strong>12%</strong></li>
+              <li class="flex items-center gap-2"><span class="h-3 w-3 rounded-sm bg-emerald-600"></span>RH &amp; DP · <strong>8%</strong></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Linha: turnover -->
+        <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-6">
+          <h2 class="font-bold">Turnover · 12 meses</h2>
+          <svg viewBox="0 0 400 170" class="mt-4 w-full" role="img" aria-label="Turnover caiu de 9,8% para 7,4% em 12 meses">
+            <g stroke="currentColor" class="text-slate-200 dark:text-slate-800" stroke-width="1"><line x1="0" y1="45" x2="400" y2="45"/><line x1="0" y1="90" x2="400" y2="90"/><line x1="0" y1="135" x2="400" y2="135"/></g>
+            <text x="4" y="40" fill="#94a3b8" font-size="9">10%</text><text x="4" y="85" fill="#94a3b8" font-size="9">8%</text><text x="4" y="130" fill="#94a3b8" font-size="9">6%</text>
+            <polyline points="0,52 33,55 66,60 100,58 133,66 166,72 200,70 233,78 266,82 300,88 333,86 366,92 400,96" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="400" cy="96" r="5" fill="#2563eb" stroke="white" stroke-width="2"/>
+          </svg>
+          <p class="mt-2 text-xs font-semibold text-emerald-600"><i class="fa-solid fa-arrow-trend-down mr-1" aria-hidden="true"></i>−2,4 pp no período · meta: 6%</p>
+        </section>
+
+        <!-- Barras: custo de benefícios -->
+        <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-6">
+          <h2 class="font-bold">Custo mensal de benefícios</h2>
+          <div class="mt-5 space-y-3 text-sm">
+            <div><div class="flex justify-between"><span>🍽️ Vale Alimentação</span><strong>R$ 173,6 mil</strong></div><div class="mt-1.5 h-2.5 rounded-full bg-slate-100 dark:bg-slate-800"><div class="h-full rounded-full bg-blue-600" style="width:100%"></div></div></div>
+            <div><div class="flex justify-between"><span>🏥 Plano de Saúde</span><strong>R$ 96,3 mil</strong></div><div class="mt-1.5 h-2.5 rounded-full bg-slate-100 dark:bg-slate-800"><div class="h-full rounded-full bg-blue-500" style="width:55%"></div></div></div>
+            <div><div class="flex justify-between"><span>🚌 Vale Transporte</span><strong>R$ 38,2 mil</strong></div><div class="mt-1.5 h-2.5 rounded-full bg-slate-100 dark:bg-slate-800"><div class="h-full rounded-full bg-blue-400" style="width:22%"></div></div></div>
+            <div><div class="flex justify-between"><span>🦷 Odontológico</span><strong>R$ 8,4 mil</strong></div><div class="mt-1.5 h-2.5 rounded-full bg-slate-100 dark:bg-slate-800"><div class="h-full rounded-full bg-blue-300" style="width:5%"></div></div></div>
+          </div>
+        </section>
+
+        <!-- Heatmap: absenteísmo -->
+        <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-6">
+          <h2 class="font-bold">Heatmap de absenteísmo <span class="text-xs font-normal text-slate-400">(semana × departamento)</span></h2>
+          <table class="mt-4 w-full border-separate" style="border-spacing:2px" role="img" aria-label="Mapa de calor de absenteísmo por departamento e dia da semana; Comercial concentra as ausências">
+            <thead><tr><th></th><th class="pb-1 text-[10px] font-semibold text-slate-400">Seg</th><th class="pb-1 text-[10px] font-semibold text-slate-400">Ter</th><th class="pb-1 text-[10px] font-semibold text-slate-400">Qua</th><th class="pb-1 text-[10px] font-semibold text-slate-400">Qui</th><th class="pb-1 text-[10px] font-semibold text-slate-400">Sex</th><th class="pb-1 text-[10px] font-semibold text-slate-400">Sáb</th></tr></thead>
+            <tbody><tr><td class="pr-3 text-xs font-semibold text-slate-500 dark:text-slate-400">DP</td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="DP: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-200 dark:bg-blue-900" title="DP: nível 1"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="DP: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="DP: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-400" title="DP: nível 2"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="DP: nível 0"></div></td></tr><tr><td class="pr-3 text-xs font-semibold text-slate-500 dark:text-slate-400">Tecnologia</td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-200 dark:bg-blue-900" title="Tecnologia: nível 1"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Tecnologia: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Tecnologia: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-200 dark:bg-blue-900" title="Tecnologia: nível 1"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Tecnologia: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Tecnologia: nível 0"></div></td></tr><tr><td class="pr-3 text-xs font-semibold text-slate-500 dark:text-slate-400">Comercial</td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-400" title="Comercial: nível 2"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-600" title="Comercial: nível 3"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-200 dark:bg-blue-900" title="Comercial: nível 1"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-400" title="Comercial: nível 2"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-800" title="Comercial: nível 4"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-200 dark:bg-blue-900" title="Comercial: nível 1"></div></td></tr><tr><td class="pr-3 text-xs font-semibold text-slate-500 dark:text-slate-400">Financeiro</td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Financeiro: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Financeiro: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-200 dark:bg-blue-900" title="Financeiro: nível 1"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Financeiro: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Financeiro: nível 0"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-slate-100 dark:bg-slate-800" title="Financeiro: nível 0"></div></td></tr><tr><td class="pr-3 text-xs font-semibold text-slate-500 dark:text-slate-400">Operações</td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-200 dark:bg-blue-900" title="Operações: nível 1"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-400" title="Operações: nível 2"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-400" title="Operações: nível 2"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-600" title="Operações: nível 3"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-400" title="Operações: nível 2"></div></td><td class="p-0.5"><div class="h-8 w-full rounded-md bg-blue-200 dark:bg-blue-900" title="Operações: nível 1"></div></td></tr></tbody>
+          </table>
+          <div class="mt-3 flex items-center gap-1.5 text-[10px] text-slate-400">menor <span class="h-3 w-3 rounded-sm bg-slate-100 dark:bg-slate-800"></span><span class="h-3 w-3 rounded-sm bg-blue-200 dark:bg-blue-900"></span><span class="h-3 w-3 rounded-sm bg-blue-400"></span><span class="h-3 w-3 rounded-sm bg-blue-600"></span><span class="h-3 w-3 rounded-sm bg-blue-800"></span> maior</div>
+        </section>
+      </div>
+
+    </main>
+
+    <footer class="pf-no-print border-t border-slate-200 px-6 py-4 text-center text-xs text-slate-400 dark:border-slate-800 dark:text-slate-600">
+      © 2026 PeopleFlow · Plataforma HCM · <a href="index.html" class="hover:text-blue-600">peopleflow.com.br</a>
+    </footer>
+  </div>
+</div>
+
+</body>
+</html>
