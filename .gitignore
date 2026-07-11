@@ -1,23 +1,24 @@
-# Dependências
-node_modules/
-.pnpm-store/
-
-# Builds
-dist/
-.next/
-out/
-build/
-.turbo/
-
-# Ambiente — nunca versionar segredos
-.env
-.env.local
-.env.*.local
-
-# Prisma
-packages/database/prisma/*.db
-
-# Logs e caches
 *.log
-coverage/
 .DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+Homestead.json
+Homestead.yaml
+Thumbs.db

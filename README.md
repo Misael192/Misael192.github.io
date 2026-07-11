@@ -1,62 +1,59 @@
-# PeopleFlow
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Plataforma HCM (Departamento Pessoal + Recursos Humanos) **multi-tenant, modular e
-orientada a eventos** — projetada para operar de 1 a 10.000 empresas sem refatoração
-arquitetural.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-> 📐 Comece por aqui: [**Documento de Arquitetura**](./docs/ARCHITECTURE.md) ·
-> [Roadmap](./docs/ROADMAP.md) · [ADRs (decisões e justificativas)](./docs/adr/)
+## About Laravel
 
-## Estrutura do monorepo
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-```
-apps/
-  api/            NestJS — API Gateway + Core (IAM, RBAC, tenants, eventos,
-                  auditoria, feature flags, workflow engine, AI engine) + Modules
-  web/            Next.js 15 — landing page, login e painéis (admin/RH/DP/gestor)
-packages/
-  database/       Prisma — schema (todas as entidades da plataforma), RLS, seed
-  design-system/  Tokens do PeopleFlow Design System (cores, tipografia, motion)
-docs/             Arquitetura, roadmap e ADRs
-```
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-## Rodando localmente
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-Pré-requisitos: Node 20+, pnpm 9+, Docker.
+## Learning Laravel
 
-```bash
-# 1. Infraestrutura (PostgreSQL + Redis)
-docker compose up -d
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-# 2. Dependências
-pnpm install
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-# 3. Variáveis de ambiente
-cp .env.example .env   # ajuste os segredos (openssl rand -base64 48)
+## Laravel Sponsors
 
-# 4. Banco: migrações + RLS + seed (módulos, permissões, planos, tenant demo)
-pnpm db:generate && pnpm db:migrate && pnpm db:seed
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-# 5. Desenvolvimento (API em :3001, web em :3000)
-pnpm dev
-```
+### Premium Partners
 
-- Documentação da API (OpenAPI): http://localhost:3001/api/docs
-- Health checks: `/api/v1/health/live` e `/api/v1/health/ready`
+- **[Vehikl](https://vehikl.com)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Redberry](https://redberry.international/laravel-development)**
+- **[Active Logic](https://activelogic.com)**
 
-## Pilares da arquitetura
+## Contributing
 
-| Pilar | Como |
-|---|---|
-| Multi-tenancy evolutiva | `tenant_id` + Postgres RLS hoje; schema/banco dedicado por tenant sem reescrita ([ADR-002](./docs/adr/ADR-002-multi-tenancy-evolutiva.md)) |
-| Modularidade | Core nunca conhece os Modules; comunicação só por event bus ([ADR-001](./docs/adr/ADR-001-monolito-modular.md), [ADR-004](./docs/adr/ADR-004-event-bus-outbox.md)) |
-| Segurança | Argon2id, JWT + refresh rotativo com detecção de reuso, MFA, RBAC/ABAC, auditoria append-only, LGPD by design ([ADR-005](./docs/adr/ADR-005-auth-jwt-rotativo.md)) |
-| Workflows por empresa | Motor visual: grafos JSONB interpretados, nós plugáveis ([ADR-006](./docs/adr/ADR-006-workflow-jsonb.md)) |
-| IA plugável | AI Engine com agentes registráveis, RAG (pgvector), quotas e logs ([ADR-008](./docs/adr/ADR-008-ai-engine-plugavel.md)) |
-| Design próprio | Tokens do PeopleFlow Design System, claro/escuro, motion guidelines ([ADR-007](./docs/adr/ADR-007-design-system-proprio.md)) |
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Testes
+## Code of Conduct
 
-```bash
-pnpm test   # unitários (Jest) — ex.: rotação/reuso de refresh token
-```
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
