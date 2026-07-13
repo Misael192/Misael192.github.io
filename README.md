@@ -1,59 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PeopleFlow
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Plataforma HCM (Departamento Pessoal + Recursos Humanos) **multiempresa, modular e
+orientada a eventos**, construída em **PHP 8.4 / Laravel 12** — projetada para operar
+de 1 a 10.000 empresas sem refatoração arquitetural.
 
-## About Laravel
+> 📐 Comece por aqui: [**Documento de Arquitetura**](./docs/ARCHITECTURE.md) ·
+> [Roadmap](./docs/ROADMAP.md) · [ADRs (decisões e justificativas)](./docs/adr/) ·
+> [API OpenAPI](./docs/openapi.yaml)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Camada | Tecnologias |
+|---|---|
+| Backend | PHP 8.4 · Laravel 12 · Eloquent · Sanctum · Horizon · Reverb · Octane · Scheduler |
+| Frontend | HTML5 · Tailwind CSS · Alpine.js · Livewire/Volt (integração Blade em andamento) |
+| Dados | PostgreSQL (RLS por tenant) · Redis (cache, filas, rate limit) |
+| Infra | Docker · Nginx · GitHub Actions · Railway · S3/Supabase Storage |
+| IA | AI Engine multi-provedor: OpenAI, Gemini, Claude e Ollama (`config/ai.php`) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Estrutura
 
-## Learning Laravel
+```
+app/
+  Core/            Fundação da plataforma (nunca depende dos módulos)
+    Tenancy/       TenantContext, BelongsToTenant, ResolveTenant (RLS)
+    AI/            AiManager (drivers), AiEngine, contratos
+    Workflow/      WorkflowEngine + executores de nós plugáveis
+    Audit/         Trilha imutável com scrubbing de PII
+    FeatureFlags/  Módulos por tenant + flags com rollout
+    Identity/      TOTP (MFA) sem dependências
+  Events/          Eventos de domínio (employee.created, vacation.approved…)
+  Http/Controllers/Api/V1/   API REST versionada
+  Models/          Eloquent (UUIDs + escopo global de tenant)
+  Services/        Use cases (ex.: RefreshTokenService com rotação)
+public/            Interface HTML5 + Tailwind + Alpine (13 páginas, dark/light)
+database/          Migrations (todas as entidades), RLS SQL, seeder
+docs/              Arquitetura, ADRs, roadmap, OpenAPI
+docker/            Nginx + PHP-FPM para produção
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Rodando localmente
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Pré-requisitos: PHP 8.4+, Composer, Node 20+ (assets), Docker (opcional p/ Postgres/Redis).
 
-## Laravel Sponsors
+```bash
+composer install
+cp .env.example .env && php artisan key:generate
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Banco: sqlite por padrão; para PostgreSQL: docker compose up -d e ajuste o .env
+touch database/database.sqlite
+php artisan migrate --seed        # módulos, permissões, planos, tenant demo
 
-### Premium Partners
+php artisan serve                 # http://localhost:8000 → landing + app
+php artisan test                  # 11 testes (auth, tenancy, workflow)
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Usuário demo: `admin@demo.com` / `password` (tenant `demo`, header `X-Tenant-Id: demo`).
 
-## Contributing
+## Interface (public/)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+13 páginas HTML5 prontas para conversão em Blade: landing, login, portal,
+dashboard, RH (Kanban de recrutamento), DP (ponto/férias/admissão/eSocial),
+colaborador (ponto interativo), gestor (central de aprovações), analytics
+(donut/linha/barras/heatmap), assistente IA (chat), administração,
+configurações e 404 — modo claro/escuro persistido, assets 100% locais
+(`public/assets/vendor`), sem dependência de CDN.
 
-## Code of Conduct
+## Pilares da arquitetura
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Pilar | Como |
+|---|---|
+| Multi-tenancy evolutiva | `tenant_id` + PostgreSQL RLS hoje; schema/banco dedicado sem reescrita ([ADR-002](./docs/adr/ADR-002-multi-tenancy-evolutiva.md)) |
+| Modularidade | Core nunca conhece módulos; comunicação via eventos ([ADR-001](./docs/adr/ADR-001-monolito-modular.md), [ADR-004](./docs/adr/ADR-004-event-bus-outbox.md)) |
+| Segurança | Argon2id, Sanctum 15 min + refresh rotativo com detecção de reuso, MFA TOTP, RBAC via Gate + ABAC, auditoria append-only, LGPD by design ([ADR-005](./docs/adr/ADR-005-auth-jwt-rotativo.md)) |
+| Workflows por empresa | Grafos JSON interpretados, nós plugáveis ([ADR-006](./docs/adr/ADR-006-workflow-jsonb.md)) |
+| IA plugável | 4 provedores atrás de um Manager; agentes por configuração ([ADR-008](./docs/adr/ADR-008-ai-engine-plugavel.md)) |
+| Stack PHP | Justificativa completa da migração ([ADR-009](./docs/adr/ADR-009-migracao-laravel.md)) |
