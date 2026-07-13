@@ -1,0 +1,80 @@
+/* ════════════════════════════════════════════════════════════════════════
+   PeopleFlow UI — folha de estilos base do Design System
+   Tokens, tipografia (Inter local), animações e refinamentos que
+   complementam o Tailwind. Preparada para conversão em Blade/Vite.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Tipografia: Inter servida localmente (assets/vendor/fonts) ────────── */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url('../vendor/fonts/inter-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url('../vendor/fonts/inter-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url('../vendor/fonts/inter-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('../vendor/fonts/inter-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 800; font-display: swap; src: url('../vendor/fonts/inter-latin-800-normal.woff2') format('woff2'); }
+
+/* ── Tokens do PeopleFlow UI ───────────────────────────────────────────── */
+:root {
+  /* Primária: azul #2563EB · IA: roxo · sucesso: verde */
+  --pf-primary: #2563eb;
+  --pf-ai: #7c3aed;
+  --pf-success: #059669;
+  --pf-ease: cubic-bezier(0.2, 0, 0, 1); /* motion guideline padrão */
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; font-feature-settings: 'cv02', 'cv03', 'cv11'; }
+
+/* ── Scrollbar discreta (webkit) ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgb(148 163 184 / .4); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(148 163 184 / .6); }
+.dark ::-webkit-scrollbar-thumb { background: rgb(71 85 105 / .5); }
+
+/* ── Animações de entrada (usadas com .pf-reveal + IntersectionObserver) ─ */
+.pf-reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--pf-ease), transform .6s var(--pf-ease); }
+.pf-reveal.pf-visible { opacity: 1; transform: none; }
+.pf-reveal-delay-1 { transition-delay: .1s; }
+.pf-reveal-delay-2 { transition-delay: .2s; }
+.pf-reveal-delay-3 { transition-delay: .3s; }
+
+@keyframes pf-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.pf-float { animation: pf-float 5s ease-in-out infinite; }
+.pf-float-slow { animation: pf-float 7s ease-in-out infinite; }
+
+@keyframes pf-pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+.pf-pulse-dot { animation: pf-pulse-dot 2s ease-in-out infinite; }
+
+/* ── Glassmorphism discreto ────────────────────────────────────────────── */
+.pf-glass { backdrop-filter: blur(12px); background: rgb(255 255 255 / .72); }
+.dark .pf-glass { background: rgb(15 23 42 / .72); }
+
+/* ── Cards que elevam no hover ─────────────────────────────────────────── */
+.pf-card-hover { transition: transform .25s var(--pf-ease), box-shadow .25s var(--pf-ease), border-color .25s var(--pf-ease); }
+.pf-card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px -12px rgb(2 6 23 / .15); }
+.dark .pf-card-hover:hover { box-shadow: 0 16px 40px -12px rgb(0 0 0 / .5); }
+
+/* ── Acessibilidade: focus visível e movimento reduzido ────────────────── */
+:focus-visible { outline: 2px solid var(--pf-primary); outline-offset: 2px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .pf-reveal { opacity: 1; transform: none; }
+}
+
+/* ── Ícones dependentes de tema ────────────────────────────────────────────
+   Font Awesome define display fora de @layer e vence os utilitários do
+   Tailwind v4; estas classes (também fora de layer) garantem a troca. */
+.pf-show-dark { display: none !important; }
+.dark .pf-show-dark { display: inline-block !important; }
+.dark .pf-show-light { display: none !important; }
+
+/* ── Skeleton loading ──────────────────────────────────────────────────── */
+@keyframes pf-shimmer { 100% { transform: translateX(100%); } }
+.pf-skeleton { position: relative; overflow: hidden; background: rgb(226 232 240); border-radius: .5rem; }
+.dark .pf-skeleton { background: rgb(30 41 59); }
+.pf-skeleton::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%); animation: pf-shimmer 1.6s infinite; background: linear-gradient(90deg, transparent, rgb(255 255 255 / .35), transparent); }
+
+/* ── Impressão: esconde navegação (relatórios/holerites) ───────────────── */
+@media print {
+  .pf-no-print { display: none !important; }
+}
