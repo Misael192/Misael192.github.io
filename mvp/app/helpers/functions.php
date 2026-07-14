@@ -24,11 +24,14 @@ function redirect(string $to): never
     exit;
 }
 
-/** Renderiza uma view dentro do layout do app (header + sidebar + footer). */
-function view(string $name, array $data = []): void
+/**
+ * Renderiza uma view. Nomes internos usam prefixo __ para nunca colidir
+ * com variáveis passadas pela view (ex.: uma chave chamada "data").
+ */
+function view(string $__view, array $__data = []): void
 {
-    extract($data, EXTR_SKIP);
-    require APP_PATH."/views/{$name}.php";
+    extract($__data, EXTR_SKIP);
+    require APP_PATH."/views/{$__view}.php";
 }
 
 /** Usuário autenticado (ou null). */

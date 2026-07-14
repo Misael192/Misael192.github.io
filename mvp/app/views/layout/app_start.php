@@ -3,6 +3,11 @@
 $user = auth_user();
 $nav = [
     ['dashboard.php', 'fa-chart-pie', 'Dashboard'],
+    ['colaboradores.php', 'fa-id-badge', 'Colaboradores'],
+    ['ponto.php', 'fa-clock', 'Ponto'],
+    ['ferias.php', 'fa-umbrella-beach', 'Férias'],
+    ['documentos.php', 'fa-folder-open', 'Documentos'],
+    ['estrutura.php', 'fa-sitemap', 'Estrutura'],
     ['empresas.php', 'fa-building', 'Empresas'],
     ['usuarios.php', 'fa-users', 'Usuários'],
 ];
@@ -26,9 +31,8 @@ $nav = [
           <i class="fa-solid <?= e($icon) ?> w-4 text-center" aria-hidden="true"></i><?= e($label) ?>
         </a>
       <?php endforeach; ?>
-      <p class="px-3 pt-4 text-[10px] font-bold uppercase tracking-wide text-slate-400">Próximas fases</p>
-      <span class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-300 dark:text-slate-600"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i>Ponto · Férias</span>
-      <span class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-300 dark:text-slate-600"><i class="fa-solid fa-user-plus w-4 text-center" aria-hidden="true"></i>Recrutamento</span>
+      <p class="px-3 pt-4 text-[10px] font-bold uppercase tracking-wide text-slate-400">Fase 3</p>
+      <span class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-300 dark:text-slate-600"><i class="fa-solid fa-money-check-dollar w-4 text-center" aria-hidden="true"></i>Folha de pagamento</span>
     </nav>
     <div class="border-t border-slate-200 p-4 text-xs text-slate-400 dark:border-slate-800">
       <?= e($user['company'] ?? '') ?>

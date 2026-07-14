@@ -14,7 +14,31 @@ repositório — as duas compartilham o mesmo design system (PeopleFlow UI).
 - ✅ Auditoria de logins (tabela `sessions`)
 - ✅ Banco: `companies`, `users`, `roles`, `permissions`, `departments`, `employees`, `sessions`
 
-**Próximas fases:** módulos de DP (ponto, férias) e RH (recrutamento), conforme o roadmap.
+**Próximas fases:** Folha de pagamento (Fase 3), IA/eSocial (Fase 4) — ver roadmap.
+
+## Fase 2 (implementada) — Módulo Departamento Pessoal
+
+- ✅ **Estrutura organizacional**: filiais, departamentos, cargos (CBO/salário base),
+  centros de custo e escalas de jornada (`work_shifts`)
+- ✅ **Colaborador completo**: dados pessoais (CPF/RG/órgão emissor/nascimento/sexo/
+  estado civil/nacionalidade/naturalidade), documentos (PIS/CTPS/título/reservista/CNH),
+  contato, endereço, dados bancários + PIX, dependentes, contato de emergência, foto —
+  gravado em transação com satélites normalizados
+- ✅ **Ficha do colaborador** com abas (dados, admissão, dependentes, históricos)
+- ✅ **Admissão digital**: checklist de 8 documentos criado automaticamente
+- ✅ **Históricos imutáveis**: salarial e de situação (quem/quando/motivo)
+- ✅ **Ponto**: registro manual (entrada/almoço/retorno/saída), aprovação do gestor e
+  **banco de horas** calculado contra a jornada da escala
+- ✅ **Férias**: período aquisitivo/concessivo por colaborador, validação de saldo
+  (CLT arts. 130/134/143), aprovação com débito do período
+- ✅ **GED**: categorias, upload com **versionamento automático**, hash SHA-256,
+  **assinatura eletrônica** com evidências (IP/user-agent) e download autenticado
+- ✅ **Auditoria**: `audit_logs` registra toda ação relevante (quem, quando, IP,
+  navegador, valores) — LGPD by design
+- ✅ **Permissões**: matriz por perfil (admin/RH/DP/gestor/colaborador) + overrides
+  por usuário (`user_permissions`), verificadas via `Can::check()`
+
+Aplicar a Fase 2: `psql -d peopleflow_mvp -f database/fase2.sql`
 
 ## Estrutura
 
