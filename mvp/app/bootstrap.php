@@ -40,7 +40,8 @@ spl_autoload_register(function (string $class): void {
     ];
     foreach ($map as $prefix => $dir) {
         if (str_starts_with($class, $prefix)) {
-            $file = $dir.substr($class, strlen($prefix)).'.php';
+            // Suporta sub-namespaces: App\Services\Payroll\X → services/Payroll/X.php
+            $file = $dir.str_replace('\\', '/', substr($class, strlen($prefix))).'.php';
             if (is_file($file)) {
                 require $file;
             }
