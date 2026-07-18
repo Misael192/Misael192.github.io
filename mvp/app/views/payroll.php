@@ -98,7 +98,11 @@ $statusBadge = [
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
               <?php foreach ($payrolls as $p): ?>
                 <tr class="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60">
-                  <td class="px-5 py-3.5"><p class="font-semibold"><?= e($p['full_name']) ?></p>
+                  <td class="px-5 py-3.5"><p class="font-semibold"><?= e($p['full_name']) ?>
+                    <?php if ($p['kind'] !== 'payslip'): ?>
+                      <span class="ml-1 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-bold text-violet-700 dark:bg-violet-950 dark:text-violet-300"><?=
+                          ['vacation' => 'Férias', 'thirteenth_1' => '13º · 1ª', 'thirteenth_2' => '13º · 2ª', 'termination' => 'Rescisão'][$p['kind']] ?? e($p['kind']) ?></span>
+                    <?php endif; ?></p>
                     <p class="text-xs text-slate-400"><?= e($p['position_name'] ?? '—') ?> · mat. <?= e($p['registration']) ?></p></td>
                   <td class="px-5 py-3.5 text-right tabular-nums"><?= $money((int) $p['gross_cents']) ?></td>
                   <td class="px-5 py-3.5 text-right tabular-nums text-red-600 dark:text-red-400">−<?= $money((int) $p['deductions_cents']) ?></td>

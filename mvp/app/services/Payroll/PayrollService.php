@@ -54,7 +54,8 @@ final class PayrollService
 
                 return [false, 'Competência já fechada — reabra antes de recalcular.'];
             }
-            $db->prepare('DELETE FROM payrolls WHERE period_id = :p')->execute(['p' => $period['id']]);
+            // Só a folha MENSAL é recalculada — 13º/férias/rescisão do período ficam intactos
+            $db->prepare("DELETE FROM payrolls WHERE period_id = :p AND kind = 'payslip'")->execute(['p' => $period['id']]);
 
             $employees = $db->prepare(
                 "SELECT * FROM employees

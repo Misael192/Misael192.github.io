@@ -74,6 +74,17 @@ Aplicar a Fase 2: `psql -d peopleflow_mvp -f database/fase2.sql`
 - ✅ **Holerite** (`holerite.php`): recibo de pagamento printável (Imprimir/PDF
   do navegador) com rubricas, referências, bases INSS/IRRF/FGTS, FGTS do mês e
   líquido em destaque; marca **PRÉVIA** enquanto a folha não é fechada
+- ✅ **13º salário** (`decimo.php`): elegíveis com avos projetados (≥15 dias =
+  1 avo), 1ª parcela sem descontos (competência nov) e 2ª com INSS/IRRF sobre o
+  integral menos o adiantamento (dez); recibo próprio por parcela
+- ✅ **Recibo de férias**: botão nas férias aprovadas gera a folha kind=vacation
+  (gozo + 1/3 tributados; abono indenizatório) e abre o recibo
+- ✅ **Rescisão** (`rescisao.php`): simula as verbas (saldo, aviso Lei 12.506,
+  férias vencidas/proporcionais + 1/3, 13º proporcional, multa FGTS 40%/20%)
+  sem gravar nada; efetivar gera o termo, desliga o colaborador (histórico +
+  auditoria) e abre o demonstrativo
+- ✅ Folhas especiais convivem com a mensal no mesmo período (`payrolls.kind`);
+  o recálculo mensal substitui apenas `kind=payslip`
 
 Aplicar a Fase 3: `psql -d peopleflow_mvp -f database/fase3.sql`
 

@@ -236,3 +236,19 @@ INSERT INTO role_permissions (role_id, permission_id)
 SELECT r.id, p.id FROM roles r, permissions p
 WHERE r.code IN ('admin', 'rh', 'dp') AND p.code = 'payroll:manage'
 ON CONFLICT DO NOTHING;
+
+-- Rubrica para verbas rescisórias (indenizatórias — sem incidências) — idempotente
+INSERT INTO rubrics (group_id, code, name, type, nature, incides_inss, incides_irrf, incides_fgts, formula)
+SELECT (SELECT id FROM rubric_groups WHERE code='proventos'), '1400', 'Verbas Rescisórias', 'earning', '1400', FALSE, FALSE, FALSE, 'termination_item'
+WHERE NOT EXISTS (SELECT 1 FROM rubrics WHERE code = '1400');
+
+-- Recalcular uma folha especial substitui a payroll: os vínculos acompanham — idempotente
+ALTER TABLE thirteenth_salary DROP CONSTRAINT IF EXISTS thirteenth_salary_payroll_id_fkey;
+ALTER TABLE thirteenth_salary ADD CONSTRAINT thirteenth_salary_payroll_id_fkey
+    FOREIGN KEY (payroll_id) REFERENCES payrolls(id) ON DELETE CASCADE;
+ALTER TABLE vacation_payroll DROP CONSTRAINT IF EXISTS vacation_payroll_payroll_id_fkey;
+ALTER TABLE vacation_payroll ADD CONSTRAINT vacation_payroll_payroll_id_fkey
+    FOREIGN KEY (payroll_id) REFERENCES payrolls(id) ON DELETE CASCADE;
+ALTER TABLE termination_payroll DROP CONSTRAINT IF EXISTS termination_payroll_payroll_id_fkey;
+ALTER TABLE termination_payroll ADD CONSTRAINT termination_payroll_payroll_id_fkey
+    FOREIGN KEY (payroll_id) REFERENCES payrolls(id) ON DELETE CASCADE;

@@ -1,6 +1,13 @@
 <?php
 /** Holerite (recibo de pagamento) — página limpa, pronta para imprimir/PDF. */
-$title = 'Holerite '.$payroll['competency'].' · '.$payroll['full_name'];
+$docTitle = [
+    'payslip' => 'Recibo de Pagamento de Salário',
+    'vacation' => 'Recibo de Férias',
+    'thirteenth_1' => '13º Salário — 1ª Parcela (Adiantamento)',
+    'thirteenth_2' => '13º Salário — 2ª Parcela (Final)',
+    'termination' => 'Termo de Rescisão — Demonstrativo',
+][$payroll['kind']] ?? 'Recibo de Pagamento';
+$title = $docTitle.' '.$payroll['competency'].' · '.$payroll['full_name'];
 require APP_PATH.'/views/layout/head.php';
 
 $money = fn (?int $cents): string => $cents === null ? '—' : 'R$ '.number_format($cents / 100, 2, ',', '.');
@@ -33,7 +40,7 @@ foreach ($charges as $c) { if ($c['type'] === 'fgts') { $fgtsDeposit = (int) $c[
           <p class="text-xs text-slate-500">CNPJ <?= e($payroll['cnpj']) ?></p>
         </div>
         <div class="text-right">
-          <p class="text-sm font-extrabold uppercase tracking-wide">Recibo de Pagamento de Salário</p>
+          <p class="text-sm font-extrabold uppercase tracking-wide"><?= e($docTitle) ?></p>
           <p class="text-xs text-slate-500">Competência: <strong><?= e($monthLabel) ?></strong>
             <?= $payroll['period_status'] === 'closed' ? '' : ' · <span class="font-bold text-amber-600">PRÉVIA — folha não fechada</span>' ?></p>
         </div>

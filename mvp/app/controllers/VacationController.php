@@ -25,6 +25,7 @@ class VacationController
             Csrf::verify();
             match ($_POST['action'] ?? 'request') {
                 'approve', 'reject' => $this->decide($companyId),
+                'receipt' => $this->receipt($companyId),
                 default => $this->request($companyId),
             };
         }
@@ -54,6 +55,23 @@ class VacationController
                 ['start' => $start, 'end' => $end, 'sell_days' => $sell]);
         }
         redirect('ferias.php');
+    }
+
+    /** Gera (ou abre) o recibo de férias — folha kind=vacation + holerite. */
+    private function receipt(int $companyId): void
+    {
+        Can::check('payroll:manage');
+        $vacationId = (int) ($_POST['vacation_id'] ?? 0);
+
+        [$ok, $message, $payrollId] = (new \App\Services\Payroll\SpecialPayrollService)
+            ->vacationReceipt($vacationId, $companyId);
+        if (! $ok) {
+            flash('error', $message);
+            redirect('ferias.php');
+        }
+
+        AuditService::log('vacation.receipt', 'vacation', $vacationId, null, ['payroll_id' => $payrollId]);
+        redirect("holerite.php?id={$payrollId}");
     }
 
     private function decide(int $companyId): void

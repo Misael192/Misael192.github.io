@@ -41,6 +41,12 @@ $statusBadge = [
                         <button name="action" value="approve" class="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700">Aprovar</button>
                         <button name="action" value="reject" class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold hover:border-red-400 hover:text-red-600 dark:border-slate-700">Rejeitar</button>
                       </form>
+                    <?php elseif ($v['status'] === 'approved' && Can::allowed('payroll:manage')): ?>
+                      <form method="post" class="inline">
+                        <?= csrf_field() ?><input type="hidden" name="vacation_id" value="<?= (int) $v['id'] ?>">
+                        <button name="action" value="receipt" class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold hover:border-blue-400 hover:text-blue-600 dark:border-slate-700">
+                          <i class="fa-solid fa-file-invoice-dollar mr-1" aria-hidden="true"></i>Recibo</button>
+                      </form>
                     <?php endif; ?>
                   </td>
                 </tr>
