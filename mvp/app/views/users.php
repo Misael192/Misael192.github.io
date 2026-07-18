@@ -3,6 +3,11 @@ $title = 'Usuários';
 $active = 'usuarios.php';
 require APP_PATH.'/views/layout/head.php';
 require APP_PATH.'/views/layout/app_start.php';
+
+use App\Middleware\Can;
+
+$canManage = Can::allowed('users:manage');
+$me = auth_user()['id'];
 ?>
       <div class="grid gap-6 xl:grid-cols-3">
         <!-- Listagem -->
@@ -18,6 +23,7 @@ require APP_PATH.'/views/layout/app_start.php';
                   <th class="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Empresa</th>
                   <th class="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Perfil</th>
                   <th class="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Último acesso</th>
+                  <th class="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Acesso</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
@@ -35,8 +41,41 @@ require APP_PATH.'/views/layout/app_start.php';
                       </div>
                     </td>
                     <td class="px-5 py-3.5 text-slate-500 dark:text-slate-400"><?= e($user['company_name']) ?></td>
-                    <td class="px-5 py-3.5"><span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300"><?= e($user['role_name']) ?></span></td>
+                    <td class="px-5 py-3.5">
+                      <?php if ($canManage && $user['id'] !== $me): ?>
+                        <form method="post" class="inline">
+                          <?= csrf_field() ?>
+                          <input type="hidden" name="action" value="role">
+                          <input type="hidden" name="user_id" value="<?= (int) $user['id'] ?>">
+                          <select name="role_id" onchange="this.form.submit()" aria-label="Perfil de <?= e($user['name']) ?>"
+                                  class="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold dark:border-slate-700 dark:bg-slate-800">
+                            <?php foreach ($roles as $role): ?>
+                              <option value="<?= (int) $role['id'] ?>"<?= (int) $role['id'] === (int) $user['role_id'] ? ' selected' : '' ?>><?= e($role['name']) ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </form>
+                      <?php else: ?>
+                        <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300"><?= e($user['role_name']) ?></span>
+                      <?php endif; ?>
+                    </td>
                     <td class="px-5 py-3.5 text-xs text-slate-500 dark:text-slate-400"><?= $user['last_login_at'] ? date('d/m/Y H:i', strtotime($user['last_login_at'])) : 'nunca' ?></td>
+                    <td class="px-5 py-3.5">
+                      <?php if ($canManage && $user['id'] !== $me): ?>
+                        <form method="post" class="inline">
+                          <?= csrf_field() ?>
+                          <input type="hidden" name="action" value="toggle">
+                          <input type="hidden" name="user_id" value="<?= (int) $user['id'] ?>">
+                          <button class="rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors <?= $user['is_active']
+                              ? 'bg-emerald-100 text-emerald-700 hover:bg-red-100 hover:text-red-700 dark:bg-emerald-950 dark:text-emerald-400'
+                              : 'bg-red-100 text-red-700 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-red-950 dark:text-red-400' ?>"
+                                  title="<?= $user['is_active'] ? 'Clique para desativar' : 'Clique para reativar' ?>">
+                            <?= $user['is_active'] ? 'Ativo' : 'Inativo' ?>
+                          </button>
+                        </form>
+                      <?php else: ?>
+                        <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">Ativo</span>
+                      <?php endif; ?>
+                    </td>
                   </tr>
                 <?php endforeach; ?>
               </tbody>

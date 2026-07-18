@@ -92,11 +92,18 @@ $tabOff = 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slat
             </div>
             <ol class="mt-4 space-y-2.5">
               <?php foreach ($emp['admission_items'] as $item): ?>
-                <li class="flex items-center gap-3 text-sm">
-                  <span class="flex h-6 w-6 items-center justify-center rounded-full <?= $item['is_done'] ? 'bg-emerald-500 text-white' : 'border-2 border-slate-300 dark:border-slate-600' ?>">
-                    <?= $item['is_done'] ? '<i class="fa-solid fa-check text-[10px]" aria-hidden="true"></i>' : '' ?>
-                  </span>
-                  <span class="<?= $item['is_done'] ? 'font-medium' : 'text-slate-500 dark:text-slate-400' ?>"><?= e($item['item']) ?></span>
+                <li>
+                  <form method="post" class="flex items-center gap-3 text-sm">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="action" value="checklist">
+                    <input type="hidden" name="item_id" value="<?= (int) $item['id'] ?>">
+                    <button type="submit" title="Marcar/desmarcar"
+                            class="flex h-6 w-6 items-center justify-center rounded-full transition-colors <?= $item['is_done'] ? 'bg-emerald-500 text-white' : 'border-2 border-slate-300 hover:border-blue-400 dark:border-slate-600' ?>">
+                      <?= $item['is_done'] ? '<i class="fa-solid fa-check text-[10px]" aria-hidden="true"></i>' : '' ?>
+                    </button>
+                    <span class="<?= $item['is_done'] ? 'font-medium' : 'text-slate-500 dark:text-slate-400' ?>"><?= e($item['item']) ?></span>
+                    <?php if ($item['done_at']): ?><span class="ml-auto text-[10px] text-slate-400"><?= date('d/m H:i', strtotime($item['done_at'])) ?></span><?php endif; ?>
+                  </form>
                 </li>
               <?php endforeach; ?>
             </ol>
@@ -122,7 +129,37 @@ $tabOff = 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slat
         </div>
 
         <!-- Históricos -->
-        <div x-show="tab === 'historico'" x-cloak class="mt-6 grid gap-6 lg:grid-cols-2">
+        <div x-show="tab === 'historico'" x-cloak class="mt-6 space-y-6">
+          <div class="grid gap-6 lg:grid-cols-2">
+            <!-- Reajuste salarial -->
+            <section class="<?= $card ?> p-6">
+              <h3 class="font-bold"><i class="fa-solid fa-arrow-trend-up mr-2 text-emerald-500" aria-hidden="true"></i>Aplicar reajuste salarial</h3>
+              <form method="post" class="mt-4 flex flex-wrap items-end gap-3 text-sm">
+                <?= csrf_field() ?><input type="hidden" name="action" value="raise">
+                <label class="flex-1"><span class="mb-1 block text-xs font-semibold text-slate-500">Novo salário (R$) *</span>
+                  <input name="new_salary" required placeholder="6.000,00" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none focus:border-blue-500 dark:border-slate-700 dark:bg-slate-800"></label>
+                <label class="flex-[2]"><span class="mb-1 block text-xs font-semibold text-slate-500">Motivo</span>
+                  <input name="reason" placeholder="Promoção, dissídio, mérito…" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none focus:border-blue-500 dark:border-slate-700 dark:bg-slate-800"></label>
+                <button class="rounded-xl bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700">Aplicar</button>
+              </form>
+            </section>
+            <!-- Mudança de situação -->
+            <section class="<?= $card ?> p-6">
+              <h3 class="font-bold"><i class="fa-solid fa-user-tag mr-2 text-blue-500" aria-hidden="true"></i>Alterar situação</h3>
+              <form method="post" class="mt-4 flex flex-wrap items-end gap-3 text-sm">
+                <?= csrf_field() ?><input type="hidden" name="action" value="status">
+                <label><span class="mb-1 block text-xs font-semibold text-slate-500">Nova situação *</span>
+                  <select name="new_status" required class="rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-800">
+                    <option value="active">Ativo</option><option value="vacation">Férias</option>
+                    <option value="on_leave">Afastado</option><option value="terminated">Desligado</option>
+                  </select></label>
+                <label class="flex-1"><span class="mb-1 block text-xs font-semibold text-slate-500">Motivo</span>
+                  <input name="reason" placeholder="Ex.: afastamento médico" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none focus:border-blue-500 dark:border-slate-700 dark:bg-slate-800"></label>
+                <button class="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">Alterar</button>
+              </form>
+            </section>
+          </div>
+          <div class="grid gap-6 lg:grid-cols-2">
           <section class="<?= $card ?> p-6">
             <h3 class="font-bold">Histórico salarial</h3>
             <ul class="mt-4 space-y-3 text-sm">
@@ -147,6 +184,7 @@ $tabOff = 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slat
               <?php endforeach; ?>
             </ul>
           </section>
+          </div>
         </div>
       </div>
 

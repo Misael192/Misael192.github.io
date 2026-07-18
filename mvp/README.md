@@ -40,6 +40,37 @@ repositório — as duas compartilham o mesmo design system (PeopleFlow UI).
 
 Aplicar a Fase 2: `psql -d peopleflow_mvp -f database/fase2.sql`
 
+## Fases 1 e 2 — fechamento 100%
+
+- ✅ **Checklist de admissão clicável**: marcar/desmarcar item a item; ao concluir
+  os 8 itens o processo vira `completed` e o colaborador é **ativado
+  automaticamente** (com histórico de situação)
+- ✅ **Reajuste salarial** pela ficha (aba Históricos): atualiza salário +
+  `employee_salary_history` em transação, com auditoria
+- ✅ **Mudança de situação** (ativo/férias/afastado/desligado) com motivo,
+  histórico e `terminated_at` quando desligado
+- ✅ **Benefícios** (`beneficios.php`): atribuir VT/VA/VR/saúde/odonto/seguro/convênio
+  por colaborador com desconto em % ou valor fixo; encerrar a qualquer momento —
+  benefícios ativos entram automaticamente no cálculo da folha (Fase 3)
+- ✅ **Gestão de usuários**: trocar perfil (RBAC) e ativar/desativar acesso direto
+  na listagem — com proteção contra auto-lockout e auditoria
+- ✅ **Dashboard com pendências reais**: férias aguardando aprovação, pontos a
+  aprovar e admissões abertas, cada card com link direto para a ação
+
+## Fase 3 (fundação implementada) — Motor de folha
+
+- ✅ Engine pura em `app/services/Payroll/` (dinheiro em **centavos**, sem float):
+  INSS progressivo, IRRF (legal × simplificado, aplica o menor), FGTS, férias,
+  13º, rescisão, horas extras (divisor 220), VT ≤ 6%, salário-família
+- ✅ Rubricas parametrizadas com incidências (`rubrics`) e **tabelas oficiais com
+  vigência** (`tax_tables`) — mudou a lei, muda-se a tabela, nunca o código
+- ✅ `PayrollService` importa banco de horas, faltas, eventos, benefícios e
+  descontos do período
+- ✅ **37 testes automatizados**: `php tests/payroll_tests.php`
+- ⏳ Próximo: telas de fechamento de competência e holerite
+
+Aplicar a Fase 3: `psql -d peopleflow_mvp -f database/fase3.sql`
+
 ## Estrutura
 
 ```

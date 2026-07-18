@@ -7,6 +7,7 @@ $nav = [
     ['ponto.php', 'fa-clock', 'Ponto'],
     ['ferias.php', 'fa-umbrella-beach', 'Férias'],
     ['documentos.php', 'fa-folder-open', 'Documentos'],
+    ['beneficios.php', 'fa-gift', 'Benefícios'],
     ['estrutura.php', 'fa-sitemap', 'Estrutura'],
     ['empresas.php', 'fa-building', 'Empresas'],
     ['usuarios.php', 'fa-users', 'Usuários'],

@@ -25,7 +25,7 @@ class User extends Model
     {
         return $this->select(
             'SELECT u.id, u.name, u.email, u.is_active, u.last_login_at,
-                    r.name AS role_name, c.name AS company_name
+                    u.role_id, r.name AS role_name, c.name AS company_name
              FROM users u
              JOIN roles r ON r.id = u.role_id
              JOIN companies c ON c.id = u.company_id
@@ -48,6 +48,16 @@ class User extends Model
             'SELECT 1 FROM users WHERE company_id = :c AND email = :e',
             ['c' => $companyId, 'e' => $email],
         ) !== null;
+    }
+
+    public function changeRole(int $id, int $roleId): void
+    {
+        $this->execute('UPDATE users SET role_id = :r WHERE id = :id', ['r' => $roleId, 'id' => $id]);
+    }
+
+    public function toggleActive(int $id): void
+    {
+        $this->execute('UPDATE users SET is_active = NOT is_active WHERE id = :id', ['id' => $id]);
     }
 
     public function touchLogin(int $id): void

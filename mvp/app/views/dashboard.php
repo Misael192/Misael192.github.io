@@ -39,6 +39,36 @@ $badges = [
         </div>
       </section>
 
+      <!-- Pendências: o que precisa de ação agora -->
+      <?php $totalPending = array_sum($pending); ?>
+      <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900" aria-label="Pendências">
+        <div class="flex items-center justify-between">
+          <h2 class="font-bold"><i class="fa-solid fa-bell mr-2 text-amber-500" aria-hidden="true"></i>Pendências</h2>
+          <?php if ($totalPending > 0): ?>
+            <span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-400"><?= $totalPending ?></span>
+          <?php endif; ?>
+        </div>
+        <?php if ($totalPending === 0): ?>
+          <p class="mt-3 text-sm text-slate-400"><i class="fa-solid fa-circle-check mr-1.5 text-emerald-500" aria-hidden="true"></i>Tudo em dia — nenhuma ação pendente.</p>
+        <?php else: ?>
+          <div class="mt-4 grid gap-3 sm:grid-cols-3">
+            <?php
+            $items = [
+                ['ferias.php', 'fa-umbrella-beach', $pending['vacations'], 'férias aguardando aprovação'],
+                ['ponto.php', 'fa-clock', $pending['timeclock'], 'registros de ponto a aprovar'],
+                ['colaboradores.php', 'fa-user-plus', $pending['admissions'], 'admissões com checklist aberto'],
+            ];
+            foreach ($items as [$href, $icon, $count, $label]): if ($count === 0) { continue; } ?>
+              <a href="<?= e($href) ?>" class="group flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 transition-colors hover:border-amber-400 dark:border-amber-900 dark:bg-amber-950/40">
+                <i class="fa-solid <?= e($icon) ?> text-amber-500" aria-hidden="true"></i>
+                <span class="text-sm"><strong class="tabular-nums"><?= $count ?></strong> <?= e($label) ?></span>
+                <i class="fa-solid fa-arrow-right ml-auto text-xs text-amber-400 transition-transform group-hover:translate-x-0.5" aria-hidden="true"></i>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+      </section>
+
       <div class="mt-6 grid gap-6 xl:grid-cols-2">
         <!-- Distribuição por status -->
         <section class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">

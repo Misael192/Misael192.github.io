@@ -80,7 +80,8 @@ ALTER TABLE employees
     ADD COLUMN IF NOT EXISTS manager_id     INT REFERENCES employees(id),
     ADD COLUMN IF NOT EXISTS contract_type  VARCHAR(20) NOT NULL DEFAULT 'clt',
     ADD COLUMN IF NOT EXISTS salary_cents   BIGINT,
-    ADD COLUMN IF NOT EXISTS photo_path     VARCHAR(255);
+    ADD COLUMN IF NOT EXISTS photo_path     VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS terminated_at  DATE;
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_employees_company_cpf
     ON employees(company_id, cpf) WHERE cpf IS NOT NULL;

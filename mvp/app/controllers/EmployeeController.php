@@ -35,20 +35,132 @@ class EmployeeController
         ]);
     }
 
-    /** Ficha completa do colaborador (abas). */
+    /** Ficha completa do colaborador (abas) + ações (checklist/reajuste/situação). */
     public function show(): void
     {
         Can::check('employees:read');
         $companyId = auth_user()['company_id'];
+        $employeeId = (int) ($_GET['id'] ?? 0);
 
-        $employee = $this->employees->findFull((int) ($_GET['id'] ?? 0), $companyId);
+        $employee = $this->employees->findFull($employeeId, $companyId);
         if ($employee === null) {
             http_response_code(404);
             flash('error', 'Colaborador não encontrado.');
             redirect('colaboradores.php');
         }
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Can::check('employees:manage');
+            Csrf::verify();
+            match ($_POST['action'] ?? '') {
+                'checklist' => $this->toggleChecklistItem($employee),
+                'raise' => $this->applyRaise($employee),
+                'status' => $this->changeStatus($employee),
+                default => null,
+            };
+            redirect("colaborador.php?id={$employeeId}");
+        }
+
         view('employee_show', ['emp' => $employee]);
+    }
+
+    /** Admissão digital: marca/desmarca item; tudo concluído → admissão completa. */
+    private function toggleChecklistItem(array $employee): void
+    {
+        $itemId = (int) ($_POST['item_id'] ?? 0);
+        $db = \App\Models\Database::connection();
+
+        $db->prepare(
+            'UPDATE admission_items SET is_done = NOT is_done, done_at = CASE WHEN is_done THEN NULL ELSE now() END
+             WHERE id = :i AND admission_id = :a',
+        )->execute(['i' => $itemId, 'a' => $employee['admission']['id']]);
+
+        // Todos os itens concluídos → processo completo (+ ativa se em admissão)
+        $stmt = $db->prepare('SELECT bool_and(is_done) FROM admission_items WHERE admission_id = :a');
+        $stmt->execute(['a' => $employee['admission']['id']]);
+        $allDone = $stmt->fetchColumn();
+
+        // PDO serializa bool como '' no pgsql — o timestamp é decidido aqui, não no SQL
+        $db->prepare('UPDATE admissions SET status = :s, completed_at = :done_at WHERE id = :a')
+           ->execute(['s' => $allDone ? 'completed' : 'in_progress',
+               'done_at' => $allDone ? date('Y-m-d H:i:sP') : null, 'a' => $employee['admission']['id']]);
+
+        if ($allDone && $employee['status'] === 'admission') {
+            $db->prepare("UPDATE employees SET status = 'active' WHERE id = :e")->execute(['e' => $employee['id']]);
+            $db->prepare('INSERT INTO employee_status_history (employee_id, old_status, new_status, reason, changed_by)
+                          VALUES (:e, :old, :new, :r, :by)')
+               ->execute(['e' => $employee['id'], 'old' => 'admission', 'new' => 'active',
+                   'r' => 'Admissão digital concluída', 'by' => auth_user()['id']]);
+            flash('success', 'Checklist completo — colaborador ativado! 🎉');
+        }
+
+        AuditService::log('admission.checklist', 'admission_item', $itemId);
+    }
+
+    /** Reajuste salarial: atualiza salário + histórico imutável + auditoria. */
+    private function applyRaise(array $employee): void
+    {
+        $newSalary = (int) round(((float) str_replace(['.', ','], ['', '.'], (string) $_POST['new_salary'])) * 100);
+        $reason = trim((string) ($_POST['reason'] ?? '')) ?: 'Reajuste';
+
+        if ($newSalary <= 0) {
+            flash('error', 'Informe o novo salário.');
+
+            return;
+        }
+
+        $db = \App\Models\Database::connection();
+        $db->beginTransaction();
+        try {
+            $db->prepare('UPDATE employees SET salary_cents = :s WHERE id = :e')
+               ->execute(['s' => $newSalary, 'e' => $employee['id']]);
+            $db->prepare('INSERT INTO employee_salary_history (employee_id, old_salary_cents, new_salary_cents, reason, changed_by)
+                          VALUES (:e, :old, :new, :r, :by)')
+               ->execute(['e' => $employee['id'], 'old' => $employee['salary_cents'],
+                   'new' => $newSalary, 'r' => $reason, 'by' => auth_user()['id']]);
+            $db->commit();
+        } catch (\Throwable $e) {
+            $db->rollBack();
+            throw $e;
+        }
+
+        AuditService::log('employee.raise', 'employee', $employee['id'],
+            ['salary_cents' => $employee['salary_cents']], ['salary_cents' => $newSalary, 'reason' => $reason]);
+        flash('success', 'Reajuste aplicado e registrado no histórico.');
+    }
+
+    /** Mudança de situação com histórico + auditoria. */
+    private function changeStatus(array $employee): void
+    {
+        $newStatus = (string) ($_POST['new_status'] ?? '');
+        $reason = trim((string) ($_POST['reason'] ?? '')) ?: null;
+        $allowed = ['active', 'vacation', 'on_leave', 'terminated', 'admission'];
+
+        if (! in_array($newStatus, $allowed, true) || $newStatus === $employee['status']) {
+            flash('error', 'Situação inválida ou inalterada.');
+
+            return;
+        }
+
+        $db = \App\Models\Database::connection();
+        $db->beginTransaction();
+        try {
+            $db->prepare('UPDATE employees SET status = :s, terminated_at = :ended WHERE id = :e')
+               ->execute(['s' => $newStatus, 'e' => $employee['id'],
+                   'ended' => $newStatus === 'terminated' ? date('Y-m-d') : null]);
+            $db->prepare('INSERT INTO employee_status_history (employee_id, old_status, new_status, reason, changed_by)
+                          VALUES (:e, :old, :new, :r, :by)')
+               ->execute(['e' => $employee['id'], 'old' => $employee['status'],
+                   'new' => $newStatus, 'r' => $reason, 'by' => auth_user()['id']]);
+            $db->commit();
+        } catch (\Throwable $e) {
+            $db->rollBack();
+            throw $e;
+        }
+
+        AuditService::log('employee.status', 'employee', $employee['id'],
+            ['status' => $employee['status']], ['status' => $newStatus, 'reason' => $reason]);
+        flash('success', 'Situação atualizada.');
     }
 
     private function store(int $companyId): void

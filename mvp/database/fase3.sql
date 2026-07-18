@@ -221,3 +221,10 @@ INSERT INTO tax_tables (type, valid_from, brackets) VALUES
 ON CONFLICT (type, valid_from) DO NOTHING;
 
 COMMIT;
+
+-- Benefícios (Fase 2 — conclusão): permissão de gestão
+INSERT INTO permissions (code, description) VALUES ('benefits:manage', 'Gerenciar benefícios dos colaboradores')
+ON CONFLICT (code) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r JOIN permissions p ON p.code = 'benefits:manage'
+WHERE r.code IN ('admin', 'rh', 'dp') ON CONFLICT DO NOTHING;
