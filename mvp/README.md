@@ -88,6 +88,26 @@ Aplicar a Fase 2: `psql -d peopleflow_mvp -f database/fase2.sql`
 
 Aplicar a Fase 3: `psql -d peopleflow_mvp -f database/fase3.sql`
 
+## Fase 5 (implementada) — Portal do Colaborador
+
+- ✅ **Vínculo login ↔ ficha**: `users.employee_id` liga o acesso ao colaborador;
+  o portal entrega somente o que é do próprio vínculo (sem RBAC — escopo por
+  `employee_id` da sessão)
+- ✅ **Meu espaço** (`portal.php`): cabeçalho com banco de horas, saldo de férias
+  e recibos; **bater ponto** (entrada → almoço → retorno → saída, fonte
+  `portal`, cai na aprovação do gestor); últimos 7 dias de marcações
+- ✅ **Meus recibos**: salário, férias, 13º e rescisão — o holerite valida que o
+  recibo é do próprio colaborador (alheio → 403, DP/RH seguem vendo tudo)
+- ✅ **Minhas férias**: saldo do período aquisitivo aberto, solicitação
+  self-service com a mesma validação CLT do RH, acompanhamento de status
+- ✅ **Meus documentos**: lista + download apenas dos próprios (`documents:read`
+  foi revogado do perfil colaborador — o GED completo é do DP/RH)
+- ✅ Login de colaborador cai direto no portal; sidebar esconde as telas
+  administrativas
+- Demo: **ana@demo.com** / **password** (perfil colaborador, vinculada à Ana)
+
+Aplicar a Fase 5: `psql -d peopleflow_mvp -f database/fase5.sql`
+
 ## Estrutura
 
 ```

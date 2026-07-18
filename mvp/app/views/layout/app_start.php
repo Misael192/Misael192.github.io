@@ -1,17 +1,24 @@
 <?php
 /** Shell do app: sidebar + topbar. Recebe $title e $active (arquivo atual). */
 $user = auth_user();
-$nav = [
-    ['dashboard.php', 'fa-chart-pie', 'Dashboard'],
-    ['colaboradores.php', 'fa-id-badge', 'Colaboradores'],
-    ['ponto.php', 'fa-clock', 'Ponto'],
-    ['ferias.php', 'fa-umbrella-beach', 'Férias'],
-    ['documentos.php', 'fa-folder-open', 'Documentos'],
-    ['beneficios.php', 'fa-gift', 'Benefícios'],
-    ['estrutura.php', 'fa-sitemap', 'Estrutura'],
-    ['empresas.php', 'fa-building', 'Empresas'],
-    ['usuarios.php', 'fa-users', 'Usuários'],
-];
+$isCollaborator = ($user['role'] ?? '') === 'colaborador';
+$nav = [];
+if (($user['employee_id'] ?? null) !== null) {
+    $nav[] = ['portal.php', 'fa-house-user', 'Meu espaço'];
+}
+if (! $isCollaborator) {
+    $nav = array_merge($nav, [
+        ['dashboard.php', 'fa-chart-pie', 'Dashboard'],
+        ['colaboradores.php', 'fa-id-badge', 'Colaboradores'],
+        ['ponto.php', 'fa-clock', 'Ponto'],
+        ['ferias.php', 'fa-umbrella-beach', 'Férias'],
+        ['documentos.php', 'fa-folder-open', 'Documentos'],
+        ['beneficios.php', 'fa-gift', 'Benefícios'],
+        ['estrutura.php', 'fa-sitemap', 'Estrutura'],
+        ['empresas.php', 'fa-building', 'Empresas'],
+        ['usuarios.php', 'fa-users', 'Usuários'],
+    ]);
+}
 ?>
 <body class="bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100"
       x-data="{ mobileNav: false }">
@@ -32,6 +39,7 @@ $nav = [
           <i class="fa-solid <?= e($icon) ?> w-4 text-center" aria-hidden="true"></i><?= e($label) ?>
         </a>
       <?php endforeach; ?>
+      <?php if (! $isCollaborator): ?>
       <p class="px-3 pt-4 text-[10px] font-bold uppercase tracking-wide text-slate-400">Folha</p>
       <?php foreach ([['folha.php', 'fa-money-check-dollar', 'Folha de pagamento'],
                       ['decimo.php', 'fa-gifts', '13º salário'],
@@ -42,6 +50,7 @@ $nav = [
                : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800' ?>">
           <i class="fa-solid <?= e($icon) ?> w-4 text-center" aria-hidden="true"></i><?= e($label) ?></a>
       <?php endforeach; ?>
+      <?php endif; ?>
     </nav>
     <div class="border-t border-slate-200 p-4 text-xs text-slate-400 dark:border-slate-800">
       <?= e($user['company'] ?? '') ?>

@@ -46,6 +46,7 @@ class AuthService
             'company' => $user['company_name'],
             'role' => $user['role_code'],
             'role_name' => $user['role_name'],
+            'employee_id' => isset($user['employee_id']) && $user['employee_id'] !== null ? (int) $user['employee_id'] : null,
             'permissions' => $this->effectivePermissions((int) $user['id'], (int) $user['role_id']),
         ];
 

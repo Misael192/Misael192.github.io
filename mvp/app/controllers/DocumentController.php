@@ -45,10 +45,15 @@ class DocumentController
     /** Download com controle de acesso (arquivo fora do docroot). */
     public function download(): void
     {
-        Can::check('documents:read');
+        \App\Middleware\Auth::check();
         $companyId = auth_user()['company_id'];
 
         $version = $this->documents->latestVersion((int) ($_GET['id'] ?? 0), $companyId);
+
+        // Colaborador baixa os próprios documentos; o resto exige permissão
+        if ($version === null || (int) ($version['employee_id'] ?? 0) !== (auth_user()['employee_id'] ?? 0)) {
+            Can::check('documents:read');
+        }
         $file = $version !== null ? STORAGE_PATH.'/uploads/'.$version['file_path'] : null;
 
         if ($version === null || ! is_file($file)) {

@@ -91,7 +91,7 @@ class Document extends Model
     public function latestVersion(int $documentId, int $companyId): ?array
     {
         return $this->selectOne(
-            'SELECT v.*, d.name, d.company_id FROM document_versions v
+            'SELECT v.*, d.name, d.company_id, d.employee_id FROM document_versions v
              JOIN documents d ON d.id = v.document_id
              WHERE v.document_id = :d AND d.company_id = :c
              ORDER BY v.version DESC LIMIT 1',

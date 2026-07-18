@@ -93,10 +93,10 @@ class PayrollController
         ]);
     }
 
-    /** Holerite individual — versão para impressão. */
+    /** Holerite individual — DP/RH veem todos; colaborador vê apenas o próprio. */
     public function payslip(): void
     {
-        Can::check('payroll:manage');
+        \App\Middleware\Auth::check();
         $companyId = auth_user()['company_id'];
 
         $stmt = Database::connection()->prepare(
@@ -119,6 +119,10 @@ class PayrollController
             http_response_code(404);
             flash('error', 'Holerite não encontrado.');
             redirect('folha.php');
+        }
+
+        if ((int) $payroll['employee_id'] !== (auth_user()['employee_id'] ?? 0)) {
+            Can::check('payroll:manage');
         }
 
         $items = Database::connection()->prepare(

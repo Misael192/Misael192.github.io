@@ -17,7 +17,7 @@ class AuthController
     public function login(): void
     {
         if (auth_user() !== null) {
-            redirect('dashboard.php');
+            redirect($this->home());
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -27,7 +27,7 @@ class AuthController
             $password = (string) ($_POST['password'] ?? '');
 
             if ($email !== '' && $password !== '' && $this->auth->attempt($email, $password)) {
-                redirect('dashboard.php');
+                redirect($this->home());
             }
 
             flash('error', 'Credenciais inválidas. Verifique e-mail e senha.');
@@ -35,6 +35,12 @@ class AuthController
         }
 
         view('login');
+    }
+
+    /** Colaborador entra direto no portal; demais perfis, no dashboard. */
+    private function home(): string
+    {
+        return (auth_user()['role'] ?? '') === 'colaborador' ? 'portal.php' : 'dashboard.php';
     }
 
     public function logout(): void
