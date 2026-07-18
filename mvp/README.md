@@ -67,7 +67,13 @@ Aplicar a Fase 2: `psql -d peopleflow_mvp -f database/fase2.sql`
 - ✅ `PayrollService` importa banco de horas, faltas, eventos, benefícios e
   descontos do período
 - ✅ **37 testes automatizados**: `php tests/payroll_tests.php`
-- ⏳ Próximo: telas de fechamento de competência e holerite
+- ✅ **Fechamento de competência** (`folha.php`): navegar por mês, lançar
+  eventos manuais (comissão/bônus/HE/desconto), calcular a empresa inteira,
+  conferir totais (bruto/descontos/líquido/FGTS) e **fechar** — competência
+  fechada é imutável (com reabertura auditada)
+- ✅ **Holerite** (`holerite.php`): recibo de pagamento printável (Imprimir/PDF
+  do navegador) com rubricas, referências, bases INSS/IRRF/FGTS, FGTS do mês e
+  líquido em destaque; marca **PRÉVIA** enquanto a folha não é fechada
 
 Aplicar a Fase 3: `psql -d peopleflow_mvp -f database/fase3.sql`
 

@@ -32,8 +32,12 @@ $nav = [
           <i class="fa-solid <?= e($icon) ?> w-4 text-center" aria-hidden="true"></i><?= e($label) ?>
         </a>
       <?php endforeach; ?>
-      <p class="px-3 pt-4 text-[10px] font-bold uppercase tracking-wide text-slate-400">Fase 3</p>
-      <span class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-300 dark:text-slate-600"><i class="fa-solid fa-money-check-dollar w-4 text-center" aria-hidden="true"></i>Folha de pagamento</span>
+      <p class="px-3 pt-4 text-[10px] font-bold uppercase tracking-wide text-slate-400">Folha</p>
+      <a href="folha.php"<?= ($active ?? '') === 'folha.php' ? ' aria-current="page"' : '' ?>
+         class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors <?= ($active ?? '') === 'folha.php'
+             ? 'bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
+             : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800' ?>">
+        <i class="fa-solid fa-money-check-dollar w-4 text-center" aria-hidden="true"></i>Folha de pagamento</a>
     </nav>
     <div class="border-t border-slate-200 p-4 text-xs text-slate-400 dark:border-slate-800">
       <?= e($user['company'] ?? '') ?>

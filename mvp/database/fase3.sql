@@ -228,3 +228,11 @@ ON CONFLICT (code) DO NOTHING;
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT r.id, p.id FROM roles r JOIN permissions p ON p.code = 'benefits:manage'
 WHERE r.code IN ('admin', 'rh', 'dp') ON CONFLICT DO NOTHING;
+
+-- Permissão do módulo de folha (fechamento/holerite) — idempotente
+INSERT INTO permissions (code, description) VALUES ('payroll:manage', 'Calcular e fechar a folha de pagamento')
+ON CONFLICT (code) DO NOTHING;
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p
+WHERE r.code IN ('admin', 'rh', 'dp') AND p.code = 'payroll:manage'
+ON CONFLICT DO NOTHING;
