@@ -6,6 +6,7 @@ $nav = [];
 if (($user['employee_id'] ?? null) !== null) {
     $nav[] = ['portal.php', 'fa-house-user', 'Meu espaço'];
 }
+$nav[] = ['assistente.php', 'fa-wand-magic-sparkles', 'Assistente CLT'];
 if (! $isCollaborator) {
     $nav = array_merge($nav, [
         ['dashboard.php', 'fa-chart-pie', 'Dashboard'],
@@ -43,7 +44,8 @@ if (! $isCollaborator) {
       <p class="px-3 pt-4 text-[10px] font-bold uppercase tracking-wide text-slate-400">Folha</p>
       <?php foreach ([['folha.php', 'fa-money-check-dollar', 'Folha de pagamento'],
                       ['decimo.php', 'fa-gifts', '13º salário'],
-                      ['rescisao.php', 'fa-file-signature', 'Rescisão']] as [$href, $icon, $label]): ?>
+                      ['rescisao.php', 'fa-file-signature', 'Rescisão'],
+                      ['esocial.php', 'fa-tower-broadcast', 'eSocial']] as [$href, $icon, $label]): ?>
         <a href="<?= e($href) ?>"<?= ($active ?? '') === $href ? ' aria-current="page"' : '' ?>
            class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors <?= ($active ?? '') === $href
                ? 'bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'

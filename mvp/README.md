@@ -88,6 +88,26 @@ Aplicar a Fase 2: `psql -d peopleflow_mvp -f database/fase2.sql`
 
 Aplicar a Fase 3: `psql -d peopleflow_mvp -f database/fase3.sql`
 
+## Fase 4 (implementada) — Assistente CLT + eSocial
+
+- ✅ **Assistente CLT** (`assistente.php`): chat disponível a todo usuário
+  (inclusive colaborador). Respostas numéricas saem das **calculadoras da
+  folha com as tabelas vigentes do banco** — nunca valores fixos no texto:
+  salário líquido, INSS, IRRF (legal × simplificado), FGTS, férias, 13º e
+  horas extras. Base de conhecimento CLT com artigos: aviso prévio (com conta
+  por anos de casa), rescisão por modalidade, banco de horas, jornada/12x36,
+  adicional noturno, insalubridade/periculosidade, licenças, experiência,
+  VT e salário-família. Conversas persistidas (`ai_conversations/ai_messages`);
+  arquitetura pronta para plugar um provedor LLM externo na mesma interface
+- ✅ **eSocial** (`esocial.php`, permissão `esocial:manage`):
+  **S-2200** (admissão) gerado da ficha do colaborador — quem está sem
+  CPF/salário aparece como pendência de cadastro; **S-1200** (remuneração)
+  gerado das rubricas da folha **fechada** da competência. XML nos leiautes
+  evtAdmissao/evtRemun (tpAmb 2), download por evento, regeneração idempotente
+  e auditoria. Transmissão via webservice (certificado A1) = próxima etapa
+
+Aplicar a Fase 4: `psql -d peopleflow_mvp -f database/fase4.sql`
+
 ## Fase 5 (implementada) — Portal do Colaborador
 
 - ✅ **Vínculo login ↔ ficha**: `users.employee_id` liga o acesso ao colaborador;
