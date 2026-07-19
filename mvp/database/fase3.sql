@@ -252,3 +252,11 @@ ALTER TABLE vacation_payroll ADD CONSTRAINT vacation_payroll_payroll_id_fkey
 ALTER TABLE termination_payroll DROP CONSTRAINT IF EXISTS termination_payroll_payroll_id_fkey;
 ALTER TABLE termination_payroll ADD CONSTRAINT termination_payroll_payroll_id_fkey
     FOREIGN KEY (payroll_id) REFERENCES payrolls(id) ON DELETE CASCADE;
+
+-- Seeds demo: salários dos colaboradores de exemplo (só se ainda não têm) —
+-- sem isso uma instalação limpa calcularia a folha para 0 colaboradores.
+UPDATE employees e SET salary_cents = v.cents
+FROM (VALUES ('00001', 420000), ('00002', 780000), ('00004', 550000), ('00005', 510000))
+     AS v(registration, cents), companies c
+WHERE c.cnpj = '00.000.000/0001-00' AND e.company_id = c.id
+  AND e.registration = v.registration AND e.salary_cents IS NULL;

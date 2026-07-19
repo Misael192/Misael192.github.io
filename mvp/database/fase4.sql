@@ -42,3 +42,14 @@ INSERT INTO role_permissions (role_id, permission_id)
 SELECT r.id, p.id FROM roles r, permissions p
 WHERE r.code IN ('admin', 'dp') AND p.code = 'esocial:manage'
 ON CONFLICT DO NOTHING;
+
+-- Seeds demo: CPF/PIS dos colaboradores de exemplo (só se ainda não têm) —
+-- o S-2200 exige CPF; sem isso a instalação limpa não gera nenhum evento.
+UPDATE employees e SET cpf = v.cpf, pis = v.pis
+FROM (VALUES ('00001', '529.982.247-25', '120.1111.111-1'),
+             ('00002', '168.995.350-09', '120.2222.222-2'),
+             ('00004', '111.444.777-35', '120.4444.444-4'),
+             ('00005', '048.640.750-05', '120.5555.555-5'))
+     AS v(registration, cpf, pis), companies c
+WHERE c.cnpj = '00.000.000/0001-00' AND e.company_id = c.id
+  AND e.registration = v.registration AND e.cpf IS NULL;
