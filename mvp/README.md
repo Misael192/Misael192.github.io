@@ -108,6 +108,23 @@ Aplicar a Fase 3: `psql -d peopleflow_mvp -f database/fase3.sql`
 
 Aplicar a Fase 4: `psql -d peopleflow_mvp -f database/fase4.sql`
 
+## Fase 6 (implementada) — API pública /api/v1
+
+- ✅ **Chaves de API** (`integracoes.php`, permissão `api:manage`): criação com
+  escopos (`read` | `read,write`), segredo `pfk_…` exibido **uma única vez**
+  (armazenamos só o SHA-256), prefixo para identificação, último uso e
+  revogação imediata (→ 401)
+- ✅ **Endpoints REST** em `/api/v1/index.php` (PATH_INFO — funciona em Apache
+  e `php -S` sem rewrite), envelope `{data, meta} | {error}`:
+  `GET /me`, `GET /employees[?status=]`, `GET /employees/{id}`,
+  `GET /payrolls?competency=YYYY-MM`, `GET /vacations[?status=]`,
+  `GET /openapi` (spec pública) e `POST /payroll-events` (escopo write) —
+  integrações (CRM/ERP) lançam comissões/bônus direto na competência aberta;
+  competência fechada responde 409
+- ✅ Escopo por empresa em toda consulta; auditoria na gestão de chaves
+
+Aplicar a Fase 6: `psql -d peopleflow_mvp -f database/fase6.sql`
+
 ## Fase 5 (implementada) — Portal do Colaborador
 
 - ✅ **Vínculo login ↔ ficha**: `users.employee_id` liga o acesso ao colaborador;
