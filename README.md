@@ -1,12 +1,31 @@
 # PeopleFlow
 
-Plataforma HCM (Departamento Pessoal + Recursos Humanos) **multiempresa, modular e
-orientada a eventos**, construída em **PHP 8.4 / Laravel 12** — projetada para operar
-de 1 a 10.000 empresas sem refatoração arquitetural.
+**Saia das planilhas.** PeopleFlow é uma plataforma HCM (Departamento Pessoal +
+Recursos Humanos) **multiempresa e modular**: comece pelo módulo que resolve o
+seu gargalo de hoje e expanda — de 1 a 10.000 empresas.
+
+O repositório tem **duas frentes complementares**:
+
+| Frente | Onde | O que é |
+|---|---|---|
+| **Produto funcional (MVP)** | [`mvp/`](./mvp/) | PHP 8.4 puro + PostgreSQL. **Fases 1–6 implementadas e testadas**: DP completo, motor de folha (INSS/IRRF/FGTS/férias/13º/rescisão com 37 testes), fechamento + holerite, Assistente CLT, eSocial S-2200/S-1200, Portal do Colaborador e API pública `/api/v1`. Leia o [README do MVP](./mvp/README.md). |
+| **Plataforma de escala** | raiz | Laravel 12: multi-tenancy evolutiva (RLS), event bus, workflow engine, AI Engine multi-provedor, billing — alvo da migração do MVP validado. |
 
 > 📐 Comece por aqui: [**Documento de Arquitetura**](./docs/ARCHITECTURE.md) ·
-> [Roadmap](./docs/ROADMAP.md) · [ADRs (decisões e justificativas)](./docs/adr/) ·
+> [Roadmap com status real](./docs/ROADMAP.md) · [ADRs (decisões e justificativas)](./docs/adr/) ·
 > [API OpenAPI](./docs/openapi.yaml)
+
+## Rodando o MVP (produto completo)
+
+```bash
+cd mvp
+createdb peopleflow_mvp
+for f in schema seeds fase2 fase3 fase4 fase5 fase6; do psql -d peopleflow_mvp -f database/$f.sql; done
+php -S localhost:8091 -t public
+php tests/payroll_tests.php   # 37 testes da folha
+```
+
+Logins demo: `admin@demo.com` / `password` (admin) · `ana@demo.com` / `password` (portal do colaborador).
 
 ## Stack
 
@@ -39,7 +58,7 @@ docs/              Arquitetura, ADRs, roadmap, OpenAPI
 docker/            Nginx + PHP-FPM para produção
 ```
 
-## Rodando localmente
+## Rodando a plataforma Laravel (raiz)
 
 Pré-requisitos: PHP 8.4+, Composer, Node 20+ (assets), Docker (opcional p/ Postgres/Redis).
 

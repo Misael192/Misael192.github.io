@@ -1,37 +1,59 @@
 # PeopleFlow — Roadmap
 
-## Fase 1 — Fundação da Plataforma ✅ (aprovada, em execução)
-- [x] Documento de arquitetura com justificativas e ADRs
-- [x] Monorepo (pnpm + turbo) com apps `api`/`web` e packages `database`/`design-system`/`contracts`
-- [x] Schema Prisma com todas as entidades da arquitetura inicial (tenancy, IAM, RBAC,
-      billing, workflow, IA, auditoria, DP/RH)
-- [x] Core API: auth (JWT + refresh rotativo + Argon2id), TenantContext, RBAC guards,
-      event bus com outbox, auditoria, feature flags, health checks, OpenAPI `/api/v1`
-- [x] Design system (tokens light/dark) + landing page + login + shell do dashboard
-- [ ] Migrações aplicadas + seed (tenant demo, papéis padrão, catálogo de módulos)
-- [ ] CI (lint, typecheck, testes) — workflow incluído, ativar branch protection
+Duas frentes convivem no repositório:
 
-## Fase 2 — DP essencial
-- Admissão digital (cadastro, documentos, checklist, assinatura)
-- Controle de ponto (web/mobile, banco de horas, aprovação de ajustes, geolocalização)
-- Gestão de férias (solicitação, aprovação via workflow engine, calendário, alertas)
-- GED (versões, permissões, compartilhamento seguro)
-- Portal do colaborador e portal do gestor (fluxos acima ponta a ponta)
+- **`mvp/` — produto funcional** em PHP puro + PostgreSQL (MVC próprio), onde as
+  fases abaixo foram implementadas e testadas ponta a ponta (Playwright + testes
+  de unidade da folha);
+- **raiz — plataforma Laravel 12** (multi-tenancy com RLS, event bus, workflow,
+  AI Engine multi-provedor, billing), alvo da migração quando o produto validar.
 
-## Fase 3 — RH
-- Recrutamento e seleção (vagas, trabalhe conosco, pipeline Kanban, entrevistas)
-- Benefícios (catálogo, VT/VA, plano de saúde, relatórios)
-- Desempenho (metas, avaliações, PDI) e treinamentos (cursos, certificados)
-- Engajamento (clima, reconhecimento, mural, comunicação interna)
+## Fase 1 — Fundação ✅ concluída (mvp/)
+- [x] Login seguro (Argon2id, CSRF, sessão auditada em `user_sessions`)
+- [x] Empresas (CNPJ validado) e usuários com perfis RBAC + overrides por usuário
+- [x] Gestão de perfis: trocar papel e ativar/desativar acesso (anti auto-lockout)
+- [x] Dashboard com KPIs reais e pendências acionáveis (férias/ponto/admissões)
 
-## Fase 4 — Plataforma comercial
-- Billing ativo (Stripe), planos self-service, limites e upgrade/downgrade
-- Workflow engine com editor visual completo
-- AI Engine: assistente CLT (RAG), geração de documentos, resumo de currículos
-- Dashboards de analytics (turnover, absenteísmo, headcount)
+## Fase 2 — Departamento Pessoal ✅ concluída (mvp/)
+- [x] Estrutura organizacional: filiais, departamentos, cargos (CBO), centros de custo, escalas
+- [x] Colaborador completo (documentos, endereço, bancários/PIX, dependentes, emergência, foto)
+      gravado em transação com satélites normalizados
+- [x] Admissão digital com checklist clicável → ativação automática do colaborador
+- [x] Ponto com aprovação e banco de horas contra a jornada da escala
+- [x] Férias: período aquisitivo/concessivo, saldo CLT, aprovação com débito
+- [x] GED: versionamento automático, SHA-256, assinatura eletrônica, download gated
+- [x] Históricos imutáveis (salário/situação) e auditoria completa (quem/quando/IP/valores)
 
-## Fase 5 — Escala e ecossistema
-- Multi-tenancy nível 2/3 (schema/banco dedicado) para Enterprise
-- Eventos em Redis Streams, workers dedicados, read replicas
-- Webhooks públicos, API keys self-service, Marketplace de integrações
-- Preparação eSocial / folha (Payroll)
+## Fase 3 — Folha de pagamento ✅ concluída (mvp/)
+- [x] Engine pura em centavos: INSS progressivo, IRRF legal × simplificado (menor),
+      FGTS, férias, 13º, rescisão, HE (divisor 220), VT ≤ 6%, salário-família — 37 testes
+- [x] Rubricas parametrizadas (incidências/fórmula) e tabelas oficiais com vigência
+- [x] Fechamento de competência: eventos → calcular → conferir → fechar (imutável) → reabrir
+- [x] Holerite printável por tipo; folhas especiais: 13º (1ª/2ª), recibo de férias,
+      rescisão com simulação → termo
+
+## Fase 4 — IA e eSocial ✅ concluída (mvp/)
+- [x] Assistente CLT: chat que calcula com a engine + tabelas vigentes e cita base
+      legal; conversas persistidas; interface pronta para provedor LLM externo
+- [x] eSocial: S-2200 (admissão) e S-1200 (remuneração de folha fechada), XML nos
+      leiautes, download e pendências de cadastro apontadas
+- [ ] Transmissão ao webservice eSocial (certificado A1)
+- [ ] Workflow visual de aprovações · OCR de documentos
+
+## Fase 5 — Portal do Colaborador ✅ concluída (mvp/)
+- [x] Vínculo `users.employee_id`; login de colaborador cai direto no portal
+- [x] Bater ponto, recibos próprios, férias self-service com validação CLT,
+      documentos próprios — acesso alheio bloqueado (403) e testado
+- [ ] PWA/app móvel
+
+## Fase 6 — API pública e integrações ✅ concluída (mvp/)
+- [x] `/api/v1` com Bearer `pfk_…` (SHA-256), escopos read/write, envelope JSON,
+      OpenAPI pública; POST /payroll-events para integrações lançarem comissões
+- [x] Tela de chaves: criar/copiar uma única vez/revogar, auditado
+- [ ] Webhooks de saída · conectores prontos (SAP, TOTVS, Conta Azul, Omie, Nibo, Domínio)
+
+## Próximos passos
+1. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
+2. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
+3. Migração progressiva do MVP validado para a plataforma Laravel da raiz
+   (multi-tenancy RLS, filas, billing) — ver [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs
