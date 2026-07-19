@@ -153,6 +153,7 @@ class PayrollController
     {
         $this->payroll->closePeriod($companyId, $competency, auth_user()['id']);
         AuditService::log('payroll.close', 'payroll_period', $competency);
+        \App\Services\Api\WebhookService::dispatch($companyId, 'payroll.closed', ['competency' => $competency]);
         flash('success', "Competência {$competency} fechada — folha imutável a partir de agora.");
     }
 

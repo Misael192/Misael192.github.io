@@ -234,6 +234,10 @@ class EmployeeController
         $employeeId = $this->employees->createFull($core, $satellites, auth_user()['id']);
 
         AuditService::log('employee.create', 'employee', $employeeId, null, ['name' => $core['full_name'], 'registration' => $core['registration']]);
+        \App\Services\Api\WebhookService::dispatch($companyId, 'employee.created', [
+            'employee_id' => $employeeId, 'full_name' => $core['full_name'],
+            'registration' => $core['registration'], 'hired_at' => $core['hired_at'],
+        ]);
         flash('success', "Colaborador \"{$core['full_name']}\" admitido — checklist de admissão criado.");
         redirect("colaborador.php?id={$employeeId}");
     }

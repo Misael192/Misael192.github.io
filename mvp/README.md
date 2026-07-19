@@ -122,6 +122,13 @@ Aplicar a Fase 4: `psql -d peopleflow_mvp -f database/fase4.sql`
   integrações (CRM/ERP) lançam comissões/bônus direto na competência aberta;
   competência fechada responde 409
 - ✅ Escopo por empresa em toda consulta; auditoria na gestão de chaves
+- ✅ **Webhooks de saída**: endpoints por empresa com segredo `whsec` (exibido
+  uma vez) e filtro de eventos (`employee.created/terminated`,
+  `vacation.approved/rejected`, `payroll.closed`); POST JSON assinado com
+  **HMAC-SHA256** no cabeçalho `X-PeopleFlow-Signature` (validado
+  criptograficamente nos testes); entregas registradas com status/código/
+  tentativas, pausa de endpoint e **reenvio manual** — o despacho nunca
+  derruba a operação de negócio
 
 Aplicar a Fase 6: `psql -d peopleflow_mvp -f database/fase6.sql`
 

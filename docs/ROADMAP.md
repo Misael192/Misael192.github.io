@@ -50,7 +50,8 @@ Duas frentes convivem no repositório:
 - [x] `/api/v1` com Bearer `pfk_…` (SHA-256), escopos read/write, envelope JSON,
       OpenAPI pública; POST /payroll-events para integrações lançarem comissões
 - [x] Tela de chaves: criar/copiar uma única vez/revogar, auditado
-- [ ] Webhooks de saída · conectores prontos (SAP, TOTVS, Conta Azul, Omie, Nibo, Domínio)
+- [x] Webhooks de saída assinados (HMAC-SHA256) com entregas rastreadas e reenvio
+- [ ] Conectores prontos (SAP, TOTVS, Conta Azul, Omie, Nibo, Domínio)
 
 ## Próximos passos
 1. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)

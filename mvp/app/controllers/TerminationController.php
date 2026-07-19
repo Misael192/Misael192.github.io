@@ -58,6 +58,12 @@ class TerminationController
                 );
                 AuditService::log('payroll.termination', 'employee', $employee['id'], null,
                     ['date' => $input['date'], 'type' => $input['type'], 'result' => $message]);
+                if ($ok) {
+                    \App\Services\Api\WebhookService::dispatch($companyId, 'employee.terminated', [
+                        'employee_id' => (int) $employee['id'], 'full_name' => $employee['full_name'],
+                        'termination_date' => $input['date'], 'type' => $input['type'],
+                    ]);
+                }
                 flash($ok ? 'success' : 'error', $message);
                 redirect($ok ? "holerite.php?id={$payrollId}" : 'rescisao.php');
             }

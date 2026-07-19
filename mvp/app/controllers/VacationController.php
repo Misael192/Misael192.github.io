@@ -83,6 +83,8 @@ class VacationController
         if ($this->vacations->decide($id, $companyId, $approve, auth_user()['id'])) {
             AuditService::log($approve ? 'vacation.approve' : 'vacation.reject', 'vacation', $id,
                 ['status' => 'requested'], ['status' => $approve ? 'approved' : 'rejected']);
+            \App\Services\Api\WebhookService::dispatch($companyId,
+                $approve ? 'vacation.approved' : 'vacation.rejected', ['vacation_id' => $id]);
             flash('success', $approve ? 'Férias aprovadas — saldo do período atualizado.' : 'Solicitação rejeitada.');
         } else {
             flash('error', 'Solicitação não encontrada ou já decidida.');

@@ -98,4 +98,101 @@ $card = 'rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark
         </section>
       </div>
 
+      <!-- ══ Webhooks de saída ══════════════════════════════════════════════ -->
+      <?php if ($newWebhookSecret !== null): ?>
+        <section class="mt-6 rounded-2xl border-2 border-amber-300 bg-amber-50 p-6 dark:border-amber-700 dark:bg-amber-950/40" x-data>
+          <h2 class="font-bold text-amber-800 dark:text-amber-300"><i class="fa-solid fa-key mr-2" aria-hidden="true"></i>Segredo do webhook <?= e($newWebhookSecret['url']) ?> — copie AGORA</h2>
+          <p class="mt-1 text-xs text-amber-700 dark:text-amber-400">Use-o para validar o cabeçalho <code class="font-mono">X-PeopleFlow-Signature</code> (HMAC-SHA256 do corpo). Não será exibido de novo.</p>
+          <div class="mt-3 flex gap-2">
+            <code x-ref="wsecret" class="flex-1 overflow-x-auto rounded-xl bg-white px-4 py-3 font-mono text-sm dark:bg-slate-900"><?= e($newWebhookSecret['secret']) ?></code>
+            <button @click="navigator.clipboard.writeText($refs.wsecret.textContent.trim()); $el.innerHTML='Copiado!'"
+                    class="shrink-0 rounded-xl bg-amber-600 px-4 text-sm font-bold text-white hover:bg-amber-700">Copiar</button>
+          </div>
+        </section>
+      <?php endif; ?>
+
+      <div class="mt-6 grid gap-6 xl:grid-cols-3">
+        <!-- Endpoints + entregas -->
+        <section class="space-y-6 xl:col-span-2">
+          <div class="<?= $card ?> overflow-x-auto">
+            <div class="border-b border-slate-200 px-6 py-4 dark:border-slate-800"><h2 class="font-bold"><i class="fa-solid fa-bolt mr-2 text-violet-500" aria-hidden="true"></i>Webhooks de saída</h2></div>
+            <table class="w-full min-w-[560px] text-sm">
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                <?php foreach ($webhooks as $w): ?>
+                  <tr class="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60 <?= $w['is_active'] ? '' : 'opacity-50' ?>">
+                    <td class="px-5 py-3"><p class="font-mono text-xs font-semibold"><?= e($w['url']) ?></p>
+                      <p class="mt-0.5 text-[11px] text-slate-400"><?= $w['events'] ? e($w['events']) : 'todos os eventos' ?></p></td>
+                    <td class="px-5 py-3 text-right">
+                      <form method="post" class="inline">
+                        <?= csrf_field() ?><input type="hidden" name="action" value="webhook_toggle"><input type="hidden" name="webhook_id" value="<?= (int) $w['id'] ?>">
+                        <button class="rounded-full px-2.5 py-0.5 text-xs font-semibold <?= $w['is_active']
+                            ? 'bg-emerald-100 text-emerald-700 hover:bg-red-100 hover:text-red-700 dark:bg-emerald-950 dark:text-emerald-400'
+                            : 'bg-red-100 text-red-700 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-red-950 dark:text-red-400' ?>">
+                          <?= $w['is_active'] ? 'Ativo' : 'Pausado' ?></button>
+                      </form>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+                <?php if (! $webhooks): ?><tr><td class="px-5 py-10 text-center text-slate-400">Nenhum endpoint — registre ao lado para receber eventos em tempo real.</td></tr><?php endif; ?>
+              </tbody>
+            </table>
+          </div>
+
+          <?php if ($deliveries): ?>
+            <div class="<?= $card ?> overflow-x-auto">
+              <div class="border-b border-slate-200 px-6 py-4 dark:border-slate-800"><h2 class="font-bold text-sm">Últimas entregas</h2></div>
+              <table class="w-full min-w-[560px] text-sm">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                  <?php foreach ($deliveries as $d): ?>
+                    <tr class="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                      <td class="px-5 py-2.5"><span class="rounded-full bg-violet-100 px-2 py-0.5 font-mono text-[10px] font-bold text-violet-700 dark:bg-violet-950 dark:text-violet-300"><?= e($d['event']) ?></span></td>
+                      <td class="px-5 py-2.5 font-mono text-[11px] text-slate-500 dark:text-slate-400"><?= e(mb_strimwidth($d['url'], 0, 42, '…')) ?></td>
+                      <td class="px-5 py-2.5 text-xs tabular-nums text-slate-400"><?= date('d/m H:i', strtotime($d['created_at'])) ?> · <?= (int) $d['attempts'] ?>ª tent.</td>
+                      <td class="px-5 py-2.5">
+                        <span class="rounded-full px-2 py-0.5 text-[10px] font-bold <?= $d['status'] === 'delivered'
+                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400'
+                            : 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400' ?>">
+                          <?= $d['status'] === 'delivered' ? 'Entregue' : 'Falhou' ?><?= $d['response_code'] ? ' · '.(int) $d['response_code'] : '' ?></span>
+                      </td>
+                      <td class="px-5 py-2.5 text-right">
+                        <?php if ($d['status'] === 'failed'): ?>
+                          <form method="post" class="inline">
+                            <?= csrf_field() ?><input type="hidden" name="action" value="webhook_resend"><input type="hidden" name="delivery_id" value="<?= (int) $d['id'] ?>">
+                            <button class="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-semibold hover:border-blue-400 hover:text-blue-600 dark:border-slate-700">Reenviar</button>
+                          </form>
+                        <?php endif; ?>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
+            </div>
+          <?php endif; ?>
+        </section>
+
+        <!-- Registrar endpoint -->
+        <section class="<?= $card ?> h-fit p-6">
+          <h2 class="font-bold"><i class="fa-solid fa-plus mr-2 text-violet-500" aria-hidden="true"></i>Novo webhook</h2>
+          <p class="mt-1 text-xs text-slate-400">Receba um POST JSON assinado (HMAC-SHA256) a cada evento. Responda 2xx para confirmar.</p>
+          <form method="post" class="mt-4 space-y-3 text-sm">
+            <?= csrf_field() ?><input type="hidden" name="action" value="webhook_create">
+            <label class="block"><span class="mb-1 block text-xs font-semibold text-slate-500">URL de destino *</span>
+              <input name="url" required placeholder="https://meu-erp.com.br/hooks/peopleflow"
+                     class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-xs dark:border-slate-700 dark:bg-slate-800"></label>
+            <fieldset>
+              <legend class="mb-1.5 text-xs font-semibold text-slate-500">Eventos (nenhum = todos)</legend>
+              <div class="space-y-1.5">
+                <?php foreach ($webhookEvents as $code => $label): ?>
+                  <label class="flex items-center gap-2 text-xs">
+                    <input type="checkbox" name="events[]" value="<?= e($code) ?>" class="rounded border-slate-300">
+                    <span class="font-mono"><?= e($code) ?></span><span class="text-slate-400">— <?= e($label) ?></span>
+                  </label>
+                <?php endforeach; ?>
+              </div>
+            </fieldset>
+            <button class="w-full rounded-xl bg-violet-600 py-2.5 font-bold text-white shadow-lg shadow-violet-600/25 hover:bg-violet-700">Registrar webhook</button>
+          </form>
+        </section>
+      </div>
+
 <?php require APP_PATH.'/views/layout/app_end.php'; ?>
