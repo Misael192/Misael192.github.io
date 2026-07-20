@@ -1,0 +1,10 @@
+{
+  "name": "PeopleFlow — Plataforma HCM",
+  "short_name": "PeopleFlow",
+  "description": "Gestão de Pessoas completa: DP, RH, IA e Analytics em uma única plataforma.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "icons": [{ "src": "/assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

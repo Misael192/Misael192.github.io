@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO ─────────────────────────────────────────────────────────── -->
+  <title>PeopleFlow — Plataforma HCM completa: DP, RH e IA</title>
+  <meta name="description" content="Saia das planilhas: PeopleFlow une DP, folha de pagamento, férias, ponto, IA especialista em CLT e analytics em um único dashboard. Comece pelo módulo do seu gargalo e expanda — multiempresa e LGPD by design.">
+  <meta name="keywords" content="HCM, RH, departamento pessoal, gestão de pessoas, ponto eletrônico, férias, admissão digital, recrutamento, IA">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://misael192.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PeopleFlow — Plataforma HCM completa">
+  <meta property="og:description" content="Substitua o caos das planilhas por um único dashboard inteligente — DP, folha, RH e IA.">
+  <meta property="og:url" content="https://misael192.github.io/">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PeopleFlow — Plataforma HCM completa">
+  <meta name="twitter:description" content="Substitua o caos das planilhas por um único dashboard inteligente — DP, folha, RH e IA.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="manifest" href="assets/site.webmanifest">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PeopleFlow",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Plataforma HCM SaaS: Departamento Pessoal, RH, IA e Analytics.",
+    "offers": { "@type": "Offer", "price": "299.00", "priceCurrency": "BRL" }
+  }
+  </script>
+
+  <!-- Aplica o tema salvo ANTES da pintura (evita flash) -->
+  <script>if(localStorage.getItem('pf-theme')==='dark'||(!localStorage.getItem('pf-theme')&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')</script>
+
+  <!-- PeopleFlow UI: fontes locais, Font Awesome, Tailwind (build browser) -->
+  <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/css/peopleflow.css">
+  <script src="assets/vendor/tailwind.js"></script>
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+    @theme { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+    .pf-navbar-scrolled { @apply border-b border-slate-200 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-950/80; }
+  </style>
+  <script defer src="assets/vendor/alpine.min.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+
+<body class="bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+
+<!-- ══ NAVBAR ═══════════════════════════════════════════════════════════ -->
+<header data-navbar class="fixed inset-x-0 top-0 z-50 backdrop-blur transition-all duration-300" x-data="{ open: false }">
+  <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6" aria-label="Principal">
+    <a href="index.html" class="flex items-center gap-2 text-lg font-bold">
+      <img src="assets/img/favicon.svg" alt="" class="h-8 w-8" width="32" height="32">
+      PeopleFlow
+    </a>
+
+    <div class="hidden items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300 lg:flex">
+      <a href="#recursos" class="transition-colors hover:text-blue-600 dark:hover:text-blue-400">Recursos</a>
+      <a href="#modulos" class="transition-colors hover:text-blue-600 dark:hover:text-blue-400">Módulos</a>
+      <a href="#ia" class="transition-colors hover:text-blue-600 dark:hover:text-blue-400">IA</a>
+      <a href="#planos" class="transition-colors hover:text-blue-600 dark:hover:text-blue-400">Planos</a>
+      <a href="#clientes" class="transition-colors hover:text-blue-600 dark:hover:text-blue-400">Clientes</a>
+      <a href="#faq" class="transition-colors hover:text-blue-600 dark:hover:text-blue-400">Documentação</a>
+      <a href="#contato" class="transition-colors hover:text-blue-600 dark:hover:text-blue-400">Contato</a>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button @click="pfToggleTheme()" aria-label="Alternar tema claro/escuro"
+        class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800">
+        <i class="fa-solid fa-moon pf-show-light" aria-hidden="true"></i>
+        <i class="fa-solid fa-sun pf-show-dark" aria-hidden="true"></i>
+      </button>
+      <a href="login.html" class="hidden rounded-lg px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 sm:block">Entrar</a>
+      <a href="login.html" class="hidden rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-700 sm:block">Começar Gratuitamente</a>
+      <button @click="open = !open" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 lg:hidden" aria-label="Abrir menu" :aria-expanded="open">
+        <i class="fa-solid" :class="open ? 'fa-xmark' : 'fa-bars'" aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Menu mobile -->
+  <div x-show="open" x-transition.opacity x-cloak class="border-t border-slate-200 bg-white px-6 py-4 dark:border-slate-800 dark:bg-slate-950 lg:hidden">
+    <div class="flex flex-col gap-3 text-sm font-medium">
+      <a href="#recursos" @click="open=false" class="py-1">Recursos</a>
+      <a href="#modulos" @click="open=false" class="py-1">Módulos</a>
+      <a href="#ia" @click="open=false" class="py-1">IA</a>
+      <a href="#planos" @click="open=false" class="py-1">Planos</a>
+      <a href="#clientes" @click="open=false" class="py-1">Clientes</a>
+      <a href="login.html" class="mt-2 rounded-lg bg-blue-600 px-4 py-2.5 text-center font-semibold text-white">Começar Gratuitamente</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ══ HERO ═════════════════════════════════════════════════════════════ -->
+<section class="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <!-- fundo decorativo -->
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <div class="absolute -top-40 left-1/2 h-[36rem] w-[70rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-500/15 via-violet-500/10 to-transparent blur-3xl"></div>
+  </div>
+
+  <div class="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2">
+    <!-- Coluna esquerda -->
+    <div>
+      <span class="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-3.5 py-1.5 text-xs font-semibold text-violet-700 dark:border-violet-800 dark:bg-violet-950 dark:text-violet-300">
+        <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> IA Generativa integrada
+      </span>
+      <h1 class="mt-6 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-6xl">
+        Saia das planilhas.
+        <span class="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">Venha para o futuro do RH</span>
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+        Substitua o caos das planilhas por um único dashboard inteligente: DP, folha, férias,
+        ponto e um assistente de IA especialista em CLT. Comece pelo módulo que resolve o seu
+        gargalo de hoje — e expanda no seu ritmo, de 1 a 10.000 empresas.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a href="login.html" class="rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-xl shadow-blue-600/30 transition-all hover:-translate-y-0.5 hover:bg-blue-700">
+          Sair das planilhas agora <i class="fa-solid fa-arrow-right ml-1 text-sm" aria-hidden="true"></i>
+        </a>
+        <a href="#dashboard" class="rounded-xl border border-slate-300 px-6 py-3.5 font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900">
+          <i class="fa-regular fa-circle-play mr-1" aria-hidden="true"></i> Ver demonstração
+        </a>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
+        <span><i class="fa-solid fa-check mr-1.5 text-emerald-500" aria-hidden="true"></i>14 dias grátis</span>
+        <span><i class="fa-solid fa-check mr-1.5 text-emerald-500" aria-hidden="true"></i>Sem cartão de crédito</span>
+        <span><i class="fa-solid fa-check mr-1.5 text-emerald-500" aria-hidden="true"></i>LGPD by design</span>
+      </div>
+    </div>
+
+    <!-- Coluna direita: mockup do dashboard -->
+    <div class="relative" aria-hidden="true">
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl shadow-slate-900/10 dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex items-center gap-1.5 pb-3">
+          <span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+          <span class="ml-3 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] text-slate-400 dark:bg-slate-800">app.peopleflow.com.br</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-800">
+            <p class="text-[10px] text-slate-500 dark:text-slate-400">Colaboradores</p>
+            <p class="text-xl font-bold">1.248</p>
+            <p class="text-[10px] font-medium text-emerald-600">↑ +38 este mês</p>
+          </div>
+          <div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-800">
+            <p class="text-[10px] text-slate-500 dark:text-slate-400">Turnover</p>
+            <p class="text-xl font-bold">7,4%</p>
+            <p class="text-[10px] font-medium text-emerald-600">↓ −1,2 pp</p>
+          </div>
+          <div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-800">
+            <p class="text-[10px] text-slate-500 dark:text-slate-400">Absenteísmo</p>
+            <p class="text-xl font-bold">2,1%</p>
+            <p class="text-[10px] font-medium text-red-500">↑ +0,3 pp</p>
+          </div>
+        </div>
+        <!-- gráfico de barras fake -->
+        <div class="mt-3 rounded-xl bg-slate-50 p-4 dark:bg-slate-800">
+          <p class="mb-3 text-xs font-semibold text-slate-600 dark:text-slate-300">Admissões × Desligamentos</p>
+          <div class="flex h-24 items-end gap-2">
+            <div class="flex-1 rounded-t bg-blue-500" style="height:55%"></div>
+            <div class="flex-1 rounded-t bg-slate-300 dark:bg-slate-600" style="height:30%"></div>
+            <div class="flex-1 rounded-t bg-blue-500" style="height:70%"></div>
+            <div class="flex-1 rounded-t bg-slate-300 dark:bg-slate-600" style="height:35%"></div>
+            <div class="flex-1 rounded-t bg-blue-500" style="height:85%"></div>
+            <div class="flex-1 rounded-t bg-slate-300 dark:bg-slate-600" style="height:25%"></div>
+            <div class="flex-1 rounded-t bg-blue-500" style="height:65%"></div>
+            <div class="flex-1 rounded-t bg-slate-300 dark:bg-slate-600" style="height:40%"></div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center gap-3 rounded-xl bg-violet-50 p-3 dark:bg-violet-950/40">
+          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-white"><i class="fa-solid fa-wand-magic-sparkles text-xs"></i></span>
+          <p class="text-[11px] leading-snug text-violet-800 dark:text-violet-300"><strong>IA:</strong> 8 currículos resumidos e 2 contratos gerados hoje. Nenhuma pendência de eSocial.</p>
+        </div>
+      </div>
+
+      <!-- cartões flutuantes -->
+      <div class="pf-float absolute -left-6 top-16 hidden rounded-xl border border-slate-200 bg-white p-3 shadow-xl dark:border-slate-700 dark:bg-slate-800 md:block">
+        <p class="text-[10px] text-slate-500 dark:text-slate-400">Férias aprovadas</p>
+        <p class="text-sm font-bold text-emerald-600"><i class="fa-solid fa-umbrella-beach mr-1"></i> Ana · 10–24/08</p>
+      </div>
+      <div class="pf-float-slow absolute -right-4 bottom-20 hidden rounded-xl border border-slate-200 bg-white p-3 shadow-xl dark:border-slate-700 dark:bg-slate-800 md:block">
+        <p class="text-[10px] text-slate-500 dark:text-slate-400">Ponto registrado</p>
+        <p class="text-sm font-bold"><span class="pf-pulse-dot mr-1 inline-block h-2 w-2 rounded-full bg-emerald-500"></span>1.184 presentes</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EMPRESAS ═════════════════════════════════════════════════════════ -->
+<section id="clientes" class="border-y border-slate-100 py-12 dark:border-slate-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <p class="text-center text-sm font-medium text-slate-500 dark:text-slate-400">Empresas que confiam na PeopleFlow</p>
+    <div class="mt-7 flex flex-wrap items-center justify-center gap-x-12 gap-y-5 text-xl font-bold tracking-tight text-slate-400 grayscale dark:text-slate-600">
+      <span><i class="fa-solid fa-bolt mr-2"></i>TechFlow</span>
+      <span><i class="fa-regular fa-lightbulb mr-2"></i>Lumina</span>
+      <span><i class="fa-solid fa-globe mr-2"></i>NovaCorp</span>
+      <span><i class="fa-solid fa-shield-halved mr-2"></i>Vanguard</span>
+      <span><i class="fa-solid fa-cube mr-2"></i>Acme</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RECURSOS ═════════════════════════════════════════════════════════ -->
+<section id="recursos" class="py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="pf-reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">Tudo que a gestão de pessoas precisa</h2>
+      <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">Do ponto ao desenvolvimento de carreira — módulos que trabalham juntos, sem planilhas paralelas.</p>
+    </div>
+
+    <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- card recurso -->
+      <article class="pf-reveal pf-card-hover rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400"><i class="fa-solid fa-clock" aria-hidden="true"></i></span>
+        <h3 class="mt-4 font-bold">Departamento Pessoal</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Ponto digital, banco de horas, escalas, férias e admissão 100% digital com assinatura eletrônica.</p>
+      </article>
+      <article class="pf-reveal pf-reveal-delay-1 pf-card-hover rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400"><i class="fa-solid fa-users" aria-hidden="true"></i></span>
+        <h3 class="mt-4 font-bold">Recursos Humanos</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Recrutamento com pipeline Kanban, gestão comportamental, clima e comunicação interna.</p>
+      </article>
+      <article class="pf-reveal pf-reveal-delay-2 pf-card-hover rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-100 text-violet-600 dark:bg-violet-950 dark:text-violet-400"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></span>
+        <h3 class="mt-4 font-bold">Inteligência Artificial</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Dúvidas de CLT, contratos, advertências e resumo de currículos — com revisão humana sempre.</p>
+      </article>
+      <article class="pf-reveal pf-reveal-delay-3 pf-card-hover rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+        <h3 class="mt-4 font-bold">Analytics</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Turnover, absenteísmo, headcount e KPIs em dashboards com filtros avançados e exportação.</p>
+      </article>
+      <article class="pf-reveal pf-card-hover rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i></span>
+        <h3 class="mt-4 font-bold">Workflow</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Motor visual de fluxos: cada empresa desenha suas aprovações, documentos e assinaturas.</p>
+      </article>
+      <article class="pf-reveal pf-reveal-delay-1 pf-card-hover rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400"><i class="fa-solid fa-folder-open" aria-hidden="true"></i></span>
+        <h3 class="mt-4 font-bold">Documentos</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">GED em nuvem com versionamento, permissões por usuário e assinatura digital com evidências.</p>
+      </article>
+      <article class="pf-reveal pf-reveal-delay-2 pf-card-hover rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400"><i class="fa-solid fa-gift" aria-hidden="true"></i></span>
+        <h3 class="mt-4 font-bold">Benefícios</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">VT, VA/VR, plano de saúde e convênios com controle de utilização e custos por centro de custo.</p>
+      </article>
+      <article class="pf-reveal pf-reveal-delay-3 pf-card-hover rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400"><i class="fa-solid fa-ranking-star" aria-hidden="true"></i></span>
+        <h3 class="mt-4 font-bold">Performance</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Metas, avaliações 360°, plano de carreira, treinamentos e certificados em um ciclo contínuo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MÓDULOS ══════════════════════════════════════════════════════════ -->
+<section id="modulos" class="border-t border-slate-100 bg-slate-50 py-24 dark:border-slate-900 dark:bg-slate-900/40">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="pf-reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">Módulos ativados sob demanda</h2>
+      <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">Comece com o módulo que resolve o seu gargalo atual — e ative o resto quando crescer. A sua primeira e última plataforma de gestão de pessoas.</p>
+    </div>
+    <div class="pf-reveal mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-clock text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">DP</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-users text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">RH</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-money-check-dollar text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Payroll</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-user-plus text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Recruitment</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-gift text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Benefits</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-graduation-cap text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Learning</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-ranking-star text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Performance</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-folder-open text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Documents</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-chart-line text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Analytics</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-store text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Marketplace</p></div>
+      <div class="pf-card-hover rounded-xl border border-violet-200 bg-white p-4 text-center dark:border-violet-900 dark:bg-slate-900"><i class="fa-solid fa-wand-magic-sparkles text-violet-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">AI</p></div>
+      <div class="pf-card-hover rounded-xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-diagram-project text-blue-600" aria-hidden="true"></i><p class="mt-2 text-sm font-semibold">Workflow</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DASHBOARD (mockup grande) ════════════════════════════════════════ -->
+<section id="dashboard" class="py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="pf-reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">Uma visão executiva em tempo real</h2>
+      <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">KPIs de pessoas, férias, admissões e banco de horas — sem esperar o fechamento do mês.</p>
+    </div>
+
+    <div class="pf-reveal mt-12 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/10 dark:border-slate-800 dark:bg-slate-900" aria-hidden="true">
+      <!-- topo do app -->
+      <div class="flex items-center justify-between border-b border-slate-200 px-5 py-3 dark:border-slate-800">
+        <div class="flex items-center gap-2 font-bold"><img src="assets/img/favicon.svg" alt="" class="h-6 w-6">PeopleFlow <span class="ml-2 rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">Dashboard Executivo</span></div>
+        <div class="flex items-center gap-2 text-slate-400"><i class="fa-regular fa-bell"></i><span class="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-[10px] font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">MA</span></div>
+      </div>
+      <div class="grid gap-4 p-5 lg:grid-cols-4">
+        <!-- KPIs -->
+        <div class="rounded-xl border border-slate-200 p-4 dark:border-slate-800"><p class="text-xs text-slate-500 dark:text-slate-400">Colaboradores</p><p class="mt-1 text-2xl font-extrabold">1.248</p><p class="text-xs font-medium text-emerald-600">↑ +38</p></div>
+        <div class="rounded-xl border border-slate-200 p-4 dark:border-slate-800"><p class="text-xs text-slate-500 dark:text-slate-400">Admissões (mês)</p><p class="mt-1 text-2xl font-extrabold">42</p><p class="text-xs font-medium text-emerald-600">↑ +12%</p></div>
+        <div class="rounded-xl border border-slate-200 p-4 dark:border-slate-800"><p class="text-xs text-slate-500 dark:text-slate-400">Turnover (12m)</p><p class="mt-1 text-2xl font-extrabold">7,4%</p><p class="text-xs font-medium text-emerald-600">↓ −1,2 pp</p></div>
+        <div class="rounded-xl border border-slate-200 p-4 dark:border-slate-800"><p class="text-xs text-slate-500 dark:text-slate-400">Banco de horas</p><p class="mt-1 text-2xl font-extrabold">+2.412h</p><p class="text-xs font-medium text-amber-600">→ estável</p></div>
+
+        <!-- gráfico linhas -->
+        <div class="rounded-xl border border-slate-200 p-4 dark:border-slate-800 lg:col-span-2">
+          <p class="text-sm font-semibold">Headcount · 12 meses</p>
+          <svg viewBox="0 0 300 90" class="mt-3 w-full">
+            <polyline points="0,70 25,66 50,60 75,62 100,54 125,50 150,44 175,46 200,38 225,32 250,28 275,22 300,18" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/>
+            <polyline points="0,70 25,66 50,60 75,62 100,54 125,50 150,44 175,46 200,38 225,32 250,28 275,22 300,18 300,90 0,90" fill="url(#g1)" opacity=".15"/>
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2563eb"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs>
+          </svg>
+        </div>
+        <!-- tabela -->
+        <div class="rounded-xl border border-slate-200 p-4 dark:border-slate-800 lg:col-span-2">
+          <p class="text-sm font-semibold">Férias próximas</p>
+          <div class="mt-3 space-y-2 text-xs">
+            <div class="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2 dark:bg-slate-800"><span class="font-medium">Ana Souza · DP</span><span class="rounded-full bg-amber-100 px-2 py-0.5 font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-400">Aguardando</span></div>
+            <div class="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2 dark:bg-slate-800"><span class="font-medium">Bruno Ferreira · Tech</span><span class="rounded-full bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">Aprovada</span></div>
+            <div class="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2 dark:bg-slate-800"><span class="font-medium">Carla Nunes · Comercial</span><span class="rounded-full bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">Aprovada</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ IA ═══════════════════════════════════════════════════════════════ -->
+<section id="ia" class="border-t border-slate-100 bg-gradient-to-b from-violet-50/60 to-white py-24 dark:border-slate-900 dark:from-violet-950/20 dark:to-slate-950">
+  <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2">
+    <!-- chat fictício -->
+    <div class="pf-reveal order-2 lg:order-1">
+      <div class="rounded-2xl border border-violet-200 bg-white p-5 shadow-xl dark:border-violet-900 dark:bg-slate-900">
+        <div class="flex items-center gap-2 border-b border-slate-100 pb-3 dark:border-slate-800">
+          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-white"><i class="fa-solid fa-wand-magic-sparkles text-xs" aria-hidden="true"></i></span>
+          <p class="text-sm font-bold">Assistente PeopleFlow</p>
+          <span class="ml-auto flex items-center gap-1 text-[10px] font-medium text-emerald-600"><span class="pf-pulse-dot h-1.5 w-1.5 rounded-full bg-emerald-500"></span>online</span>
+        </div>
+        <div class="space-y-3 py-4 text-sm">
+          <div class="flex justify-end"><p class="max-w-[80%] rounded-2xl rounded-br-md bg-blue-600 px-4 py-2.5 text-white">Gere uma advertência por atraso recorrente para o colaborador João.</p></div>
+          <div class="flex"><p class="max-w-[85%] rounded-2xl rounded-bl-md bg-slate-100 px-4 py-2.5 dark:bg-slate-800">✅ <strong>Documento criado com sucesso.</strong> Advertência disciplinar fundamentada no art. 482 da CLT, pronta para sua revisão e assinatura. Deseja enviá-la para o fluxo de assinatura?</p></div>
+          <div class="flex justify-end"><p class="max-w-[80%] rounded-2xl rounded-br-md bg-blue-600 px-4 py-2.5 text-white">Sim, envie para o gestor aprovar.</p></div>
+          <div class="flex"><p class="max-w-[85%] rounded-2xl rounded-bl-md bg-slate-100 px-4 py-2.5 dark:bg-slate-800">📨 Enviado ao workflow <em>Advertências → Aprovação do gestor → Assinatura</em>. Você será notificado a cada etapa.</p></div>
+        </div>
+        <div class="flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 dark:border-slate-700">
+          <input class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" placeholder="Pergunte sobre CLT, gere documentos…" aria-label="Mensagem para o assistente">
+          <button class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-600 text-white" aria-label="Enviar"><i class="fa-solid fa-paper-plane text-xs" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pf-reveal order-1 lg:order-2">
+      <span class="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-3.5 py-1.5 text-xs font-semibold text-violet-700 dark:border-violet-800 dark:bg-violet-950 dark:text-violet-300"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> AI Engine</span>
+      <h2 class="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Um especialista em DP e RH, disponível 24/7</h2>
+      <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">O AI Engine da PeopleFlow entende o contexto da sua empresa e nunca executa nada sem a sua confirmação.</p>
+      <ul class="mt-8 grid grid-cols-2 gap-3 text-sm font-medium">
+        <li class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-scale-balanced text-violet-600" aria-hidden="true"></i> Dúvidas de CLT</li>
+        <li class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-file-signature text-violet-600" aria-hidden="true"></i> Contratos</li>
+        <li class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-file-lines text-violet-600" aria-hidden="true"></i> Currículos</li>
+        <li class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-chart-pie text-violet-600" aria-hidden="true"></i> Relatórios</li>
+        <li class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-briefcase text-violet-600" aria-hidden="true"></i> Descrições de cargos</li>
+        <li class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-bullhorn text-violet-600" aria-hidden="true"></i> Comunicados</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WORKFLOW ═════════════════════════════════════════════════════════ -->
+<section class="py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="pf-reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">Fluxos do jeito da sua empresa</h2>
+      <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">Nada de processos engessados: desenhe aprovações, documentos e assinaturas em um motor visual.</p>
+    </div>
+    <div class="pf-reveal mt-12 flex flex-wrap items-center justify-center gap-2 sm:gap-3" aria-label="Exemplo de workflow">
+      <span class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-paper-plane mr-2 text-blue-600" aria-hidden="true"></i>Solicitação</span>
+      <i class="fa-solid fa-arrow-right-long text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+      <span class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-user-tie mr-2 text-blue-600" aria-hidden="true"></i>Gestor</span>
+      <i class="fa-solid fa-arrow-right-long text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+      <span class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-check-double mr-2 text-blue-600" aria-hidden="true"></i>Aprovação</span>
+      <i class="fa-solid fa-arrow-right-long text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+      <span class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-file-lines mr-2 text-blue-600" aria-hidden="true"></i>Documento</span>
+      <i class="fa-solid fa-arrow-right-long text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+      <span class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-signature mr-2 text-blue-600" aria-hidden="true"></i>Assinatura</span>
+      <i class="fa-solid fa-arrow-right-long text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+      <span class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 shadow-sm dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-400"><i class="fa-solid fa-flag-checkered mr-2" aria-hidden="true"></i>Concluído</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SEGURANÇA ════════════════════════════════════════════════════════ -->
+<section class="border-t border-slate-100 bg-slate-50 py-24 dark:border-slate-900 dark:bg-slate-900/40">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="pf-reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">Segurança de nível enterprise</h2>
+      <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">Dados de pessoas são os mais sensíveis da empresa. Tratamos assim desde a arquitetura.</p>
+    </div>
+    <div class="pf-reveal mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-shield-halved text-blue-600" aria-hidden="true"></i><p class="mt-2 font-bold">LGPD</p><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Privacidade by design, consentimento e anonimização.</p></div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-mobile-screen text-blue-600" aria-hidden="true"></i><p class="mt-2 font-bold">MFA</p><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Segundo fator TOTP para todos os perfis.</p></div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-user-lock text-blue-600" aria-hidden="true"></i><p class="mt-2 font-bold">RBAC</p><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Permissões finas por papel, empresa e filial.</p></div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-key text-blue-600" aria-hidden="true"></i><p class="mt-2 font-bold">AES-256</p><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">PII cifrada em repouso e TLS em trânsito.</p></div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-lock text-blue-600" aria-hidden="true"></i><p class="mt-2 font-bold">Argon2ID</p><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Hash de senhas estado da arte.</p></div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-clipboard-list text-blue-600" aria-hidden="true"></i><p class="mt-2 font-bold">Auditoria</p><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Trilha imutável: quem, o quê, quando, de onde.</p></div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-plug text-blue-600" aria-hidden="true"></i><p class="mt-2 font-bold">API</p><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">REST versionada com API keys e rate limit.</p></div>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><i class="fa-solid fa-database text-blue-600" aria-hidden="true"></i><p class="mt-2 font-bold">Backup</p><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Backups criptografados com retenção configurável.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ESTATÍSTICAS ═════════════════════════════════════════════════════ -->
+<section class="bg-gradient-to-r from-blue-700 to-violet-700 py-16 text-white">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 text-center sm:px-6 lg:grid-cols-4">
+    <div><p class="text-4xl font-extrabold" data-counter="10000" data-prefix="+" aria-label="Mais de 10.000 empresas">0</p><p class="mt-1 text-sm font-medium text-blue-100">empresas</p></div>
+    <div><p class="text-4xl font-extrabold" data-counter="2" data-prefix="+" data-suffix=" mi" aria-label="Mais de 2 milhões de colaboradores">0</p><p class="mt-1 text-sm font-medium text-blue-100">de colaboradores</p></div>
+    <div><p class="text-4xl font-extrabold" data-counter="99.9" data-decimals="1" data-suffix="%" aria-label="99,9 por cento de uptime">0</p><p class="mt-1 text-sm font-medium text-blue-100">de uptime</p></div>
+    <div><p class="text-4xl font-extrabold" data-counter="50" data-prefix="+" data-suffix=" mi" aria-label="Mais de 50 milhões de registros">0</p><p class="mt-1 text-sm font-medium text-blue-100">de registros</p></div>
+  </div>
+</section>
+
+<!-- ══ PLANOS ═══════════════════════════════════════════════════════════ -->
+<section id="planos" class="py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="pf-reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">Planos que crescem com você</h2>
+      <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">Do primeiro colaborador ao grupo com milhares — sem taxa de implantação.</p>
+    </div>
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+      <!-- Starter -->
+      <article class="pf-reveal pf-card-hover flex flex-col rounded-2xl border border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+        <h3 class="font-bold">Starter</h3>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Para pequenas empresas começarem certo.</p>
+        <p class="mt-5 text-4xl font-extrabold">R$ 299<span class="text-base font-medium text-slate-500">/mês</span></p>
+        <ul class="mt-6 flex-1 space-y-3 text-sm">
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Até 50 colaboradores</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>DP: ponto, férias, admissão</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>GED com assinatura</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Portal do colaborador</li>
+        </ul>
+        <a href="login.html" class="mt-8 rounded-xl border border-slate-300 py-3 text-center font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">Começar Agora</a>
+      </article>
+
+      <!-- Business (destaque) -->
+      <article class="pf-reveal relative flex flex-col rounded-2xl border-2 border-blue-600 bg-white p-8 shadow-2xl shadow-blue-600/20 dark:bg-slate-900">
+        <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-blue-600 px-4 py-1 text-xs font-bold text-white">MAIS POPULAR</span>
+        <h3 class="font-bold">Business</h3>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">RH completo + IA para empresas em crescimento.</p>
+        <p class="mt-5 text-4xl font-extrabold">R$ 799<span class="text-base font-medium text-slate-500">/mês</span></p>
+        <ul class="mt-6 flex-1 space-y-3 text-sm">
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Até 300 colaboradores</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Tudo do Starter</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Recrutamento + Performance + Benefícios</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Analytics avançado</li>
+          <li><i class="fa-solid fa-wand-magic-sparkles mr-2 text-violet-500" aria-hidden="true"></i>Assistente de IA (500 mil tokens/mês)</li>
+        </ul>
+        <a href="login.html" class="mt-8 rounded-xl bg-blue-600 py-3 text-center font-semibold text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-700">Começar Agora</a>
+      </article>
+
+      <!-- Enterprise -->
+      <article class="pf-reveal pf-card-hover flex flex-col rounded-2xl border border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+        <h3 class="font-bold">Enterprise</h3>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Isolamento dedicado e SLA para grandes operações.</p>
+        <p class="mt-5 text-4xl font-extrabold">Sob consulta</p>
+        <ul class="mt-6 flex-1 space-y-3 text-sm">
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Colaboradores ilimitados</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Todos os módulos + Payroll</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>Banco de dados dedicado</li>
+          <li><i class="fa-solid fa-check mr-2 text-emerald-500" aria-hidden="true"></i>SSO/SAML, SLA 99,9%, suporte dedicado</li>
+        </ul>
+        <a href="#contato" class="mt-8 rounded-xl border border-slate-300 py-3 text-center font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">Falar com vendas</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEPOIMENTOS ══════════════════════════════════════════════════════ -->
+<section class="border-t border-slate-100 bg-slate-50 py-24 dark:border-slate-900 dark:bg-slate-900/40">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <h2 class="pf-reveal text-center text-3xl font-extrabold tracking-tight sm:text-4xl">Quem usa, recomenda</h2>
+    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+      <figure class="pf-reveal pf-card-hover rounded-2xl border border-slate-200 bg-white p-7 dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex text-amber-400" aria-label="5 de 5 estrelas"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <blockquote class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">"Fechamos a folha 3 dias mais cedo todo mês. O ponto digital com aprovação de ajustes acabou com as planilhas do DP."</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">MR</span>
+          <div><p class="text-sm font-bold">Mariana Ribeiro</p><p class="text-xs text-slate-500 dark:text-slate-400">Head de DP · TechFlow</p></div>
+        </figcaption>
+      </figure>
+      <figure class="pf-reveal pf-reveal-delay-1 pf-card-hover rounded-2xl border border-slate-200 bg-white p-7 dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex text-amber-400" aria-label="5 de 5 estrelas"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <blockquote class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">"O assistente de IA resume currículos e tira dúvidas de CLT na hora. Nosso time de RH ganhou horas por semana."</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-violet-100 font-bold text-violet-700 dark:bg-violet-950 dark:text-violet-300">CA</span>
+          <div><p class="text-sm font-bold">Carlos Andrade</p><p class="text-xs text-slate-500 dark:text-slate-400">Diretor de Pessoas · Lumina</p></div>
+        </figcaption>
+      </figure>
+      <figure class="pf-reveal pf-reveal-delay-2 pf-card-hover rounded-2xl border border-slate-200 bg-white p-7 dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex text-amber-400" aria-label="5 de 5 estrelas"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <blockquote class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">"Gerimos 14 CNPJs em uma única conta, com permissões separadas por empresa. O multiempresa é de verdade."</blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">FS</span>
+          <div><p class="text-sm font-bold">Fernanda Silva</p><p class="text-xs text-slate-500 dark:text-slate-400">CHRO · NovaCorp</p></div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══════════════════════════════════════════════════════════════ -->
+<section id="faq" class="py-24">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6" x-data="{ open: 1 }">
+    <h2 class="pf-reveal text-center text-3xl font-extrabold tracking-tight sm:text-4xl">Perguntas frequentes</h2>
+    <div class="pf-reveal mt-10 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900">
+      <details class="group px-6 py-5" :open="open === 1" @click.prevent="open = open === 1 ? 0 : 1">
+        <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Como funciona a PeopleFlow?<i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform" :class="open === 1 && 'rotate-180'" aria-hidden="true"></i></summary>
+        <p x-show="open === 1" x-collapse class="pt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Você cria a conta, ativa os módulos que precisa (DP, RH, IA…) e convida o time. Colaboradores registram ponto e solicitam férias pelo portal; gestores aprovam; o DP acompanha tudo em dashboards — sem instalação, direto no navegador.</p>
+      </details>
+      <details class="group px-6 py-5" :open="open === 2" @click.prevent="open = open === 2 ? 0 : 2">
+        <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">É multiempresa?<i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform" :class="open === 2 && 'rotate-180'" aria-hidden="true"></i></summary>
+        <p x-show="open === 2" x-collapse class="pt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Sim. Cada empresa tem dados, usuários e permissões totalmente isolados — com isolamento reforçado no próprio banco de dados. Grupos podem administrar vários CNPJs em uma única conta.</p>
+      </details>
+      <details class="group px-6 py-5" :open="open === 3" @click.prevent="open = open === 3 ? 0 : 3">
+        <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Tem API?<i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform" :class="open === 3 && 'rotate-180'" aria-hidden="true"></i></summary>
+        <p x-show="open === 3" x-collapse class="pt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Sim — API REST versionada (/api/v1) com documentação OpenAPI, API keys com escopos e webhooks para integrar com ERP, contabilidade e eSocial.</p>
+      </details>
+      <details class="group px-6 py-5" :open="open === 4" @click.prevent="open = open === 4 ? 0 : 4">
+        <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Possui IA?<i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform" :class="open === 4 && 'rotate-180'" aria-hidden="true"></i></summary>
+        <p x-show="open === 4" x-collapse class="pt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Sim. O AI Engine responde dúvidas de CLT, gera contratos, advertências, descrições de cargos e resume currículos. Suporta OpenAI, Gemini, Claude e modelos locais — e nunca age sem confirmação humana.</p>
+      </details>
+      <details class="group px-6 py-5" :open="open === 5" @click.prevent="open = open === 5 ? 0 : 5">
+        <summary class="flex cursor-pointer list-none items-center justify-between font-semibold">É seguro?<i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform" :class="open === 5 && 'rotate-180'" aria-hidden="true"></i></summary>
+        <p x-show="open === 5" x-collapse class="pt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">LGPD by design: criptografia AES-256 para dados sensíveis, senhas com Argon2ID, MFA, permissões RBAC e trilha de auditoria imutável de todas as ações.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA FINAL ════════════════════════════════════════════════════════ -->
+<section id="contato" class="px-4 pb-24 sm:px-6">
+  <div class="pf-reveal mx-auto max-w-7xl overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 via-blue-600 to-violet-700 px-6 py-20 text-center text-white">
+    <h2 class="mx-auto max-w-2xl text-3xl font-extrabold tracking-tight sm:text-5xl">Transforme a gestão de pessoas da sua empresa.</h2>
+    <p class="mx-auto mt-5 max-w-xl text-lg text-blue-100">14 dias grátis, sem cartão de crédito. Migração assistida dos seus dados.</p>
+    <a href="login.html" class="mt-9 inline-block rounded-xl bg-white px-8 py-4 font-bold text-blue-700 shadow-2xl transition-transform hover:-translate-y-0.5">Criar Conta <i class="fa-solid fa-arrow-right ml-1 text-sm" aria-hidden="true"></i></a>
+  </div>
+</section>
+</main>
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════════════════ -->
+<footer class="border-t border-slate-200 bg-slate-50 py-14 dark:border-slate-800 dark:bg-slate-950">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-5">
+    <div class="lg:col-span-2">
+      <a href="index.html" class="flex items-center gap-2 text-lg font-bold"><img src="assets/img/favicon.svg" alt="" class="h-8 w-8">PeopleFlow</a>
+      <p class="mt-3 max-w-xs text-sm text-slate-500 dark:text-slate-400">A plataforma HCM que une DP, RH, IA e Analytics para empresas de todos os tamanhos.</p>
+      <div class="mt-5 flex gap-3 text-slate-400">
+        <a href="#" aria-label="LinkedIn" class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 transition-colors hover:text-blue-600 dark:border-slate-800"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+        <a href="#" aria-label="Instagram" class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 transition-colors hover:text-blue-600 dark:border-slate-800"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="#" aria-label="YouTube" class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 transition-colors hover:text-blue-600 dark:border-slate-800"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+        <a href="#" aria-label="X (Twitter)" class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 transition-colors hover:text-blue-600 dark:border-slate-800"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+      </div>
+    </div>
+    <nav aria-label="Produto">
+      <p class="text-sm font-bold">Produto</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-500 dark:text-slate-400">
+        <li><a href="#recursos" class="hover:text-blue-600">Recursos</a></li>
+        <li><a href="#modulos" class="hover:text-blue-600">Módulos</a></li>
+        <li><a href="#planos" class="hover:text-blue-600">Planos</a></li>
+        <li><a href="ia.html" class="hover:text-blue-600">IA</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Empresa">
+      <p class="text-sm font-bold">Empresa</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-500 dark:text-slate-400">
+        <li><a href="#" class="hover:text-blue-600">Sobre</a></li>
+        <li><a href="#" class="hover:text-blue-600">Blog</a></li>
+        <li><a href="#" class="hover:text-blue-600">Carreiras</a></li>
+        <li><a href="#contato" class="hover:text-blue-600">Contato</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Recursos e suporte">
+      <p class="text-sm font-bold">Recursos</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-500 dark:text-slate-400">
+        <li><a href="#" class="hover:text-blue-600">API</a></li>
+        <li><a href="#" class="hover:text-blue-600">Documentação</a></li>
+        <li><a href="#" class="hover:text-blue-600">Suporte</a></li>
+        <li><a href="#" class="hover:text-blue-600">LGPD</a></li>
+        <li><a href="#" class="hover:text-blue-600">Privacidade</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p class="mt-12 text-center text-xs text-slate-400 dark:text-slate-600">© 2026 PeopleFlow Tecnologia LTDA. Todos os direitos reservados.</p>
+</footer>
+
+<!-- Botão voltar ao topo -->
+<button data-back-to-top aria-label="Voltar ao topo"
+  class="fixed bottom-6 right-6 z-50 hidden h-11 w-11 rounded-full bg-blue-600 text-white shadow-xl shadow-blue-600/30 transition-transform hover:-translate-y-0.5">
+  <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+</button>
+
+</body>
+</html>

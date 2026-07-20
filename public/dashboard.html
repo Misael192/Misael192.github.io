@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Executivo · PeopleFlow</title>
+  <meta name="description" content="KPIs e indicadores de pessoas.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <script>if(localStorage.getItem('pf-theme')==='dark'||(!localStorage.getItem('pf-theme')&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')</script>
+  <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/css/peopleflow.css">
+  <script src="assets/vendor/tailwind.js"></script>
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+    @theme { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  </style>
+  <script defer src="assets/vendor/alpine.min.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100"
+      x-data="{ collapsed: false, mobileNav: false }">
+
+<div class="flex min-h-screen">
+  <!-- ══ SIDEBAR (desktop) ══ -->
+  <aside class="pf-no-print sticky top-0 z-40 hidden h-screen shrink-0 flex-col border-r border-slate-200 bg-white transition-all duration-300 dark:border-slate-800 dark:bg-slate-900 lg:flex"
+         :class="collapsed ? 'w-[76px]' : 'w-64'">
+    <div class="flex h-16 items-center gap-2 border-b border-slate-200 px-4 dark:border-slate-800">
+      <img src="assets/img/favicon.svg" alt="" class="h-8 w-8 shrink-0" width="32" height="32">
+      <span x-show="!collapsed" x-transition.opacity class="text-lg font-bold">PeopleFlow</span>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Menu principal">
+      <a href="portal.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-grip w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Portal</span></a>
+      <a href="dashboard.html" aria-current="page" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"><i class="fa-solid fa-chart-pie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Dashboard</span></a>
+      <a href="rh.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-users w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>RH</span></a>
+      <a href="dp.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>DP</span></a>
+      <a href="colaborador.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-id-badge w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Colaborador</span></a>
+      <a href="gestor.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-user-tie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Gestor</span></a>
+      <a href="analytics.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-line w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Analytics</span></a>
+      <a href="ia.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-wand-magic-sparkles w-4 text-center text-violet-600 dark:text-violet-400" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Assistente IA</span></a>
+      <a href="empresa.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-building w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Administração</span></a>
+      <a href="configuracoes.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-gear w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Configurações</span></a>
+    </nav>
+    <div class="border-t border-slate-200 p-3 dark:border-slate-800">
+      <button @click="collapsed = !collapsed" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" :aria-label="collapsed ? 'Expandir menu' : 'Recolher menu'">
+        <i class="fa-solid w-4 text-center" :class="collapsed ? 'fa-angles-right' : 'fa-angles-left'" aria-hidden="true"></i>
+        <span x-show="!collapsed" x-transition.opacity>Recolher</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══ SIDEBAR (mobile drawer) ══ -->
+  <div x-show="mobileNav" x-transition.opacity x-cloak class="fixed inset-0 z-50 bg-slate-950/50 lg:hidden" @click="mobileNav = false" aria-hidden="true"></div>
+  <aside x-show="mobileNav" x-cloak x-transition:enter="transition-transform duration-300" x-transition:enter-start="-translate-x-full" x-transition:leave="transition-transform duration-300" x-transition:leave-end="-translate-x-full"
+         class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 lg:hidden" aria-label="Menu móvel">
+    <div class="flex h-16 items-center justify-between border-b border-slate-200 px-4 dark:border-slate-800">
+      <span class="flex items-center gap-2 font-bold"><img src="assets/img/favicon.svg" alt="" class="h-8 w-8">PeopleFlow</span>
+      <button @click="mobileNav = false" class="h-9 w-9 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Fechar menu"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3" x-data="{ collapsed: false }">
+      <a href="portal.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-grip w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Portal</span></a>
+      <a href="dashboard.html" aria-current="page" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"><i class="fa-solid fa-chart-pie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Dashboard</span></a>
+      <a href="rh.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-users w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>RH</span></a>
+      <a href="dp.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>DP</span></a>
+      <a href="colaborador.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-id-badge w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Colaborador</span></a>
+      <a href="gestor.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-user-tie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Gestor</span></a>
+      <a href="analytics.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-line w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Analytics</span></a>
+      <a href="ia.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-wand-magic-sparkles w-4 text-center text-violet-600 dark:text-violet-400" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Assistente IA</span></a>
+      <a href="empresa.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-building w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Administração</span></a>
+      <a href="configuracoes.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-gear w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Configurações</span></a>
+    </nav>
+  </aside>
+
+  <!-- ══ ÁREA PRINCIPAL ══ -->
+  <div class="flex min-w-0 flex-1 flex-col">
+    <!-- Topbar -->
+    <header class="pf-no-print pf-glass sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 px-4 dark:border-slate-800 sm:px-6">
+      <button @click="mobileNav = true" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <!-- Breadcrumb -->
+      <nav class="hidden items-center gap-2 text-sm sm:flex" aria-label="Breadcrumb">
+        <a href="portal.html" class="text-slate-400 transition-colors hover:text-blue-600"><i class="fa-solid fa-house text-xs" aria-hidden="true"></i></a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+        <span class="font-semibold text-slate-700 dark:text-slate-200">Dashboard</span>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-1.5">
+        <!-- Busca global -->
+        <label class="relative hidden md:block">
+          <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400" aria-hidden="true"></i>
+          <input type="search" placeholder="Buscar…" aria-label="Buscar na plataforma"
+                 class="w-56 rounded-xl border border-slate-200 bg-white py-2 pl-8 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 dark:border-slate-700 dark:bg-slate-900">
+        </label>
+
+        <!-- Notificações -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" aria-label="Notificações" :aria-expanded="open">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i>
+            <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" aria-hidden="true"></span>
+          </button>
+          <div x-show="open" @click.outside="open = false" x-transition x-cloak
+               class="absolute right-0 mt-2 w-80 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <p class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Notificações</p>
+            <a href="gestor.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-umbrella-beach mt-0.5 text-blue-500" aria-hidden="true"></i><span>Férias de <strong>Ana Souza</strong> aguardam sua aprovação.</span></a>
+            <a href="dp.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-clock mt-0.5 text-amber-500" aria-hidden="true"></i><span>3 ajustes de ponto pendentes na equipe Comercial.</span></a>
+            <a href="ia.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-wand-magic-sparkles mt-0.5 text-violet-500" aria-hidden="true"></i><span>IA terminou de resumir 8 currículos.</span></a>
+          </div>
+        </div>
+
+        <!-- Tema -->
+        <button @click="pfToggleTheme()" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" aria-label="Alternar tema claro/escuro">
+          <i class="fa-solid fa-moon pf-show-light" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun pf-show-dark" aria-hidden="true"></i>
+        </button>
+
+        <!-- Usuário -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="flex items-center gap-2 rounded-xl p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Menu do usuário" :aria-expanded="open">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">MA</span>
+            <i class="fa-solid fa-chevron-down hidden text-[10px] text-slate-400 sm:block" aria-hidden="true"></i>
+          </button>
+          <div x-show="open" @click.outside="open = false" x-transition x-cloak
+               class="absolute right-0 mt-2 w-56 rounded-2xl border border-slate-200 bg-white p-2 text-sm shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <div class="border-b border-slate-100 px-3 py-2.5 dark:border-slate-800">
+              <p class="font-bold">Misael Araújo</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Empresa Demonstração</p>
+            </div>
+            <a href="colaborador.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-regular fa-user w-4 text-slate-400" aria-hidden="true"></i>Meu perfil</a>
+            <a href="empresa.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-rotate w-4 text-slate-400" aria-hidden="true"></i>Trocar empresa</a>
+            <a href="configuracoes.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-gear w-4 text-slate-400" aria-hidden="true"></i>Configurações</a>
+            <a href="login.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"><i class="fa-solid fa-arrow-right-from-bracket w-4" aria-hidden="true"></i>Sair</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cabeçalho da página -->
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 pt-6 sm:px-6">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight">Dashboard Executivo</h1>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <label class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium dark:border-slate-700 dark:bg-slate-900">
+          <i class="fa-regular fa-calendar text-slate-400" aria-hidden="true"></i>
+          <select aria-label="Período" class="bg-transparent outline-none">
+            <option>Últimos 30 dias</option><option>Este trimestre</option><option>Este ano</option>
+          </select>
+        </label>
+        <button onclick="window.print()" class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"><i class="fa-solid fa-download mr-1.5" aria-hidden="true"></i>Exportar</button>
+      </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <main id="conteudo" class="flex-1 px-4 py-6 sm:px-6">
+
+      <!-- KPIs -->
+      <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6" aria-label="Indicadores">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+          <div class="flex items-center justify-between text-slate-400"><p class="text-xs font-semibold uppercase tracking-wide">Colaboradores</p><i class="fa-solid fa-users" aria-hidden="true"></i></div>
+          <p class="mt-2 text-3xl font-extrabold tracking-tight">1.248</p>
+          <p class="mt-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">↑ +38 este mês</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+          <div class="flex items-center justify-between text-slate-400"><p class="text-xs font-semibold uppercase tracking-wide">Admissões</p><i class="fa-solid fa-user-plus" aria-hidden="true"></i></div>
+          <p class="mt-2 text-3xl font-extrabold tracking-tight">42</p>
+          <p class="mt-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">↑ +12% vs. jun</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+          <div class="flex items-center justify-between text-slate-400"><p class="text-xs font-semibold uppercase tracking-wide">Demissões</p><i class="fa-solid fa-user-minus" aria-hidden="true"></i></div>
+          <p class="mt-2 text-3xl font-extrabold tracking-tight">17</p>
+          <p class="mt-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">↓ −8% vs. jun</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+          <div class="flex items-center justify-between text-slate-400"><p class="text-xs font-semibold uppercase tracking-wide">Turnover</p><i class="fa-solid fa-rotate" aria-hidden="true"></i></div>
+          <p class="mt-2 text-3xl font-extrabold tracking-tight">7,4%</p>
+          <p class="mt-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">↓ −1,2 pp (12m)</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+          <div class="flex items-center justify-between text-slate-400"><p class="text-xs font-semibold uppercase tracking-wide">Banco de horas</p><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i></div>
+          <p class="mt-2 text-3xl font-extrabold tracking-tight">+2.412h</p>
+          <p class="mt-1 text-xs font-semibold text-amber-600 dark:text-amber-400">→ estável</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+          <div class="flex items-center justify-between text-slate-400"><p class="text-xs font-semibold uppercase tracking-wide">Absenteísmo</p><i class="fa-solid fa-bed" aria-hidden="true"></i></div>
+          <p class="mt-2 text-3xl font-extrabold tracking-tight">2,1%</p>
+          <p class="mt-1 text-xs font-semibold text-red-600 dark:text-red-400">↑ +0,3 pp</p>
+        </div>
+      </section>
+
+      <div class="mt-6 grid gap-6 xl:grid-cols-2">
+        <!-- Gráfico: admissões × desligamentos -->
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+          <div class="flex items-center justify-between">
+            <h2 class="font-bold">Admissões × Desligamentos</h2>
+            <span class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+              <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-blue-600"></span>Admissões</span>
+              <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-slate-300 dark:bg-slate-600"></span>Desligamentos</span>
+            </span>
+          </div>
+          <div class="mt-5 flex h-48 items-end gap-3" role="img" aria-label="Gráfico de barras: admissões e desligamentos por mês, fevereiro a julho">
+            <!-- barras (pares mês a mês) -->
+            <div class="flex flex-1 flex-col items-center gap-1"><div class="flex w-full items-end justify-center gap-1" style="height:160px"><div class="w-1/3 rounded-t-md bg-blue-600" style="height:45%"></div><div class="w-1/3 rounded-t-md bg-slate-300 dark:bg-slate-600" style="height:22%"></div></div><span class="text-[10px] text-slate-400">Fev</span></div>
+            <div class="flex flex-1 flex-col items-center gap-1"><div class="flex w-full items-end justify-center gap-1" style="height:160px"><div class="w-1/3 rounded-t-md bg-blue-600" style="height:60%"></div><div class="w-1/3 rounded-t-md bg-slate-300 dark:bg-slate-600" style="height:30%"></div></div><span class="text-[10px] text-slate-400">Mar</span></div>
+            <div class="flex flex-1 flex-col items-center gap-1"><div class="flex w-full items-end justify-center gap-1" style="height:160px"><div class="w-1/3 rounded-t-md bg-blue-600" style="height:40%"></div><div class="w-1/3 rounded-t-md bg-slate-300 dark:bg-slate-600" style="height:35%"></div></div><span class="text-[10px] text-slate-400">Abr</span></div>
+            <div class="flex flex-1 flex-col items-center gap-1"><div class="flex w-full items-end justify-center gap-1" style="height:160px"><div class="w-1/3 rounded-t-md bg-blue-600" style="height:75%"></div><div class="w-1/3 rounded-t-md bg-slate-300 dark:bg-slate-600" style="height:25%"></div></div><span class="text-[10px] text-slate-400">Mai</span></div>
+            <div class="flex flex-1 flex-col items-center gap-1"><div class="flex w-full items-end justify-center gap-1" style="height:160px"><div class="w-1/3 rounded-t-md bg-blue-600" style="height:55%"></div><div class="w-1/3 rounded-t-md bg-slate-300 dark:bg-slate-600" style="height:40%"></div></div><span class="text-[10px] text-slate-400">Jun</span></div>
+            <div class="flex flex-1 flex-col items-center gap-1"><div class="flex w-full items-end justify-center gap-1" style="height:160px"><div class="w-1/3 rounded-t-md bg-blue-600" style="height:85%"></div><div class="w-1/3 rounded-t-md bg-slate-300 dark:bg-slate-600" style="height:18%"></div></div><span class="text-[10px] text-slate-400">Jul</span></div>
+          </div>
+        </section>
+
+        <!-- Gráfico: headcount -->
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+          <h2 class="font-bold">Headcount · 12 meses</h2>
+          <svg viewBox="0 0 400 160" class="mt-5 w-full" role="img" aria-label="Gráfico de linha: crescimento do quadro de 1.020 para 1.248 colaboradores em 12 meses">
+            <g stroke="currentColor" class="text-slate-200 dark:text-slate-800" stroke-width="1">
+              <line x1="0" y1="40" x2="400" y2="40"/><line x1="0" y1="80" x2="400" y2="80"/><line x1="0" y1="120" x2="400" y2="120"/>
+            </g>
+            <polyline points="0,130 33,126 66,120 100,122 133,112 166,106 200,96 233,98 266,84 300,72 333,62 366,50 400,40" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="400" cy="40" r="5" fill="#2563eb" stroke="white" stroke-width="2"/>
+          </svg>
+          <div class="mt-2 flex justify-between text-[10px] text-slate-400"><span>Ago/25</span><span>Nov/25</span><span>Fev/26</span><span>Mai/26</span><span>Jul/26</span></div>
+        </section>
+      </div>
+
+      <div class="mt-6 grid gap-6 xl:grid-cols-3">
+        <!-- Atividades -->
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+          <h2 class="font-bold">Atividades recentes</h2>
+          <ol class="mt-4 space-y-4 border-l-2 border-slate-100 pl-4 text-sm dark:border-slate-800">
+            <li class="relative"><span class="absolute -left-[23px] top-1 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-900"></span><p class="font-semibold">Férias de Bruno aprovadas</p><p class="text-xs text-slate-500 dark:text-slate-400">por Helena Castro · há 12 min</p></li>
+            <li class="relative"><span class="absolute -left-[23px] top-1 h-3 w-3 rounded-full border-2 border-white bg-blue-500 dark:border-slate-900"></span><p class="font-semibold">Admissão de Carlos Lima iniciada</p><p class="text-xs text-slate-500 dark:text-slate-400">checklist 4/9 concluído · há 1 h</p></li>
+            <li class="relative"><span class="absolute -left-[23px] top-1 h-3 w-3 rounded-full border-2 border-white bg-violet-500 dark:border-slate-900"></span><p class="font-semibold">IA gerou descrição de cargo</p><p class="text-xs text-slate-500 dark:text-slate-400">Analista de DP Pleno · há 2 h</p></li>
+            <li class="relative"><span class="absolute -left-[23px] top-1 h-3 w-3 rounded-full border-2 border-white bg-amber-500 dark:border-slate-900"></span><p class="font-semibold">3 ajustes de ponto solicitados</p><p class="text-xs text-slate-500 dark:text-slate-400">equipe Comercial · há 3 h</p></li>
+          </ol>
+        </section>
+
+        <!-- Alertas -->
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+          <h2 class="font-bold">Alertas</h2>
+          <div class="mt-4 space-y-3 text-sm">
+            <div class="flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950/40"><i class="fa-solid fa-triangle-exclamation mt-0.5 text-amber-500" aria-hidden="true"></i><p><strong>2 períodos aquisitivos</strong> de férias vencem em 45 dias.</p></div>
+            <div class="flex gap-3 rounded-xl border border-red-200 bg-red-50 p-3 dark:border-red-900 dark:bg-red-950/40"><i class="fa-solid fa-file-circle-exclamation mt-0.5 text-red-500" aria-hidden="true"></i><p><strong>ASO de 3 colaboradores</strong> vence este mês.</p></div>
+            <div class="flex gap-3 rounded-xl border border-blue-200 bg-blue-50 p-3 dark:border-blue-900 dark:bg-blue-950/40"><i class="fa-solid fa-signature mt-0.5 text-blue-500" aria-hidden="true"></i><p><strong>5 documentos</strong> aguardando assinatura há mais de 7 dias.</p></div>
+          </div>
+        </section>
+
+        <!-- Calendário + últimos acessos -->
+        <section class="space-y-6">
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+            <h2 class="font-bold">Julho 2026</h2>
+            <div class="mt-3 grid grid-cols-7 gap-1 text-center text-xs" role="grid" aria-label="Calendário de julho de 2026">
+              <span class="py-1 font-bold text-slate-400">D</span><span class="py-1 font-bold text-slate-400">S</span><span class="py-1 font-bold text-slate-400">T</span><span class="py-1 font-bold text-slate-400">Q</span><span class="py-1 font-bold text-slate-400">Q</span><span class="py-1 font-bold text-slate-400">S</span><span class="py-1 font-bold text-slate-400">S</span>
+              <span class="py-1.5 text-slate-300 dark:text-slate-700">28</span><span class="py-1.5 text-slate-300 dark:text-slate-700">29</span><span class="py-1.5 text-slate-300 dark:text-slate-700">30</span><span class="py-1.5">1</span><span class="py-1.5">2</span><span class="py-1.5">3</span><span class="py-1.5">4</span>
+              <span class="py-1.5">5</span><span class="py-1.5">6</span><span class="py-1.5 rounded-lg bg-emerald-100 font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400" title="2 admissões">7</span><span class="py-1.5">8</span><span class="py-1.5">9</span><span class="py-1.5">10</span><span class="rounded-lg bg-blue-600 py-1.5 font-bold text-white">11</span>
+              <span class="py-1.5">12</span><span class="py-1.5">13</span><span class="py-1.5">14</span><span class="py-1.5 rounded-lg bg-amber-100 font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-400" title="Fechamento da folha">15</span><span class="py-1.5">16</span><span class="py-1.5">17</span><span class="py-1.5">18</span>
+              <span class="py-1.5">19</span><span class="py-1.5 rounded-lg bg-violet-100 font-semibold text-violet-700 dark:bg-violet-950 dark:text-violet-400" title="Início férias Bruno">20</span><span class="py-1.5">21</span><span class="py-1.5">22</span><span class="py-1.5">23</span><span class="py-1.5">24</span><span class="py-1.5">25</span>
+              <span class="py-1.5">26</span><span class="py-1.5">27</span><span class="py-1.5">28</span><span class="py-1.5">29</span><span class="py-1.5">30</span><span class="py-1.5">31</span><span class="py-1.5 text-slate-300 dark:text-slate-700">1</span>
+            </div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+            <h2 class="font-bold">Últimos acessos</h2>
+            <ul class="mt-3 space-y-2.5 text-sm">
+              <li class="flex items-center gap-3"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-[10px] font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">AS</span><span class="font-medium">Ana Souza</span><span class="ml-auto text-xs text-slate-400">há 5 min</span></li>
+              <li class="flex items-center gap-3"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-violet-100 text-[10px] font-bold text-violet-700 dark:bg-violet-950 dark:text-violet-300">HC</span><span class="font-medium">Helena Castro</span><span class="ml-auto text-xs text-slate-400">há 18 min</span></li>
+              <li class="flex items-center gap-3"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">BF</span><span class="font-medium">Bruno Ferreira</span><span class="ml-auto text-xs text-slate-400">há 41 min</span></li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+    </main>
+
+    <footer class="pf-no-print border-t border-slate-200 px-6 py-4 text-center text-xs text-slate-400 dark:border-slate-800 dark:text-slate-600">
+      © 2026 PeopleFlow · Plataforma HCM · <a href="index.html" class="hover:text-blue-600">peopleflow.com.br</a>
+    </footer>
+  </div>
+</div>
+
+</body>
+</html>

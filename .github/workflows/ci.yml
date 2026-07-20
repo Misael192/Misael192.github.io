@@ -7,27 +7,24 @@ on:
 
 jobs:
   build-and-test:
+    name: Lint + testes do MVP (PHP puro)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
         with:
-          version: 9
+          php-version: '8.4'
+          extensions: mbstring, pdo, pdo_pgsql, curl, dom
+          coverage: none
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
+      - name: Lint de todo o PHP (raiz + mvp)
+        run: |
+          set -e
+          find app mvp/app mvp/public mvp/tests -name '*.php' -print0 \
+            | xargs -0 -n1 -P4 php -l > /dev/null
+          echo "Lint OK"
 
-      - name: Instalar dependências
-        run: pnpm install --frozen-lockfile
-
-      - name: Gerar Prisma Client
-        run: pnpm db:generate
-
-      - name: Testes
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
+      - name: Testes do motor de folha (37 asserções, sem banco)
+        run: php mvp/tests/payroll_tests.php

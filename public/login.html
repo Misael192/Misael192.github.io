@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar · PeopleFlow</title>
+  <meta name="description" content="Acesse a plataforma PeopleFlow.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <script>if(localStorage.getItem('pf-theme')==='dark'||(!localStorage.getItem('pf-theme')&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')</script>
+  <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/css/peopleflow.css">
+  <script src="assets/vendor/tailwind.js"></script>
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+    @theme { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  </style>
+  <script defer src="assets/vendor/alpine.min.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+<div class="flex min-h-screen">
+
+  <!-- Painel institucional (esquerda, desktop) -->
+  <aside class="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-violet-700 p-12 text-white lg:flex" aria-hidden="true">
+    <div class="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white/10 blur-3xl"></div>
+    <a href="index.html" class="flex items-center gap-2 text-xl font-bold"><img src="assets/img/favicon.svg" alt="" class="h-9 w-9 rounded-xl bg-white/15 p-1">PeopleFlow</a>
+    <div>
+      <h2 class="max-w-md text-4xl font-extrabold leading-tight">A gestão de pessoas da sua empresa, fluindo.</h2>
+      <p class="mt-4 max-w-md text-blue-100">DP, RH, IA e Analytics em uma única plataforma multiempresa.</p>
+      <div class="mt-8 flex items-center gap-4 rounded-2xl bg-white/10 p-4 backdrop-blur">
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 font-bold">MR</span>
+        <p class="text-sm text-blue-50">"Fechamos a folha 3 dias mais cedo todo mês."<br><span class="text-xs text-blue-200">Mariana · Head de DP, TechFlow</span></p>
+      </div>
+    </div>
+    <p class="text-xs text-blue-200">© 2026 PeopleFlow · LGPD by design</p>
+  </aside>
+
+  <!-- Formulário -->
+  <main class="flex w-full items-center justify-center p-6 lg:w-1/2"
+        x-data="{ show: false, captcha: false, lang: 'pt-BR' }">
+    <div class="w-full max-w-md">
+      <div class="mb-8 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2 font-bold lg:hidden"><img src="assets/img/favicon.svg" alt="" class="h-8 w-8">PeopleFlow</a>
+        <div class="ml-auto flex items-center gap-2">
+          <select x-model="lang" aria-label="Idioma" class="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-medium dark:border-slate-700 dark:bg-slate-900">
+            <option value="pt-BR">🇧🇷 Português</option><option value="en">🇺🇸 English</option><option value="es">🇪🇸 Español</option>
+          </select>
+          <button @click="pfToggleTheme()" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 dark:border-slate-700" aria-label="Alternar tema">
+            <i class="fa-solid fa-moon pf-show-light text-sm" aria-hidden="true"></i><i class="fa-solid fa-sun pf-show-dark text-sm" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <h1 class="text-2xl font-extrabold tracking-tight">Bem-vindo de volta 👋</h1>
+      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Acesse a plataforma da sua empresa.</p>
+
+      <!-- SSO -->
+      <div class="mt-7 grid grid-cols-2 gap-3">
+        <button type="button" @click="pfToast('SSO Google indisponível na demonstração', 'info')" class="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800">
+          <i class="fa-brands fa-google text-red-500" aria-hidden="true"></i> Google
+        </button>
+        <button type="button" @click="pfToast('SSO Microsoft indisponível na demonstração', 'info')" class="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800">
+          <i class="fa-brands fa-microsoft text-blue-500" aria-hidden="true"></i> Microsoft
+        </button>
+      </div>
+      <div class="my-6 flex items-center gap-3 text-xs text-slate-400"><span class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></span>ou entre com e-mail<span class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></span></div>
+
+      <form onsubmit="event.preventDefault(); window.location.href='portal.html'">
+        <label for="email" class="mb-1.5 block text-sm font-semibold">E-mail corporativo</label>
+        <input id="email" type="email" required placeholder="voce@empresa.com.br" autocomplete="email"
+               class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900">
+
+        <label for="senha" class="mb-1.5 mt-4 block text-sm font-semibold">Senha</label>
+        <div class="relative">
+          <input id="senha" :type="show ? 'text' : 'password'" required minlength="8" placeholder="••••••••" autocomplete="current-password"
+                 class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 pr-11 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900">
+          <button type="button" @click="show = !show" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" :aria-label="show ? 'Ocultar senha' : 'Mostrar senha'">
+            <i class="fa-regular" :class="show ? 'fa-eye-slash' : 'fa-eye'" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between text-sm">
+          <label class="flex cursor-pointer items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"> Lembrar login</label>
+          <a href="#" class="font-semibold text-blue-600 hover:underline">Esqueci minha senha</a>
+        </div>
+
+        <!-- Captcha fictício -->
+        <button type="button" @click="captcha = true"
+                class="mt-5 flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-900"
+                :class="captcha && 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/40'" aria-label="Verificação captcha">
+          <span class="flex h-6 w-6 items-center justify-center rounded border-2" :class="captcha ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-slate-300'">
+            <i x-show="captcha" class="fa-solid fa-check text-xs" aria-hidden="true"></i>
+          </span>
+          <span x-text="captcha ? 'Verificado — você é humano' : 'Não sou um robô'"></span>
+          <i class="fa-solid fa-shield-halved ml-auto text-slate-300" aria-hidden="true"></i>
+        </button>
+
+        <button type="submit" :disabled="!captcha"
+                class="mt-5 w-full rounded-xl bg-blue-600 py-3 font-bold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">
+          Entrar <i class="fa-solid fa-arrow-right ml-1 text-sm" aria-hidden="true"></i>
+        </button>
+      </form>
+
+      <p class="mt-7 text-center text-sm text-slate-500 dark:text-slate-400">Ainda não tem conta? <a href="index.html#planos" class="font-semibold text-blue-600 hover:underline">Começar gratuitamente</a></p>
+      <p class="mt-6 text-center text-xs text-slate-400"><i class="fa-solid fa-lock mr-1" aria-hidden="true"></i>Protegido por MFA, Argon2ID e criptografia AES-256</p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

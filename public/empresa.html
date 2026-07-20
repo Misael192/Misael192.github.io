@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração · PeopleFlow</title>
+  <meta name="description" content="Empresas, usuários, módulos, integrações e auditoria.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <script>if(localStorage.getItem('pf-theme')==='dark'||(!localStorage.getItem('pf-theme')&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')</script>
+  <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/css/peopleflow.css">
+  <script src="assets/vendor/tailwind.js"></script>
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+    @theme { --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  </style>
+  <script defer src="assets/vendor/alpine.min.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100"
+      x-data="{ collapsed: false, mobileNav: false }">
+
+<div class="flex min-h-screen">
+  <!-- ══ SIDEBAR (desktop) ══ -->
+  <aside class="pf-no-print sticky top-0 z-40 hidden h-screen shrink-0 flex-col border-r border-slate-200 bg-white transition-all duration-300 dark:border-slate-800 dark:bg-slate-900 lg:flex"
+         :class="collapsed ? 'w-[76px]' : 'w-64'">
+    <div class="flex h-16 items-center gap-2 border-b border-slate-200 px-4 dark:border-slate-800">
+      <img src="assets/img/favicon.svg" alt="" class="h-8 w-8 shrink-0" width="32" height="32">
+      <span x-show="!collapsed" x-transition.opacity class="text-lg font-bold">PeopleFlow</span>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Menu principal">
+      <a href="portal.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-grip w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Portal</span></a>
+      <a href="dashboard.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-pie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Dashboard</span></a>
+      <a href="rh.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-users w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>RH</span></a>
+      <a href="dp.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>DP</span></a>
+      <a href="colaborador.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-id-badge w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Colaborador</span></a>
+      <a href="gestor.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-user-tie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Gestor</span></a>
+      <a href="analytics.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-line w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Analytics</span></a>
+      <a href="ia.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-wand-magic-sparkles w-4 text-center text-violet-600 dark:text-violet-400" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Assistente IA</span></a>
+      <a href="empresa.html" aria-current="page" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"><i class="fa-solid fa-building w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Administração</span></a>
+      <a href="configuracoes.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-gear w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Configurações</span></a>
+    </nav>
+    <div class="border-t border-slate-200 p-3 dark:border-slate-800">
+      <button @click="collapsed = !collapsed" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" :aria-label="collapsed ? 'Expandir menu' : 'Recolher menu'">
+        <i class="fa-solid w-4 text-center" :class="collapsed ? 'fa-angles-right' : 'fa-angles-left'" aria-hidden="true"></i>
+        <span x-show="!collapsed" x-transition.opacity>Recolher</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══ SIDEBAR (mobile drawer) ══ -->
+  <div x-show="mobileNav" x-transition.opacity x-cloak class="fixed inset-0 z-50 bg-slate-950/50 lg:hidden" @click="mobileNav = false" aria-hidden="true"></div>
+  <aside x-show="mobileNav" x-cloak x-transition:enter="transition-transform duration-300" x-transition:enter-start="-translate-x-full" x-transition:leave="transition-transform duration-300" x-transition:leave-end="-translate-x-full"
+         class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 lg:hidden" aria-label="Menu móvel">
+    <div class="flex h-16 items-center justify-between border-b border-slate-200 px-4 dark:border-slate-800">
+      <span class="flex items-center gap-2 font-bold"><img src="assets/img/favicon.svg" alt="" class="h-8 w-8">PeopleFlow</span>
+      <button @click="mobileNav = false" class="h-9 w-9 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Fechar menu"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3" x-data="{ collapsed: false }">
+      <a href="portal.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-grip w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Portal</span></a>
+      <a href="dashboard.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-pie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Dashboard</span></a>
+      <a href="rh.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-users w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>RH</span></a>
+      <a href="dp.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-clock w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>DP</span></a>
+      <a href="colaborador.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-id-badge w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Colaborador</span></a>
+      <a href="gestor.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-user-tie w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Gestor</span></a>
+      <a href="analytics.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-chart-line w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Analytics</span></a>
+      <a href="ia.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-wand-magic-sparkles w-4 text-center text-violet-600 dark:text-violet-400" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Assistente IA</span></a>
+      <a href="empresa.html" aria-current="page" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors bg-blue-50 font-semibold text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"><i class="fa-solid fa-building w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Administração</span></a>
+      <a href="configuracoes.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i class="fa-solid fa-gear w-4 text-center" aria-hidden="true"></i><span x-show="!collapsed" x-transition.opacity>Configurações</span></a>
+    </nav>
+  </aside>
+
+  <!-- ══ ÁREA PRINCIPAL ══ -->
+  <div class="flex min-w-0 flex-1 flex-col">
+    <!-- Topbar -->
+    <header class="pf-no-print pf-glass sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 px-4 dark:border-slate-800 sm:px-6">
+      <button @click="mobileNav = true" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <!-- Breadcrumb -->
+      <nav class="hidden items-center gap-2 text-sm sm:flex" aria-label="Breadcrumb">
+        <a href="portal.html" class="text-slate-400 transition-colors hover:text-blue-600"><i class="fa-solid fa-house text-xs" aria-hidden="true"></i></a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-slate-300 dark:text-slate-700" aria-hidden="true"></i>
+        <span class="font-semibold text-slate-700 dark:text-slate-200">Administração</span>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-1.5">
+        <!-- Busca global -->
+        <label class="relative hidden md:block">
+          <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400" aria-hidden="true"></i>
+          <input type="search" placeholder="Buscar…" aria-label="Buscar na plataforma"
+                 class="w-56 rounded-xl border border-slate-200 bg-white py-2 pl-8 pr-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 dark:border-slate-700 dark:bg-slate-900">
+        </label>
+
+        <!-- Notificações -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" aria-label="Notificações" :aria-expanded="open">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i>
+            <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" aria-hidden="true"></span>
+          </button>
+          <div x-show="open" @click.outside="open = false" x-transition x-cloak
+               class="absolute right-0 mt-2 w-80 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <p class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Notificações</p>
+            <a href="gestor.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-umbrella-beach mt-0.5 text-blue-500" aria-hidden="true"></i><span>Férias de <strong>Ana Souza</strong> aguardam sua aprovação.</span></a>
+            <a href="dp.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-clock mt-0.5 text-amber-500" aria-hidden="true"></i><span>3 ajustes de ponto pendentes na equipe Comercial.</span></a>
+            <a href="ia.html" class="flex gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-wand-magic-sparkles mt-0.5 text-violet-500" aria-hidden="true"></i><span>IA terminou de resumir 8 currículos.</span></a>
+          </div>
+        </div>
+
+        <!-- Tema -->
+        <button @click="pfToggleTheme()" class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800" aria-label="Alternar tema claro/escuro">
+          <i class="fa-solid fa-moon pf-show-light" aria-hidden="true"></i>
+          <i class="fa-solid fa-sun pf-show-dark" aria-hidden="true"></i>
+        </button>
+
+        <!-- Usuário -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="flex items-center gap-2 rounded-xl p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Menu do usuário" :aria-expanded="open">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">MA</span>
+            <i class="fa-solid fa-chevron-down hidden text-[10px] text-slate-400 sm:block" aria-hidden="true"></i>
+          </button>
+          <div x-show="open" @click.outside="open = false" x-transition x-cloak
+               class="absolute right-0 mt-2 w-56 rounded-2xl border border-slate-200 bg-white p-2 text-sm shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <div class="border-b border-slate-100 px-3 py-2.5 dark:border-slate-800">
+              <p class="font-bold">Misael Araújo</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Empresa Demonstração</p>
+            </div>
+            <a href="colaborador.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-regular fa-user w-4 text-slate-400" aria-hidden="true"></i>Meu perfil</a>
+            <a href="empresa.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-rotate w-4 text-slate-400" aria-hidden="true"></i>Trocar empresa</a>
+            <a href="configuracoes.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"><i class="fa-solid fa-gear w-4 text-slate-400" aria-hidden="true"></i>Configurações</a>
+            <a href="login.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"><i class="fa-solid fa-arrow-right-from-bracket w-4" aria-hidden="true"></i>Sair</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cabeçalho da página -->
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 pt-6 sm:px-6">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight">Administração</h1>
+      </div>
+      
+    </div>
+
+    <!-- Conteúdo -->
+    <main id="conteudo" class="flex-1 px-4 py-6 sm:px-6">
+
+      <!-- Estrutura organizacional -->
+      <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Estrutura">
+        <div class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-5"><i class="fa-solid fa-building text-blue-500" aria-hidden="true"></i><p class="mt-2 text-2xl font-extrabold">3</p><p class="text-xs text-slate-500 dark:text-slate-400">Empresas (CNPJs)</p></div>
+        <div class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-5"><i class="fa-solid fa-location-dot text-blue-500" aria-hidden="true"></i><p class="mt-2 text-2xl font-extrabold">7</p><p class="text-xs text-slate-500 dark:text-slate-400">Filiais</p></div>
+        <div class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-5"><i class="fa-solid fa-sitemap text-blue-500" aria-hidden="true"></i><p class="mt-2 text-2xl font-extrabold">18</p><p class="text-xs text-slate-500 dark:text-slate-400">Departamentos · 42 cargos</p></div>
+        <div class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-5"><i class="fa-solid fa-credit-card text-blue-500" aria-hidden="true"></i><p class="mt-2 text-2xl font-extrabold">Business</p><p class="text-xs text-slate-500 dark:text-slate-400">Assinatura ativa · renova 01/08</p></div>
+      </section>
+
+      <div class="mt-6 grid gap-6 xl:grid-cols-2">
+        <!-- Usuários e perfis -->
+        <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+          <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+            <h2 class="font-bold">Usuários e perfis</h2>
+            <button class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/25 transition-colors hover:bg-blue-700 !py-1.5 text-xs" onclick="pfToast('Convite enviado por e-mail', 'success')"><i class="fa-solid fa-user-plus mr-1.5" aria-hidden="true"></i>Convidar</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[480px] text-sm">
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              <tr class="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <td class="px-5 py-3.5"><div class="flex items-center gap-3"><span class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">MA</span><div><p class="font-semibold">Misael Araújo</p><p class="text-xs text-slate-500 dark:text-slate-400">misael@demo.com</p></div></div></td>
+                <td class="px-5 py-3.5"><span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">Administrador</span></td>
+                <td class="px-5 py-3.5 text-right"><button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 !px-3 !py-1.5 text-xs">Permissões</button></td>
+              </tr>
+              <tr class="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <td class="px-5 py-3.5"><div class="flex items-center gap-3"><span class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">DR</span><div><p class="font-semibold">Daniela Rocha</p><p class="text-xs text-slate-500 dark:text-slate-400">daniela@demo.com</p></div></div></td>
+                <td class="px-5 py-3.5"><span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">RH</span></td>
+                <td class="px-5 py-3.5 text-right"><button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 !px-3 !py-1.5 text-xs">Permissões</button></td>
+              </tr>
+              <tr class="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <td class="px-5 py-3.5"><div class="flex items-center gap-3"><span class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">AS</span><div><p class="font-semibold">Ana Souza</p><p class="text-xs text-slate-500 dark:text-slate-400">ana@demo.com</p></div></div></td>
+                <td class="px-5 py-3.5"><span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">DP</span></td>
+                <td class="px-5 py-3.5 text-right"><button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 !px-3 !py-1.5 text-xs">Permissões</button></td>
+              </tr>
+              <tr class="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <td class="px-5 py-3.5"><div class="flex items-center gap-3"><span class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">HC</span><div><p class="font-semibold">Helena Castro</p><p class="text-xs text-slate-500 dark:text-slate-400">helena@demo.com</p></div></div></td>
+                <td class="px-5 py-3.5"><span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">Gestor</span></td>
+                <td class="px-5 py-3.5 text-right"><button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 !px-3 !py-1.5 text-xs">Permissões</button></td>
+              </tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Módulos e feature flags -->
+        <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-6">
+          <div class="flex items-center justify-between"><h2 class="font-bold">Módulos da plataforma</h2><span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">8 ativos</span></div>
+          <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Ative módulos por empresa. Módulos core não podem ser desativados.</p>
+          <div class="mt-4 grid gap-2.5 sm:grid-cols-2">
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox" checked disabled @change="pfToast('Módulo Pessoas & DP: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Pessoas & DP</span>
+              <span class="ml-auto rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">core</span>
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox" checked disabled @change="pfToast('Módulo GED — Documentos: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">GED — Documentos</span>
+              <span class="ml-auto rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">core</span>
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox" checked  @change="pfToast('Módulo Recrutamento: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Recrutamento</span>
+              
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox" checked  @change="pfToast('Módulo Benefícios: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Benefícios</span>
+              
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox" checked  @change="pfToast('Módulo Desempenho: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Desempenho</span>
+              
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox" checked  @change="pfToast('Módulo Treinamentos: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Treinamentos</span>
+              
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox" checked  @change="pfToast('Módulo Analytics: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Analytics</span>
+              
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox" checked  @change="pfToast('Módulo Assistente de IA: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Assistente de IA</span>
+              
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox"   @change="pfToast('Módulo Folha de Pagamento: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Folha de Pagamento</span>
+              
+            </label>
+            <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-700">
+              <input type="checkbox"   @change="pfToast('Módulo Marketplace: ' + ($el.checked ? 'ativado' : 'desativado'), 'success')" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span class="text-sm font-semibold">Marketplace</span>
+              
+            </label></div>
+        </section>
+      </div>
+
+      <div class="mt-6 grid gap-6 xl:grid-cols-3">
+        <!-- Integrações -->
+        <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 p-6">
+          <h2 class="font-bold">Integrações e API</h2>
+          <ul class="mt-4 space-y-3 text-sm">
+            <li class="flex items-center gap-3 rounded-xl border border-slate-200 p-3 dark:border-slate-700"><i class="fa-solid fa-plug text-emerald-500" aria-hidden="true"></i><div><p class="font-semibold">ERP Contábil</p><p class="text-xs text-slate-400">webhook · última entrega há 20 min</p></div><span class="ml-auto rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">ativo</span></li>
+            <li class="flex items-center gap-3 rounded-xl border border-slate-200 p-3 dark:border-slate-700"><i class="fa-solid fa-key text-blue-500" aria-hidden="true"></i><div><p class="font-semibold">pf_live_…9f2</p><p class="text-xs text-slate-400">API key · escopo employees:read</p></div><button class="ml-auto text-xs font-semibold text-red-500 hover:underline" onclick="pfToast('API key revogada', 'error')">revogar</button></li>
+          </ul>
+          <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 mt-4 w-full text-xs" onclick="pfToast('Nova API key gerada — copie agora, ela não será exibida de novo', 'info')"><i class="fa-solid fa-plus mr-1.5" aria-hidden="true"></i>Nova API key</button>
+        </section>
+
+        <!-- Logs / auditoria -->
+        <section class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 xl:col-span-2">
+          <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+            <h2 class="font-bold">Logs de auditoria <span class="text-xs font-normal text-slate-400">(trilha imutável)</span></h2>
+            <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 !py-1.5 text-xs" onclick="window.print()">Exportar</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[560px] text-sm">
+              <thead class="border-b border-slate-200 text-left dark:border-slate-800"><tr><th class="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Ator</th><th class="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Ação</th><th class="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Alvo</th><th class="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Quando · IP</th></tr></thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              <tr><td class="px-5 py-3 font-medium">Misael Araújo</td><td class="px-5 py-3"><code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs dark:bg-slate-800">employee.update</code></td><td class="px-5 py-3 text-slate-500 dark:text-slate-400">Ana Souza</td><td class="px-5 py-3 text-xs text-slate-400">há 12 min · 187.44.x.x</td></tr>
+              <tr><td class="px-5 py-3 font-medium">Sistema</td><td class="px-5 py-3"><code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs dark:bg-slate-800">payroll.generated</code></td><td class="px-5 py-3 text-slate-500 dark:text-slate-400">Competência 2026-07</td><td class="px-5 py-3 text-xs text-slate-400">há 1 h · —</td></tr>
+              <tr><td class="px-5 py-3 font-medium">Helena Castro</td><td class="px-5 py-3"><code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs dark:bg-slate-800">vacation.approve</code></td><td class="px-5 py-3 text-slate-500 dark:text-slate-400">Bruno Ferreira</td><td class="px-5 py-3 text-xs text-slate-400">há 3 h · 201.17.x.x</td></tr>
+              <tr><td class="px-5 py-3 font-medium">API key pf_live_…9f2</td><td class="px-5 py-3"><code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs dark:bg-slate-800">employees.read</code></td><td class="px-5 py-3 text-slate-500 dark:text-slate-400">Integração ERP</td><td class="px-5 py-3 text-xs text-slate-400">há 5 h · 34.95.x.x</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+    </main>
+
+    <footer class="pf-no-print border-t border-slate-200 px-6 py-4 text-center text-xs text-slate-400 dark:border-slate-800 dark:text-slate-600">
+      © 2026 PeopleFlow · Plataforma HCM · <a href="index.html" class="hover:text-blue-600">peopleflow.com.br</a>
+    </footer>
+  </div>
+</div>
+
+</body>
+</html>
