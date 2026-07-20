@@ -19,7 +19,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2, 8.3, 8.4]
+        # composer.lock exige PHP >= 8.4 (symfony 8.x) — decisão do projeto (ADR-009)
+        php: [8.4]
 
     name: PHP ${{ matrix.php }}
 
