@@ -53,8 +53,30 @@ Duas frentes convivem no repositório:
 - [x] Webhooks de saída assinados (HMAC-SHA256) com entregas rastreadas e reenvio
 - [ ] Conectores prontos (SAP, TOTVS, Conta Azul, Omie, Nibo, Domínio)
 
+## Migração MVP → Laravel 🚧 em andamento (raiz)
+
+Progressiva e fatiada: cada slice porta uma parte já validada do MVP para a
+plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
+
+- [x] **Motor de folha** (`app/Services/Payroll/`): os 7 calculadores puros
+      (Inss/Irrf/Fgts/Vacation/Thirteenth/Termination/PayrollEngine) portados
+      **verbatim** do MVP (já usavam o namespace `App\Services\Payroll`);
+      `rubrics`/`tax_tables` viraram tabelas globais (sem tenant — são leis
+      federais, iguais para todo tenant) com `Rubric`/`TaxTable` (GlobalModel)
+      e `PayrollEngineSeeder`; `TaxTableRepository` reescrito de PDO cru para
+      Eloquent, mesma interface pública. 29 testes novos (25 unit puros
+      espelhando as 37 asserções do MVP + 4 feature via banco/seeder) — todos
+      os valores batem com os já validados manualmente; suíte completa 40/40
+- [ ] `PayrollService`/`SpecialPayrollService`: fechamento de competência,
+      folhas especiais (13º/férias/rescisão) — precisa de `payroll_periods`,
+      `payrolls`, `payroll_items`, `social_charges` (tenant-scoped) e da
+      permissão `payroll:manage`
+- [ ] Controllers/rotas Livewire para folha, holerite, Assistente CLT e eSocial
+- [ ] Portal do colaborador, API pública `/api/v1` de folha e webhooks
+- [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
+
 ## Próximos passos
 1. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
 2. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
-3. Migração progressiva do MVP validado para a plataforma Laravel da raiz
-   (multi-tenancy RLS, filas, billing) — ver [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs
+3. Próxima fatia da migração: `PayrollService` (fechamento de competência) —
+   ver [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs

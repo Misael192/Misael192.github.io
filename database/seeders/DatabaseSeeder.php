@@ -55,6 +55,9 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        // Motor de folha: rubricas e tabelas oficiais (globais, sem tenant)
+        $this->call(PayrollEngineSeeder::class);
+
         // Catálogo de módulos
         foreach (self::MODULES as $module) {
             Module::query()->updateOrCreate(['code' => $module['code']], $module);
