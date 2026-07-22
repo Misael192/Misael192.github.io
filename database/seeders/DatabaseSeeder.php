@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             'time-entries:read', 'time-entries:register', 'time-entries:approve',
         ],
         'documents' => ['documents:read', 'documents:upload', 'documents:sign', 'documents:share'],
+        'payroll' => ['payroll:read', 'payroll:manage'],
         'recruitment' => ['jobs:read', 'jobs:manage', 'candidates:read', 'candidates:manage'],
         'benefits' => ['benefits:read', 'benefits:manage'],
         'performance' => ['reviews:read', 'reviews:manage', 'goals:read', 'goals:manage'],
@@ -119,11 +120,11 @@ class DatabaseSeeder extends Seeder
                 self::PERMISSION_GROUPS['people'], self::PERMISSION_GROUPS['recruitment'],
                 self::PERMISSION_GROUPS['benefits'], self::PERMISSION_GROUPS['performance'],
                 self::PERMISSION_GROUPS['learning'], self::PERMISSION_GROUPS['documents'],
-                self::PERMISSION_GROUPS['ai'],
+                self::PERMISSION_GROUPS['payroll'], self::PERMISSION_GROUPS['ai'],
             )],
             'DP' => ['name' => 'Departamento Pessoal', 'permissions' => array_merge(
                 self::PERMISSION_GROUPS['people'], self::PERMISSION_GROUPS['documents'],
-                self::PERMISSION_GROUPS['ai'],
+                self::PERMISSION_GROUPS['payroll'], self::PERMISSION_GROUPS['ai'],
             )],
             'MANAGER' => ['name' => 'Gestor', 'permissions' => [
                 'employees:read', 'vacations:read', 'vacations:approve',

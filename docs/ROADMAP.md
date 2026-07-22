@@ -67,10 +67,18 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       Eloquent, mesma interface pública. 29 testes novos (25 unit puros
       espelhando as 37 asserções do MVP + 4 feature via banco/seeder) — todos
       os valores batem com os já validados manualmente; suíte completa 40/40
-- [ ] `PayrollService`/`SpecialPayrollService`: fechamento de competência,
-      folhas especiais (13º/férias/rescisão) — precisa de `payroll_periods`,
-      `payrolls`, `payroll_items`, `social_charges` (tenant-scoped) e da
-      permissão `payroll:manage`
+- [x] **Fechamento da folha mensal** (`App\Services\Payroll\PayrollService`):
+      tabelas tenant-scoped `payroll_periods`/`payrolls`/`payroll_items`/
+      `social_charges` (UUID, RLS automática) com models Eloquent; máquina de
+      estados `open → calculated → closed` (fechado é imutável; `reopenPeriod`
+      volta para calculada). Salário vem do `employment_contracts` vigente,
+      hora-extra do `time_bank_entries` (crédito → HE 50%); permissão
+      `payroll:manage`/`payroll:read` para RH/DP. 6 feature tests (totais,
+      import de banco de horas, recálculo idempotente, guarda de competência
+      fechada, reabertura). Suíte 46/46
+- [ ] `SpecialPayrollService`: folhas especiais (13º/férias/rescisão) na mesma
+      estrutura (`kind`) — falta portar dependentes, faltas e rescisões, que
+      ainda não têm tabela no domínio Laravel
 - [ ] Controllers/rotas Livewire para folha, holerite, Assistente CLT e eSocial
 - [ ] Portal do colaborador, API pública `/api/v1` de folha e webhooks
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
@@ -78,5 +86,6 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
 ## Próximos passos
 1. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
 2. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
-3. Próxima fatia da migração: `PayrollService` (fechamento de competência) —
-   ver [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs
+3. Próxima fatia da migração: `SpecialPayrollService` (13º/férias/rescisão) e
+   as tabelas de apoio (dependentes, faltas, rescisões) — ver
+   [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs
