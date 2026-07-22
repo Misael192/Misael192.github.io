@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * Folha de um colaborador numa competência. `kind` separa a mensal
@@ -41,5 +42,11 @@ class Payroll extends TenantModel
     public function charges(): HasMany
     {
         return $this->hasMany(SocialCharge::class);
+    }
+
+    /** Registro de origem da folha especial (pedido de férias, rescisão). */
+    public function source(): MorphTo
+    {
+        return $this->morphTo();
     }
 }
