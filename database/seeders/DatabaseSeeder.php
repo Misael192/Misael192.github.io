@@ -105,7 +105,8 @@ class DatabaseSeeder extends Seeder
         // Fixa o tenant no contexto para escopos/traits funcionarem no seed.
         app(TenantContext::class)->set($tenant);
 
-        foreach (Module::query()->whereIn('code', $plans[1]['module_codes'])->get() as $module) {
+        $demoModules = array_merge($plans[1]['module_codes'], ['payroll']);
+        foreach (Module::query()->whereIn('code', $demoModules)->get() as $module) {
             DB::table('tenant_modules')->updateOrInsert(
                 ['tenant_id' => $tenant->id, 'module_id' => $module->id],
                 ['is_enabled' => true, 'source' => 'plan', 'created_at' => now(), 'updated_at' => now()],

@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\V1\AiChatController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\HealthController;
+use App\Http\Controllers\Api\V1\PayrollController;
+use App\Http\Controllers\Api\V1\SpecialPayrollController;
 use App\Http\Controllers\Api\V1\VacationController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +46,27 @@ Route::prefix('v1')->group(function () {
                 ->middleware('can:vacations:request');
             Route::post('vacations/{vacation}/approve', [VacationController::class, 'approve'])
                 ->middleware('can:vacations:approve');
+        });
+
+        // Módulo Folha — fechamento mensal, holerite e folhas especiais.
+        Route::middleware('module:payroll')->group(function () {
+            Route::post('payroll/periods/{company}/calculate', [PayrollController::class, 'calculate'])
+                ->middleware('can:payroll:manage');
+            Route::post('payroll/periods/{company}/close', [PayrollController::class, 'close'])
+                ->middleware('can:payroll:manage');
+            Route::post('payroll/periods/{company}/reopen', [PayrollController::class, 'reopen'])
+                ->middleware('can:payroll:manage');
+            Route::get('payrolls/{payroll}', [PayrollController::class, 'show'])
+                ->middleware('can:payroll:read');
+
+            Route::post('payroll/thirteenth/{company}', [SpecialPayrollController::class, 'thirteenth'])
+                ->middleware('can:payroll:manage');
+            Route::post('payroll/vacations/{vacation}/receipt', [SpecialPayrollController::class, 'vacationReceipt'])
+                ->middleware('can:payroll:manage');
+            Route::post('payroll/employees/{employee}/termination/simulate', [SpecialPayrollController::class, 'simulateTermination'])
+                ->middleware('can:payroll:read');
+            Route::post('payroll/employees/{employee}/termination', [SpecialPayrollController::class, 'terminate'])
+                ->middleware('can:payroll:manage');
         });
 
         // AI Engine — módulo comercial próprio.

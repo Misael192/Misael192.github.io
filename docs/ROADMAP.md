@@ -84,13 +84,20 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       `payrolls.source_type/source_id` (morphTo). Persistem na mesma estrutura
       com `kind` (thirteenth_1/2, vacation, termination); a mensal nunca as
       toca. 7 feature tests batendo com os calculadores puros. Suíte 53/53
-- [ ] Controllers/rotas Livewire para folha, holerite, Assistente CLT e eSocial
-- [ ] Portal do colaborador, API pública `/api/v1` de folha e webhooks
+- [x] **API v1 de folha** (`/api/v1/payroll/*`): `PayrollController`
+      (calcular/fechar/reabrir competência, holerite) e
+      `SpecialPayrollController` (13º, recibo de férias, simular/efetivar
+      rescisão) sobre os serviços portados, no mesmo pipeline das demais
+      rotas (tenant → auth Sanctum → `module:payroll` → RBAC `payroll:read`/
+      `payroll:manage` → auditoria). Módulo payroll habilitado no tenant
+      demo. 7 feature tests HTTP ponta a ponta. Suíte 60/60
+- [ ] UI (Livewire) de folha, holerite, Assistente CLT e eSocial
+- [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
 ## Próximos passos
 1. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
 2. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
-3. Próxima fatia da migração: controllers/rotas Livewire de folha (fechamento,
-   holerite, folhas especiais) sobre os serviços já portados — ver
+3. Próxima fatia da migração: UI Livewire de folha (fechamento, holerite,
+   folhas especiais) consumindo a API já portada — ver
    [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs
