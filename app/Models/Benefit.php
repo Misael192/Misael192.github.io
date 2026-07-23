@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Benefit extends TenantModel
 {
     use SoftDeletes;
+
     protected function casts(): array
     {
         return [

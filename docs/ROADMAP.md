@@ -91,6 +91,9 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       rotas (tenant → auth Sanctum → `module:payroll` → RBAC `payroll:read`/
       `payroll:manage` → auditoria). Módulo payroll habilitado no tenant
       demo. 7 feature tests HTTP ponta a ponta. Suíte 60/60
+- [x] **CI da plataforma Laravel**: job `laravel` roda `pint --test` +
+      `php artisan test` (SQLite em memória) ao lado do job do MVP; base do
+      root normalizada com Pint (`pint.json` exclui `mvp/`, que segue intacto)
 - [ ] UI (Livewire) de folha, holerite, Assistente CLT e eSocial
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte

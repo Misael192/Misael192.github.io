@@ -28,3 +28,30 @@ jobs:
 
       - name: Testes do motor de folha (37 asserções, sem banco)
         run: php mvp/tests/payroll_tests.php
+
+  laravel:
+    name: Plataforma Laravel (Pint + PHPUnit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo, pdo_sqlite, curl, dom, bcmath
+          coverage: none
+
+      - name: Instala dependências
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepara ambiente de teste
+        run: |
+          cp .env.example .env || true
+          php artisan key:generate --force
+
+      - name: Estilo (Laravel Pint)
+        run: vendor/bin/pint --test
+
+      - name: Testes (PHPUnit, SQLite em memória)
+        run: php artisan test

@@ -12,8 +12,7 @@ class OpenAiProvider implements LlmProvider
     public function __construct(
         private readonly string $apiKey,
         private readonly string $model = 'gpt-4o',
-    ) {
-    }
+    ) {}
 
     public function complete(string $system, array $messages): array
     {

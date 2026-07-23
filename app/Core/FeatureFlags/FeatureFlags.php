@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\DB;
  */
 class FeatureFlags
 {
-    public function __construct(private readonly TenantContext $context)
-    {
-    }
+    public function __construct(private readonly TenantContext $context) {}
 
     /** Módulo comercial habilitado para o tenant atual? (people, recruitment…) */
     public function moduleEnabled(string $moduleCode): bool

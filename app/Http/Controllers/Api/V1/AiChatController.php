@@ -12,9 +12,7 @@ use Illuminate\Http\Request;
 /** Chat com o AI Engine (agentes: assistant, clt, contracts, recruiter). */
 class AiChatController extends Controller
 {
-    public function __construct(private readonly AiEngine $engine)
-    {
-    }
+    public function __construct(private readonly AiEngine $engine) {}
 
     public function send(Request $request): JsonResponse
     {

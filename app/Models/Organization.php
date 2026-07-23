@@ -4,9 +4,4 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-
-
-class Organization extends TenantModel
-{
-
-}
+class Organization extends TenantModel {}
