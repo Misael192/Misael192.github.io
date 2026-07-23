@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Log;
  */
 class WorkflowEngine
 {
-    public function __construct(private readonly NodeExecutorRegistry $registry)
-    {
-    }
+    public function __construct(private readonly NodeExecutorRegistry $registry) {}
 
     /** Inicia instâncias de todo template ativo cujo gatilho é este evento. */
     public function onDomainEvent(string $eventName, array $payload): void

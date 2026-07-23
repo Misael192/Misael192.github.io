@@ -12,8 +12,7 @@ class GeminiProvider implements LlmProvider
     public function __construct(
         private readonly string $apiKey,
         private readonly string $model = 'gemini-2.0-flash',
-    ) {
-    }
+    ) {}
 
     public function complete(string $system, array $messages): array
     {

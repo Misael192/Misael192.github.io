@@ -4,9 +4,4 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-
-
-class OAuthAccount extends TenantModel
-{
-
-}
+class OAuthAccount extends TenantModel {}

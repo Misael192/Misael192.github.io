@@ -14,9 +14,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class EnsureModuleEnabled
 {
-    public function __construct(private readonly FeatureFlags $flags)
-    {
-    }
+    public function __construct(private readonly FeatureFlags $flags) {}
 
     public function handle(Request $request, Closure $next, string $moduleCode): mixed
     {

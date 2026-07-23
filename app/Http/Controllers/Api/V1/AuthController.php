@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Core\Identity\Totp;
 use App\Http\Controllers\Controller;
+use App\Models\MfaCredential;
 use App\Models\User;
 use App\Services\Auth\RefreshTokenService;
 use Illuminate\Http\JsonResponse;
@@ -20,9 +21,7 @@ use Illuminate\Validation\ValidationException;
  */
 class AuthController extends Controller
 {
-    public function __construct(private readonly RefreshTokenService $refreshTokens)
-    {
-    }
+    public function __construct(private readonly RefreshTokenService $refreshTokens) {}
 
     public function login(Request $request): JsonResponse
     {
@@ -87,7 +86,7 @@ class AuthController extends Controller
             throw ValidationException::withMessages(['mfa_code' => 'Código MFA obrigatório']);
         }
 
-        $credential = $user->hasOne(\App\Models\MfaCredential::class)
+        $credential = $user->hasOne(MfaCredential::class)
             ->whereNotNull('verified_at')
             ->first();
 

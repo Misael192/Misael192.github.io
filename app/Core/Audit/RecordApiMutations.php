@@ -22,8 +22,7 @@ class RecordApiMutations
     public function __construct(
         private readonly AuditRecorder $audit,
         private readonly TenantContext $context,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request, Closure $next): mixed
     {

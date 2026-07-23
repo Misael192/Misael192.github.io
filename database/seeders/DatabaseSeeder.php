@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             'time-entries:read', 'time-entries:register', 'time-entries:approve',
         ],
         'documents' => ['documents:read', 'documents:upload', 'documents:sign', 'documents:share'],
+        'payroll' => ['payroll:read', 'payroll:manage'],
         'recruitment' => ['jobs:read', 'jobs:manage', 'candidates:read', 'candidates:manage'],
         'benefits' => ['benefits:read', 'benefits:manage'],
         'performance' => ['reviews:read', 'reviews:manage', 'goals:read', 'goals:manage'],
@@ -55,6 +56,9 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        // Motor de folha: rubricas e tabelas oficiais (globais, sem tenant)
+        $this->call(PayrollEngineSeeder::class);
+
         // Catálogo de módulos
         foreach (self::MODULES as $module) {
             Module::query()->updateOrCreate(['code' => $module['code']], $module);
@@ -101,7 +105,8 @@ class DatabaseSeeder extends Seeder
         // Fixa o tenant no contexto para escopos/traits funcionarem no seed.
         app(TenantContext::class)->set($tenant);
 
-        foreach (Module::query()->whereIn('code', $plans[1]['module_codes'])->get() as $module) {
+        $demoModules = array_merge($plans[1]['module_codes'], ['payroll']);
+        foreach (Module::query()->whereIn('code', $demoModules)->get() as $module) {
             DB::table('tenant_modules')->updateOrInsert(
                 ['tenant_id' => $tenant->id, 'module_id' => $module->id],
                 ['is_enabled' => true, 'source' => 'plan', 'created_at' => now(), 'updated_at' => now()],
@@ -116,11 +121,11 @@ class DatabaseSeeder extends Seeder
                 self::PERMISSION_GROUPS['people'], self::PERMISSION_GROUPS['recruitment'],
                 self::PERMISSION_GROUPS['benefits'], self::PERMISSION_GROUPS['performance'],
                 self::PERMISSION_GROUPS['learning'], self::PERMISSION_GROUPS['documents'],
-                self::PERMISSION_GROUPS['ai'],
+                self::PERMISSION_GROUPS['payroll'], self::PERMISSION_GROUPS['ai'],
             )],
             'DP' => ['name' => 'Departamento Pessoal', 'permissions' => array_merge(
                 self::PERMISSION_GROUPS['people'], self::PERMISSION_GROUPS['documents'],
-                self::PERMISSION_GROUPS['ai'],
+                self::PERMISSION_GROUPS['payroll'], self::PERMISSION_GROUPS['ai'],
             )],
             'MANAGER' => ['name' => 'Gestor', 'permissions' => [
                 'employees:read', 'vacations:read', 'vacations:approve',

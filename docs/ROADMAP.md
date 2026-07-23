@@ -53,8 +53,63 @@ Duas frentes convivem no repositório:
 - [x] Webhooks de saída assinados (HMAC-SHA256) com entregas rastreadas e reenvio
 - [ ] Conectores prontos (SAP, TOTVS, Conta Azul, Omie, Nibo, Domínio)
 
+## Migração MVP → Laravel 🚧 em andamento (raiz)
+
+Progressiva e fatiada: cada slice porta uma parte já validada do MVP para a
+plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
+
+- [x] **Motor de folha** (`app/Services/Payroll/`): os 7 calculadores puros
+      (Inss/Irrf/Fgts/Vacation/Thirteenth/Termination/PayrollEngine) portados
+      **verbatim** do MVP (já usavam o namespace `App\Services\Payroll`);
+      `rubrics`/`tax_tables` viraram tabelas globais (sem tenant — são leis
+      federais, iguais para todo tenant) com `Rubric`/`TaxTable` (GlobalModel)
+      e `PayrollEngineSeeder`; `TaxTableRepository` reescrito de PDO cru para
+      Eloquent, mesma interface pública. 29 testes novos (25 unit puros
+      espelhando as 37 asserções do MVP + 4 feature via banco/seeder) — todos
+      os valores batem com os já validados manualmente; suíte completa 40/40
+- [x] **Fechamento da folha mensal** (`App\Services\Payroll\PayrollService`):
+      tabelas tenant-scoped `payroll_periods`/`payrolls`/`payroll_items`/
+      `social_charges` (UUID, RLS automática) com models Eloquent; máquina de
+      estados `open → calculated → closed` (fechado é imutável; `reopenPeriod`
+      volta para calculada). Salário vem do `employment_contracts` vigente,
+      hora-extra do `time_bank_entries` (crédito → HE 50%); permissão
+      `payroll:manage`/`payroll:read` para RH/DP. 6 feature tests (totais,
+      import de banco de horas, recálculo idempotente, guarda de competência
+      fechada, reabertura). Suíte 46/46
+- [x] **Folhas especiais** (`App\Services\Payroll\SpecialPayrollService`): 13º
+      (1ª/2ª parcela, com desconto do adiantamento e FGTS por diferença),
+      recibo de férias (ponte com `vacation_requests`, idempotente) e rescisão
+      (termo + desligamento). Tabelas de apoio `employee_dependents` e
+      `terminations` (tenant-scoped); folha especial referencia sua origem via
+      `payrolls.source_type/source_id` (morphTo). Persistem na mesma estrutura
+      com `kind` (thirteenth_1/2, vacation, termination); a mensal nunca as
+      toca. 7 feature tests batendo com os calculadores puros. Suíte 53/53
+- [x] **API v1 de folha** (`/api/v1/payroll/*`): `PayrollController`
+      (calcular/fechar/reabrir competência, holerite) e
+      `SpecialPayrollController` (13º, recibo de férias, simular/efetivar
+      rescisão) sobre os serviços portados, no mesmo pipeline das demais
+      rotas (tenant → auth Sanctum → `module:payroll` → RBAC `payroll:read`/
+      `payroll:manage` → auditoria). Módulo payroll habilitado no tenant
+      demo. 7 feature tests HTTP ponta a ponta. Suíte 60/60
+- [x] **CI da plataforma Laravel**: job `laravel` roda `pint --test` +
+      `php artisan test` (SQLite em memória) ao lado do job do MVP; base do
+      root normalizada com Pint (`pint.json` exclui `mvp/`, que segue intacto)
+- [x] **Fundação da UI (Livewire)**: login web por sessão (tenant no
+      formulário → `tenant_slug` na sessão; `SetTenantFromSession` fixa o
+      escopo antes do `auth`), shell autenticado e painel com KPIs reais do
+      tenant. Layout Blade reaproveita o design system estático
+      (`public/assets/peopleflow.css`), sem depender do build Vite. Rotas
+      `/entrar` e `/painel`. 7 feature tests (Livewire) + login real validado
+      no browser (Playwright, zero erro de JS). Suíte 67/67
+- [ ] Telas Livewire de folha (fechamento, holerite, folhas especiais)
+      consumindo os serviços já portados
+- [ ] UI dos demais módulos, Assistente CLT e eSocial
+- [ ] Portal do colaborador e webhooks de folha
+- [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
+
 ## Próximos passos
 1. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
 2. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
-3. Migração progressiva do MVP validado para a plataforma Laravel da raiz
-   (multi-tenancy RLS, filas, billing) — ver [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs
+3. Próxima fatia da migração: tela Livewire de fechamento de folha + holerite
+   sobre `PayrollService`/`SpecialPayrollService` — ver
+   [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs

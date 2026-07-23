@@ -123,8 +123,8 @@ return new class extends Migration
     public function down(): void
     {
         foreach (['workflow_step_executions', 'workflow_instances', 'workflow_templates',
-                  'knowledge_documents', 'ai_prompt_templates', 'ai_messages',
-                  'ai_conversations'] as $table) {
+            'knowledge_documents', 'ai_prompt_templates', 'ai_messages',
+            'ai_conversations'] as $table) {
             Schema::dropIfExists($table);
         }
     }
