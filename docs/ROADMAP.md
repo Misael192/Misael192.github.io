@@ -94,13 +94,22 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
 - [x] **CI da plataforma Laravel**: job `laravel` roda `pint --test` +
       `php artisan test` (SQLite em memória) ao lado do job do MVP; base do
       root normalizada com Pint (`pint.json` exclui `mvp/`, que segue intacto)
-- [ ] UI (Livewire) de folha, holerite, Assistente CLT e eSocial
+- [x] **Fundação da UI (Livewire)**: login web por sessão (tenant no
+      formulário → `tenant_slug` na sessão; `SetTenantFromSession` fixa o
+      escopo antes do `auth`), shell autenticado e painel com KPIs reais do
+      tenant. Layout Blade reaproveita o design system estático
+      (`public/assets/peopleflow.css`), sem depender do build Vite. Rotas
+      `/entrar` e `/painel`. 7 feature tests (Livewire) + login real validado
+      no browser (Playwright, zero erro de JS). Suíte 67/67
+- [ ] Telas Livewire de folha (fechamento, holerite, folhas especiais)
+      consumindo os serviços já portados
+- [ ] UI dos demais módulos, Assistente CLT e eSocial
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
 ## Próximos passos
 1. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
 2. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
-3. Próxima fatia da migração: UI Livewire de folha (fechamento, holerite,
-   folhas especiais) consumindo a API já portada — ver
+3. Próxima fatia da migração: tela Livewire de fechamento de folha + holerite
+   sobre `PayrollService`/`SpecialPayrollService` — ver
    [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs
