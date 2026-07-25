@@ -30,5 +30,11 @@
                 <p class="mt-2 text-3xl font-extrabold">{{ $pendingVacations }}</p>
             </div>
         </div>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+            <a href="/folha" wire:navigate class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700">
+                <i class="fa-solid fa-calculator" aria-hidden="true"></i> Fechar folha
+            </a>
+        </div>
     </main>
 </div>

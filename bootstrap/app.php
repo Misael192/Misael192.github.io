@@ -23,6 +23,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'module' => EnsureModuleEnabled::class,
             'audit' => RecordApiMutations::class,
         ]);
+
+        // Resolve o tenant da sessão em TODA requisição web — inclui o
+        // endpoint do Livewire (/livewire/update), que não passa pelas
+        // rotas nomeadas. Sem tenant na sessão é no-op (ex.: /entrar).
+        $middleware->web(append: [SetTenantFromSession::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

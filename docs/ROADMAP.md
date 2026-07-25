@@ -101,9 +101,15 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       (`public/assets/peopleflow.css`), sem depender do build Vite. Rotas
       `/entrar` e `/painel`. 7 feature tests (Livewire) + login real validado
       no browser (Playwright, zero erro de JS). Suíte 67/67
-- [ ] Telas Livewire de folha (fechamento, holerite, folhas especiais)
-      consumindo os serviços já portados
-- [ ] UI dos demais módulos, Assistente CLT e eSocial
+- [x] **Tela de folha + holerite (Livewire)**: `/folha` calcula/fecha/reabre
+      a competência pelo `PayrollService` (RBAC `payroll:manage` autorizado na
+      ação) e lista as folhas; `/folha/holerite/{payroll}` mostra itens e
+      encargos. `SetTenantFromSession` promovido ao grupo `web` global para o
+      tenant ser resolvido também no endpoint do Livewire (`/livewire/update`),
+      não só nas rotas nomeadas. 5 feature tests + fluxo real validado no
+      browser (login → calcular → holerite). Suíte 72/72
+- [ ] Telas Livewire das folhas especiais (13º/férias/rescisão) e UI dos
+      demais módulos, Assistente CLT e eSocial
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
