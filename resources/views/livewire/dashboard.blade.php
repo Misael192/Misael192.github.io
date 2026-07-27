@@ -35,6 +35,9 @@
             <a href="/folha" wire:navigate class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700">
                 <i class="fa-solid fa-calculator" aria-hidden="true"></i> Fechar folha
             </a>
+            <a href="/folha/especiais" wire:navigate class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
+                <i class="fa-solid fa-gift" aria-hidden="true"></i> Folhas especiais
+            </a>
         </div>
     </main>
 </div>

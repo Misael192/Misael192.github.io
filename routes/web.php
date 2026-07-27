@@ -3,6 +3,7 @@
 use App\Livewire\Auth\Login;
 use App\Livewire\Dashboard;
 use App\Livewire\Payroll\Folha;
+use App\Livewire\Payroll\FolhasEspeciais;
 use App\Livewire\Payroll\Holerite;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     // Módulo Folha (habilitado por tenant + RBAC nas ações do componente).
     Route::middleware('module:payroll')->group(function () {
         Route::get('/folha', Folha::class)->name('folha');
+        Route::get('/folha/especiais', FolhasEspeciais::class)->name('folha.especiais');
         Route::get('/folha/holerite/{payroll}', Holerite::class)->name('folha.holerite');
     });
 });

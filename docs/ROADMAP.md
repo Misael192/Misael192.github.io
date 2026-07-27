@@ -108,8 +108,16 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       tenant ser resolvido também no endpoint do Livewire (`/livewire/update`),
       não só nas rotas nomeadas. 5 feature tests + fluxo real validado no
       browser (login → calcular → holerite). Suíte 72/72
-- [ ] Telas Livewire das folhas especiais (13º/férias/rescisão) e UI dos
-      demais módulos, Assistente CLT e eSocial
+- [x] **Telas Livewire das folhas especiais** (`/folha/especiais`):
+      `FolhasEspeciais` sobre o `SpecialPayrollService` — 13º (1ª/2ª parcela),
+      recibo de férias dos pedidos aprovados (idempotente, aponta o holerite já
+      gerado) e rescisão em dois passos (simular verbas → efetivar, com o termo
+      e o desligamento). RBAC `payroll:manage` nas ações; saldo do FGTS entra em
+      reais e vira centavos só na fronteira (nenhuma tela faz conta). 5 feature
+      tests (13º, recibo, simular→efetivar, conversão de centavos, guarda de
+      login). Suíte 77/77
+- [ ] UI dos demais módulos (colaboradores/admissão/ponto/férias),
+      Assistente CLT e eSocial
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 

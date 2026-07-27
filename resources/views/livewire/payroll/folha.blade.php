@@ -3,7 +3,10 @@
         <a href="/painel" wire:navigate class="flex items-center gap-2 font-bold">
             <img src="{{ asset('assets/img/favicon.svg') }}" alt="" class="h-8 w-8"> PeopleFlow
         </a>
-        <a href="/painel" wire:navigate class="text-sm font-semibold text-slate-500 hover:text-slate-700 dark:text-slate-400">← Painel</a>
+        <div class="flex items-center gap-4 text-sm font-semibold">
+            <a href="/folha/especiais" wire:navigate class="text-blue-600 hover:underline">Folhas especiais</a>
+            <a href="/painel" wire:navigate class="text-slate-500 hover:text-slate-700 dark:text-slate-400">← Painel</a>
+        </div>
     </header>
 
     <main class="mx-auto max-w-5xl p-6">
