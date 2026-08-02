@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Ai\Assistente;
 use App\Livewire\Auth\Login;
 use App\Livewire\Dashboard;
 use App\Livewire\Payroll\Folha;
@@ -27,6 +28,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/colaboradores', Colaboradores::class)->name('colaboradores');
         Route::get('/ferias', Ferias::class)->name('ferias');
         Route::get('/ponto', Ponto::class)->name('ponto');
+    });
+
+    // Assistente CLT (módulo ai habilitado por tenant).
+    Route::middleware('module:ai')->group(function () {
+        Route::get('/assistente', Assistente::class)->name('assistente');
     });
 
     // Módulo Folha (habilitado por tenant + RBAC nas ações do componente).

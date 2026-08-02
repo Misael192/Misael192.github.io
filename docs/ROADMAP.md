@@ -139,7 +139,15 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       do mês vira HE 50% (rubrica 1001) no cálculo. 4 feature tests (crédito
       600min, débito −120min, HE ponta a ponta com bruto > salário, guarda de
       login). Suíte 91/91
-- [ ] Admissão digital, Assistente CLT e eSocial (UI)
+- [x] **Assistente CLT** (`/assistente`): `CltAssistantService` portado
+      **verbatim** do MVP para `App\Services\Ai` (já usava `App\Services\Payroll\*`
+      — só a normalização Pint de aspas mudou; o MVP segue intacto). Chat
+      Livewire que NUNCA responde valor "de cabeça": todo número sai das
+      calculadoras com as tabelas vigentes (líquido 5200 = 4.304,51, INSS 3000 =
+      253,41) e o texto cita a base legal. Conversa persistida em
+      `ai_conversations`/`ai_messages` (provider `calculated`, pronto para plugar
+      um LLM). Módulo `ai`. 5 feature tests. Suíte 96/96
+- [ ] Admissão digital e eSocial (UI)
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
