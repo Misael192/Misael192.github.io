@@ -7,6 +7,7 @@ use App\Livewire\Payroll\FolhasEspeciais;
 use App\Livewire\Payroll\Holerite;
 use App\Livewire\People\Colaboradores;
 use App\Livewire\People\Ferias;
+use App\Livewire\People\Ponto;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('module:people')->group(function () {
         Route::get('/colaboradores', Colaboradores::class)->name('colaboradores');
         Route::get('/ferias', Ferias::class)->name('ferias');
+        Route::get('/ponto', Ponto::class)->name('ponto');
     });
 
     // Módulo Folha (habilitado por tenant + RBAC nas ações do componente).

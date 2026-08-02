@@ -131,7 +131,15 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       `vacations:request`/`vacations:approve`. Fecha o ciclo com as folhas
       especiais: pedido aprovado aqui vira recibo lá (líquido 351183, batendo com
       o motor). 5 feature tests. Suíte 87/87
-- [ ] UI dos demais módulos de DP (admissão/ponto), Assistente CLT e eSocial
+- [x] **Tela de ponto / banco de horas** (`/ponto`): `Ponto` sobre o
+      `TimeBankService` (novo) — lança crédito (hora-extra) ou débito
+      (compensação) por colaborador (horas → minutos com sinal na fronteira),
+      mostra saldo por pessoa e os lançamentos recentes. RBAC
+      `time-entries:register`. Fecha o outro insumo da folha mensal: o crédito
+      do mês vira HE 50% (rubrica 1001) no cálculo. 4 feature tests (crédito
+      600min, débito −120min, HE ponta a ponta com bruto > salário, guarda de
+      login). Suíte 91/91
+- [ ] Admissão digital, Assistente CLT e eSocial (UI)
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
