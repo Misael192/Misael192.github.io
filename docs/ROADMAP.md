@@ -156,7 +156,16 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       5200.00; pendência sem CPF; S-1200 barra folha não-fechada; S-1200 da
       folha fechada com rubricas; guarda de login). Suíte 101/101
 - [ ] Admissão digital (checklist) — UI
-- [ ] Portal do colaborador e webhooks de folha
+- [x] **Portal do colaborador** (`/portal`): o usuário com vínculo
+      (`users.employee_id`) cai direto no portal (o login redireciona
+      colaborador → `/portal`, gestão → `/painel`). Vê os PRÓPRIOS holerites,
+      bate ponto (`TimeClockService`, alterna entrada/saída) e pede férias
+      self-service (`VacationService`, vira solicitação para aprovação).
+      **Acesso alheio bloqueado (403)**: `/portal/holerite/{payroll}` só abre
+      para o dono da folha; usuário sem vínculo não entra. Holerite reaproveita
+      um parcial compartilhado com a folha de DP. RBAC `time-entries:register`/
+      `vacations:request`. 6 feature tests. Suíte 106/106
+- [ ] Webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
 ## Próximos passos

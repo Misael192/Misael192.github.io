@@ -48,7 +48,10 @@ class Login extends Component
         session()->put('tenant_slug', $tenant->slug);
         session()->regenerate();
 
-        return $this->redirectIntended('/painel', navigate: true);
+        // Colaborador com vínculo cai no portal; equipe de gestão, no painel.
+        $home = Auth::user()->employee !== null ? '/portal' : '/painel';
+
+        return $this->redirectIntended($home, navigate: true);
     }
 
     public function render()

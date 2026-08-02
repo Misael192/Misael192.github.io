@@ -10,6 +10,8 @@ use App\Livewire\Payroll\Holerite;
 use App\Livewire\People\Colaboradores;
 use App\Livewire\People\Ferias;
 use App\Livewire\People\Ponto;
+use App\Livewire\Portal\Portal;
+use App\Livewire\Portal\PortalHolerite;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -23,6 +25,10 @@ Route::get('/entrar', Login::class)->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/painel', Dashboard::class)->name('dashboard');
+
+    // Portal do colaborador (self-service; acesso restrito ao próprio vínculo).
+    Route::get('/portal', Portal::class)->name('portal');
+    Route::get('/portal/holerite/{payroll}', PortalHolerite::class)->name('portal.holerite');
 
     // Módulo Pessoas & DP (habilitado por tenant + RBAC nas ações).
     Route::middleware('module:people')->group(function () {
