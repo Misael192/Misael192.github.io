@@ -5,6 +5,7 @@ use App\Livewire\Dashboard;
 use App\Livewire\Payroll\Folha;
 use App\Livewire\Payroll\FolhasEspeciais;
 use App\Livewire\Payroll\Holerite;
+use App\Livewire\People\Colaboradores;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -18,6 +19,11 @@ Route::get('/entrar', Login::class)->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/painel', Dashboard::class)->name('dashboard');
+
+    // Módulo Pessoas & DP (habilitado por tenant + RBAC nas ações).
+    Route::middleware('module:people')->group(function () {
+        Route::get('/colaboradores', Colaboradores::class)->name('colaboradores');
+    });
 
     // Módulo Folha (habilitado por tenant + RBAC nas ações do componente).
     Route::middleware('module:payroll')->group(function () {

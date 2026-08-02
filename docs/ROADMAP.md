@@ -116,8 +116,16 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       reais e vira centavos só na fronteira (nenhuma tela faz conta). 5 feature
       tests (13º, recibo, simular→efetivar, conversão de centavos, guarda de
       login). Suíte 77/77
-- [ ] UI dos demais módulos (colaboradores/admissão/ponto/férias),
-      Assistente CLT e eSocial
+- [x] **Tela de colaboradores** (`/colaboradores`): `Colaboradores` sobre o
+      `EmployeeService` (novo, em `App\Services\People`) — cadastra colaborador
+      + contrato vigente numa transação, lista com salário/situação e ativa quem
+      está em admissão. Salário entra em reais e vira centavos na fronteira;
+      matrícula única por empresa. RBAC `employees:create`/`employees:update`,
+      módulo `people`. Fecha o ciclo ponta a ponta: cadastrar pela tela → rodar
+      a folha. 5 feature tests (cadastro+contrato, matrícula duplicada, entra na
+      folha com líquido 4.304,51, ativação, guarda de login). Suíte 82/82
+- [ ] UI dos demais módulos de DP (admissão/ponto/férias), Assistente CLT e
+      eSocial
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
