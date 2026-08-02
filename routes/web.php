@@ -3,6 +3,7 @@
 use App\Livewire\Ai\Assistente;
 use App\Livewire\Auth\Login;
 use App\Livewire\Dashboard;
+use App\Livewire\Esocial\Esocial;
 use App\Livewire\Payroll\Folha;
 use App\Livewire\Payroll\FolhasEspeciais;
 use App\Livewire\Payroll\Holerite;
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/folha', Folha::class)->name('folha');
         Route::get('/folha/especiais', FolhasEspeciais::class)->name('folha.especiais');
         Route::get('/folha/holerite/{payroll}', Holerite::class)->name('folha.holerite');
+        Route::get('/esocial', Esocial::class)->name('esocial');
     });
 });
 

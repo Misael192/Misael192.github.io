@@ -147,7 +147,15 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       253,41) e o texto cita a base legal. Conversa persistida em
       `ai_conversations`/`ai_messages` (provider `calculated`, pronto para plugar
       um LLM). Módulo `ai`. 5 feature tests. Suíte 96/96
-- [ ] Admissão digital e eSocial (UI)
+- [x] **eSocial** (`/esocial`): `EsocialService` (reescrito de PDO cru para
+      Eloquent) gera **S-2200** (admissão) e **S-1200** (remuneração da folha
+      **fechada**) nos leiautes evtAdmissao/evtRemun; tabela tenant-scoped
+      `esocial_events` (UUID, XML versionado por `company/tipo/referência`,
+      auditável). Aponta pendências de cadastro (sem CPF/salário) e mostra o XML
+      na tela. RBAC `payroll:manage`. 5 feature tests (S-2200 com vrSalFx
+      5200.00; pendência sem CPF; S-1200 barra folha não-fechada; S-1200 da
+      folha fechada com rubricas; guarda de login). Suíte 101/101
+- [ ] Admissão digital (checklist) — UI
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
