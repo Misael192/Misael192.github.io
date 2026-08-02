@@ -124,8 +124,14 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       módulo `people`. Fecha o ciclo ponta a ponta: cadastrar pela tela → rodar
       a folha. 5 feature tests (cadastro+contrato, matrícula duplicada, entra na
       folha com líquido 4.304,51, ativação, guarda de login). Suíte 82/82
-- [ ] UI dos demais módulos de DP (admissão/ponto/férias), Assistente CLT e
-      eSocial
+- [x] **Tela de férias** (`/ferias`): `Ferias` sobre o `VacationService` (novo)
+      — solicita (dias + abono, guardas CLT: gozo ≤ 30, abono ≤ 10 e ≤ dias) e
+      decide (aprovar/recusar), disparando os mesmos eventos da API
+      (`VacationRequested`/`VacationApproved`) para o Workflow Engine. RBAC
+      `vacations:request`/`vacations:approve`. Fecha o ciclo com as folhas
+      especiais: pedido aprovado aqui vira recibo lá (líquido 351183, batendo com
+      o motor). 5 feature tests. Suíte 87/87
+- [ ] UI dos demais módulos de DP (admissão/ponto), Assistente CLT e eSocial
 - [ ] Portal do colaborador e webhooks de folha
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
