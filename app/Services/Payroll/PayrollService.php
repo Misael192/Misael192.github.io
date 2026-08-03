@@ -13,6 +13,7 @@ use App\Models\PayrollPeriod;
 use App\Models\SocialCharge;
 use App\Models\TimeBankEntry;
 use App\Models\User;
+use App\Services\Integrations\WebhookDispatcher;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -100,7 +101,32 @@ class PayrollService
                 'closed_by_id' => $user->id,
             ]);
 
+        if ($affected > 0) {
+            $this->notifyPayrollClosed($company, $competency);
+        }
+
         return $affected > 0;
+    }
+
+    /** Webhook de saída (assinado) ao fechar a competência — no-op sem integração. */
+    private function notifyPayrollClosed(Company $company, string $competency): void
+    {
+        $period = PayrollPeriod::query()
+            ->where('company_id', $company->id)
+            ->where('competency', $competency)
+            ->first();
+
+        $payrolls = Payroll::query()->where('period_id', $period->id)->get();
+
+        app(WebhookDispatcher::class)->dispatch($company, 'payroll.closed', [
+            'company_id' => $company->id,
+            'competency' => $competency,
+            'totals' => [
+                'employees' => $payrolls->where('kind', Payroll::KIND_PAYSLIP)->count(),
+                'gross_cents' => (int) $payrolls->sum('gross_cents'),
+                'net_cents' => (int) $payrolls->sum('net_cents'),
+            ],
+        ]);
     }
 
     /** Reabre a competência fechada (volta para calculada). */

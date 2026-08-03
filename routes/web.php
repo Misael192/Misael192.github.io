@@ -4,6 +4,7 @@ use App\Livewire\Ai\Assistente;
 use App\Livewire\Auth\Login;
 use App\Livewire\Dashboard;
 use App\Livewire\Esocial\Esocial;
+use App\Livewire\Integrations\Webhooks;
 use App\Livewire\Payroll\Folha;
 use App\Livewire\Payroll\FolhasEspeciais;
 use App\Livewire\Payroll\Holerite;
@@ -41,6 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('module:ai')->group(function () {
         Route::get('/assistente', Assistente::class)->name('assistente');
     });
+
+    // Webhooks de saída (configuração + entregas; RBAC nas ações).
+    Route::get('/webhooks', Webhooks::class)->name('webhooks');
 
     // Módulo Folha (habilitado por tenant + RBAC nas ações do componente).
     Route::middleware('module:payroll')->group(function () {

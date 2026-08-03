@@ -165,7 +165,17 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       para o dono da folha; usuário sem vínculo não entra. Holerite reaproveita
       um parcial compartilhado com a folha de DP. RBAC `time-entries:register`/
       `vacations:request`. 6 feature tests. Suíte 106/106
-- [ ] Webhooks de folha
+- [x] **Webhooks de folha** (`/webhooks`): `WebhookDispatcher` (novo, em
+      `App\Services\Integrations`) entrega webhooks de saída **assinados
+      (HMAC-SHA256, header `X-PeopleFlow-Signature`)** para as integrações
+      `webhook` ativas do tenant, rastreando cada tentativa em `webhook_logs`
+      (código, tentativas, entregue-em) com **reenvio**. O `PayrollService`
+      dispara `payroll.closed` (com totais da competência) ao fechar a folha —
+      no-op sem integração, então a folha segue funcionando sem webhook. Tela
+      cadastra endpoints (url+segredo), ativa/desativa e mostra as entregas.
+      RBAC `integrations:manage`. 4 feature tests (cadastro; fechar entrega com
+      assinatura conferida contra o corpo; reenvio de entrega que falhou 500→200
+      incrementando tentativas; guarda de login). Suíte 110/110
 - [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
 
 ## Próximos passos
