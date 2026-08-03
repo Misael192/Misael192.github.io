@@ -56,7 +56,9 @@ Duas frentes convivem no repositório:
 ## Migração MVP → Laravel 🚧 em andamento (raiz)
 
 Progressiva e fatiada: cada slice porta uma parte já validada do MVP para a
-plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
+plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP. Toda a
+superfície funcional do MVP já roda na plataforma (suíte 110/110); resta só o
+**cutover** — runbook em [CUTOVER.md](./CUTOVER.md).
 
 - [x] **Motor de folha** (`app/Services/Payroll/`): os 7 calculadores puros
       (Inss/Irrf/Fgts/Vacation/Thirteenth/Termination/PayrollEngine) portados
@@ -176,11 +178,18 @@ plataforma Laravel (multi-tenancy RLS, testes PHPUnit), sem parar o MVP.
       RBAC `integrations:manage`. 4 feature tests (cadastro; fechar entrega com
       assinatura conferida contra o corpo; reenvio de entrega que falhou 500→200
       incrementando tentativas; guarda de login). Suíte 110/110
-- [ ] Cutover: MVP em modo somente-leitura → Laravel como única fonte
+- [~] **Cutover**: runbook pronto ([CUTOVER.md](./CUTOVER.md)) — paridade
+      funcional, estratégia de ETL (int→UUID + `tenant_id`, catálogo global já
+      semeado, PII cifrada via Eloquent), guarda de somente-leitura no MVP
+      (`PEOPLEFLOW_READONLY` no `mvp/app/bootstrap.php`), sequência da virada,
+      Go/No-Go, rollback e descomissionamento. A execução da virada é operacional
+      (janela controlada + ETL ensaiado em staging), a cargo da operação.
 
 ## Próximos passos
-1. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
-2. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
-3. Próxima fatia da migração: tela Livewire de fechamento de folha + holerite
-   sobre `PayrollService`/`SpecialPayrollService` — ver
-   [ARCHITECTURE.md](./ARCHITECTURE.md) e ADRs
+1. **Executar o cutover** (janela controlada): escrever o comando ETL
+   `cutover:import`, ensaiar em staging com dados mascarados e seguir o
+   [runbook](./CUTOVER.md) — Go/No-Go, freeze só-leitura, flip, monitoramento.
+2. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
+3. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
+4. Admissão digital (checklist clicável) na plataforma; conectores prontos
+   (SAP/TOTVS/Conta Azul/…) sobre os webhooks já assinados
