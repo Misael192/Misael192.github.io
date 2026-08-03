@@ -60,8 +60,13 @@ dados (ETL), não um `pg_dump`/`restore` direto:
 6. Rodar a suíte e um `migrate:fresh --seed` de referência em staging com uma cópia dos
    dados para validar o ETL ponta a ponta.
 
-> Escrever o ETL como um comando Artisan idempotente (`php artisan cutover:import {companyId}`)
-> e ensaiá-lo em **staging** com dados de produção mascarados. Ensaiar ≥ 1 vez com dry-run.
+> O ETL já é um comando Artisan idempotente: **`php artisan cutover:import {export.json}`**
+> (`App\Services\Cutover\CutoverImporter`). Ele consome um **export portátil JSON por empresa**
+> (tenant/organization/company + employees[contracts,dependents] + periods[payrolls[items,charges]]),
+> gera UUIDs, fixa o `TenantContext`, cifra PII via Eloquent, preserva centavos/fechamentos e
+> **não** toca o catálogo global. Falta ligar a **origem** (gerar o JSON a partir da base do MVP)
+> e **ensaiar em staging** com dados mascarados (≥ 1 dry-run). Exemplo de payload nos testes
+> `tests/Feature/Cutover/CutoverImportTest.php`.
 
 ## 3. Colocar o MVP em somente-leitura
 

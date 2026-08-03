@@ -179,11 +179,17 @@ superfície funcional do MVP já roda na plataforma (suíte 110/110); resta só 
       assinatura conferida contra o corpo; reenvio de entrega que falhou 500→200
       incrementando tentativas; guarda de login). Suíte 110/110
 - [~] **Cutover**: runbook pronto ([CUTOVER.md](./CUTOVER.md)) — paridade
-      funcional, estratégia de ETL (int→UUID + `tenant_id`, catálogo global já
-      semeado, PII cifrada via Eloquent), guarda de somente-leitura no MVP
+      funcional, estratégia de ETL, guarda de somente-leitura no MVP
       (`PEOPLEFLOW_READONLY` no `mvp/app/bootstrap.php`), sequência da virada,
-      Go/No-Go, rollback e descomissionamento. A execução da virada é operacional
-      (janela controlada + ETL ensaiado em staging), a cargo da operação.
+      Go/No-Go, rollback e descomissionamento. O **ETL já tem código**:
+      `cutover:import {export.json}` (`CutoverImporter`) importa o export
+      portátil de uma empresa para o schema multi-tenant — gera UUIDs, fixa o
+      `TenantContext` (tenant_id + RLS), cifra PII via Eloquent, preserva os
+      centavos e os fechamentos, e **não duplica** o catálogo global; idempotente
+      (reexecutável para deltas). 5 feature tests (valores/fechamento, PII
+      cifrada em repouso, catálogo intacto, idempotência, comando Artisan).
+      Suíte 115/115. A execução da virada segue operacional (ensaiar em staging
+      com dados mascarados + janela controlada), a cargo da operação.
 
 ## Próximos passos
 1. **Executar o cutover** (janela controlada): escrever o comando ETL
