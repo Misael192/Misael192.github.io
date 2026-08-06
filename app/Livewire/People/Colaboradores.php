@@ -33,6 +33,8 @@ class Colaboradores extends Component
 
     public string $weeklyHours = '';
 
+    public string $initialStatus = 'active';
+
     public string $flash = '';
 
     public function mount(): void
@@ -56,6 +58,7 @@ class Colaboradores extends Component
             'type' => ['required', 'in:clt,pj,estagio,temporario'],
             'salary' => ['required', 'numeric', 'min:0'],
             'weeklyHours' => ['nullable', 'integer', 'min:1', 'max:60'],
+            'initialStatus' => ['required', 'in:active,admission'],
         ]);
 
         $service->register($this->company(), [
@@ -65,12 +68,16 @@ class Colaboradores extends Component
             'type' => $data['type'],
             'salary_cents' => (int) round(((float) $data['salary']) * 100),
             'weekly_hours' => $data['weeklyHours'] !== '' ? (int) $data['weeklyHours'] : null,
+            'status' => $data['initialStatus'],
         ]);
 
         $this->reset(['fullName', 'registrationNumber', 'salary', 'weeklyHours']);
         $this->type = 'clt';
+        $this->initialStatus = 'active';
         $this->hiredAt = now()->format('Y-m-d');
-        $this->flash = 'Colaborador cadastrado.';
+        $this->flash = $data['initialStatus'] === 'admission'
+            ? 'Colaborador cadastrado em admissão — checklist criado.'
+            : 'Colaborador cadastrado.';
     }
 
     public function ativar(string $employeeId, EmployeeService $service): void

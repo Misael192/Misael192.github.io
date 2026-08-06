@@ -157,7 +157,15 @@ superfície funcional do MVP já roda na plataforma (suíte 110/110); resta só 
       na tela. RBAC `payroll:manage`. 5 feature tests (S-2200 com vrSalFx
       5200.00; pendência sem CPF; S-1200 barra folha não-fechada; S-1200 da
       folha fechada com rubricas; guarda de login). Suíte 101/101
-- [ ] Admissão digital (checklist) — UI
+- [x] **Admissão digital** (`/admissao`): `AdmissionService` (novo) cria o
+      checklist padrão do MVP (CPF, RG, CTPS, PIS/PASEP, comprovante, ASO,
+      contrato, foto) quando o colaborador é cadastrado "em admissão"; a tela
+      lista os pendentes com o checklist clicável e barra de progresso, e ao
+      concluir todos os itens **ativa o colaborador automaticamente** (sai da
+      lista). Cadastro ganhou a "situação inicial" (Ativo / Em admissão). RBAC
+      `employees:update`; tabela tenant-scoped `admission_tasks`. 4 feature tests
+      (cadastro cria checklist; concluir tudo ativa; desmarcar não rebaixa quem
+      já saiu; guarda de login). Suíte 122/122
 - [x] **Portal do colaborador** (`/portal`): o usuário com vínculo
       (`users.employee_id`) cai direto no portal (o login redireciona
       colaborador → `/portal`, gestão → `/painel`). Vê os PRÓPRIOS holerites,
@@ -197,5 +205,5 @@ superfície funcional do MVP já roda na plataforma (suíte 110/110); resta só 
    [runbook](./CUTOVER.md) — Go/No-Go, freeze só-leitura, flip, monitoramento.
 2. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
 3. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
-4. Admissão digital (checklist clicável) na plataforma; conectores prontos
-   (SAP/TOTVS/Conta Azul/…) sobre os webhooks já assinados
+4. Conectores prontos (SAP/TOTVS/Conta Azul/…) sobre os webhooks já assinados;
+   exporter no lado MVP para alimentar o `cutover:import`

@@ -8,6 +8,7 @@ use App\Livewire\Integrations\Webhooks;
 use App\Livewire\Payroll\Folha;
 use App\Livewire\Payroll\FolhasEspeciais;
 use App\Livewire\Payroll\Holerite;
+use App\Livewire\People\Admissao;
 use App\Livewire\People\Colaboradores;
 use App\Livewire\People\Ferias;
 use App\Livewire\People\Ponto;
@@ -34,6 +35,7 @@ Route::middleware('auth')->group(function () {
     // Módulo Pessoas & DP (habilitado por tenant + RBAC nas ações).
     Route::middleware('module:people')->group(function () {
         Route::get('/colaboradores', Colaboradores::class)->name('colaboradores');
+        Route::get('/admissao', Admissao::class)->name('admissao');
         Route::get('/ferias', Ferias::class)->name('ferias');
         Route::get('/ponto', Ponto::class)->name('ponto');
     });

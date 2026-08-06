@@ -16,17 +16,21 @@ use Illuminate\Support\Facades\DB;
  */
 class EmployeeService
 {
+    public function __construct(private readonly AdmissionService $admissions = new AdmissionService) {}
+
     /**
      * @param  array{full_name: string, registration_number: string, hired_at: string, type: string, salary_cents: int, weekly_hours?: int|null, status?: string}  $data
      */
     public function register(Company $company, array $data): Employee
     {
         return DB::transaction(function () use ($company, $data) {
+            $status = $data['status'] ?? Employee::STATUS_ACTIVE;
+
             $employee = Employee::query()->create([
                 'company_id' => $company->id,
                 'registration_number' => $data['registration_number'],
                 'full_name' => $data['full_name'],
-                'status' => $data['status'] ?? Employee::STATUS_ACTIVE,
+                'status' => $status,
                 'hired_at' => $data['hired_at'],
             ]);
 
@@ -37,6 +41,11 @@ class EmployeeService
                 'weekly_hours' => $data['weekly_hours'] ?? null,
                 'start_date' => $data['hired_at'],
             ]);
+
+            // Admissão digital: cria o checklist quando entra em admissão.
+            if ($status === Employee::STATUS_ADMISSION) {
+                $this->admissions->startFor($employee);
+            }
 
             return $employee;
         });

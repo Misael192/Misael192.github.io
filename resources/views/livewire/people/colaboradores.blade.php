@@ -59,6 +59,14 @@
                            class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900">
                     @error('weeklyHours') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                 </div>
+                <div>
+                    <label for="initialStatus" class="mb-1.5 block text-sm font-semibold">Situação inicial</label>
+                    <select wire:model="initialStatus" id="initialStatus"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900">
+                        <option value="active">Ativo</option>
+                        <option value="admission">Em admissão (checklist)</option>
+                    </select>
+                </div>
             </div>
 
             <div class="mt-4">

@@ -75,4 +75,9 @@ class Employee extends TenantModel
     {
         return $this->hasMany(EmploymentContract::class);
     }
+
+    public function admissionTasks(): HasMany
+    {
+        return $this->hasMany(AdmissionTask::class);
+    }
 }
