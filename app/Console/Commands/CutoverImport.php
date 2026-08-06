@@ -15,7 +15,8 @@ use Illuminate\Console\Command;
  */
 class CutoverImport extends Command
 {
-    protected $signature = 'cutover:import {path : Caminho do arquivo JSON de export do MVP}';
+    protected $signature = 'cutover:import {path : Caminho do arquivo JSON de export do MVP}
+                            {--dry-run : Ensaia sem escrever nada — conta e aponta inconsistências}';
 
     protected $description = 'Importa o export de uma empresa do MVP para o schema multi-tenant da plataforma';
 
@@ -34,6 +35,29 @@ class CutoverImport extends Command
             $this->error('JSON inválido: esperado um objeto com tenant.slug.');
 
             return self::FAILURE;
+        }
+
+        if ($this->option('dry-run')) {
+            $plan = $importer->plan($data);
+            $this->info("Dry-run do tenant '{$plan['tenant']}' — nada foi gravado.");
+            $this->table(
+                ['Colaboradores', 'Competências', 'Folhas'],
+                [[$plan['employees'], $plan['periods'], $plan['payrolls']]],
+            );
+
+            foreach ($plan['issues'] as $issue) {
+                $this->warn('• '.$issue);
+            }
+
+            if ($plan['issues'] !== []) {
+                $this->error(count($plan['issues']).' inconsistência(s) — corrija o export antes de importar.');
+
+                return self::FAILURE;
+            }
+
+            $this->info('Sem inconsistências — pronto para importar.');
+
+            return self::SUCCESS;
         }
 
         $summary = $importer->import($data);

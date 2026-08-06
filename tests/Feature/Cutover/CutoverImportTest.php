@@ -121,6 +121,45 @@ class CutoverImportTest extends TestCase
         $this->assertSame(2, $payroll->items()->count()); // itens não acumulam
     }
 
+    public function test_dry_run_conta_sem_escrever(): void
+    {
+        $plan = (new CutoverImporter)->plan($this->export());
+
+        $this->assertSame(1, $plan['employees']);
+        $this->assertSame(1, $plan['periods']);
+        $this->assertSame(1, $plan['payrolls']);
+        $this->assertSame([], $plan['issues']);
+
+        // Nada foi gravado.
+        $this->assertSame(0, Tenant::query()->where('slug', 'acme')->count());
+    }
+
+    public function test_dry_run_aponta_folha_sem_colaborador(): void
+    {
+        $export = $this->export();
+        $export['periods'][0]['payrolls'][0]['registration_number'] = '9999'; // matrícula inexistente
+
+        $plan = (new CutoverImporter)->plan($export);
+
+        $this->assertCount(1, $plan['issues']);
+        $this->assertStringContainsString('9999', $plan['issues'][0]);
+    }
+
+    public function test_comando_dry_run_falha_com_inconsistencia_e_nao_grava(): void
+    {
+        $export = $this->export();
+        $export['periods'][0]['payrolls'][0]['registration_number'] = '9999';
+        $path = tempnam(sys_get_temp_dir(), 'cutover').'.json';
+        file_put_contents($path, json_encode($export));
+
+        $this->artisan('cutover:import', ['path' => $path, '--dry-run' => true])
+            ->expectsOutputToContain('nada foi gravado')
+            ->assertFailed();
+
+        @unlink($path);
+        $this->assertSame(0, Tenant::query()->where('slug', 'acme')->count());
+    }
+
     public function test_comando_artisan_importa_de_um_arquivo(): void
     {
         $path = tempnam(sys_get_temp_dir(), 'cutover').'.json';

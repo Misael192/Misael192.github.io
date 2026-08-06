@@ -28,6 +28,41 @@ use Illuminate\Support\Facades\DB;
 class CutoverImporter
 {
     /**
+     * Ensaia o import sem escrever nada (dry-run do runbook): conta o que seria
+     * importado e aponta inconsistências (folha sem colaborador correspondente).
+     *
+     * @param  array<string, mixed>  $data
+     * @return array{tenant: string, employees: int, periods: int, payrolls: int, issues: list<string>}
+     */
+    public function plan(array $data): array
+    {
+        $matriculas = [];
+        foreach ($data['employees'] ?? [] as $row) {
+            $matriculas[$row['registration_number']] = true;
+        }
+
+        $payrolls = 0;
+        $issues = [];
+        foreach ($data['periods'] ?? [] as $period) {
+            foreach ($period['payrolls'] ?? [] as $p) {
+                $payrolls++;
+                if (! isset($matriculas[$p['registration_number']])) {
+                    $issues[] = "Competência {$period['competency']}: folha refere matrícula "
+                        ."{$p['registration_number']} sem colaborador no export.";
+                }
+            }
+        }
+
+        return [
+            'tenant' => $data['tenant']['slug'],
+            'employees' => count($matriculas),
+            'periods' => count($data['periods'] ?? []),
+            'payrolls' => $payrolls,
+            'issues' => $issues,
+        ];
+    }
+
+    /**
      * @param  array<string, mixed>  $data
      * @return array{tenant: string, employees: int, periods: int, payrolls: int}
      */
