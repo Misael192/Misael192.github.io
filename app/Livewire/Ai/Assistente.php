@@ -6,14 +6,15 @@ namespace App\Livewire\Ai;
 
 use App\Models\AiConversation;
 use App\Models\AiMessage;
-use App\Services\Ai\CltAssistantService;
+use App\Services\Ai\AssistantResponder;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 /**
  * Assistente CLT pela UI: chat que calcula com a engine da folha (tabelas
  * vigentes) e cita a base legal. Conversa persistida em ai_conversations/
- * ai_messages. Provedor 'calculated' — pronto para plugar um LLM depois.
+ * ai_messages. O AssistantResponder usa um LLM ancorado nos fatos calculados
+ * quando configurado, com fallback calculado (provider registrado por mensagem).
  */
 #[Layout('layouts.app')]
 class Assistente extends Component
@@ -32,7 +33,7 @@ class Assistente extends Component
         $this->conversationId = (string) $conversation->id;
     }
 
-    public function enviar(CltAssistantService $assistant): void
+    public function enviar(AssistantResponder $responder): void
     {
         $data = $this->validate(['draft' => ['required', 'string', 'max:2000']]);
 
@@ -42,11 +43,13 @@ class Assistente extends Component
             'content' => $data['draft'],
         ]);
 
+        $answer = $responder->respond($data['draft']);
+
         AiMessage::query()->create([
             'conversation_id' => $this->conversationId,
             'role' => 'assistant',
-            'content' => $assistant->answer($data['draft']),
-            'provider' => 'calculated',
+            'content' => $answer['content'],
+            'provider' => $answer['provider'],
         ]);
 
         $this->draft = '';

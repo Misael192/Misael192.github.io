@@ -147,8 +147,16 @@ superfície funcional do MVP já roda na plataforma (suíte 110/110); resta só 
       Livewire que NUNCA responde valor "de cabeça": todo número sai das
       calculadoras com as tabelas vigentes (líquido 5200 = 4.304,51, INSS 3000 =
       253,41) e o texto cita a base legal. Conversa persistida em
-      `ai_conversations`/`ai_messages` (provider `calculated`, pronto para plugar
-      um LLM). Módulo `ai`. 5 feature tests. Suíte 96/96
+      `ai_conversations`/`ai_messages`. Módulo `ai`. 5 feature tests. Suíte 96/96
+- [x] **LLM plugável no Assistente** (`AssistantResponder`): liga o Assistente
+      ao AI Engine (ADR-008) mantendo a engine como fonte de verdade — a engine
+      SEMPRE calcula os fatos e, quando um provedor está configurado
+      (`config/ai.php`), o LLM (ex.: Claude) **redige ancorado nesses fatos**
+      (system prompt manda usar EXCLUSIVAMENTE os valores calculados, sem
+      recalcular). Sem `ANTHROPIC_API_KEY` ou se a chamada falhar, cai no
+      **calculado** — o provider real fica registrado por mensagem. 3 feature
+      tests com `Http::fake` (sem chave → calculado; com chave → LLM ancorado nos
+      fatos; erro do LLM → fallback). Suíte 125/125
 - [x] **eSocial** (`/esocial`): `EsocialService` (reescrito de PDO cru para
       Eloquent) gera **S-2200** (admissão) e **S-1200** (remuneração da folha
       **fechada**) nos leiautes evtAdmissao/evtRemun; tabela tenant-scoped
@@ -204,6 +212,7 @@ superfície funcional do MVP já roda na plataforma (suíte 110/110); resta só 
    `cutover:import`, ensaiar em staging com dados mascarados e seguir o
    [runbook](./CUTOVER.md) — Go/No-Go, freeze só-leitura, flip, monitoramento.
 2. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
-3. Provedor LLM real no Assistente (Claude API) mantendo o fallback calculado
-4. Conectores prontos (SAP/TOTVS/Conta Azul/…) sobre os webhooks já assinados;
+3. Conectores prontos (SAP/TOTVS/Conta Azul/…) sobre os webhooks já assinados;
    exporter no lado MVP para alimentar o `cutover:import`
+4. Ligar a chave real do LLM em produção (`ANTHROPIC_API_KEY`) — o código já
+   está pronto e testado com fallback calculado
