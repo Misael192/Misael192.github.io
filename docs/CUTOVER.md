@@ -106,7 +106,9 @@ if (($_ENV['PEOPLEFLOW_READONLY'] ?? '') === '1'
 ## 5. Go / No-Go (checklist)
 
 - [ ] Suíte da plataforma **verde** no commit a promover (`pint --test` + `php artisan test`).
-- [ ] ETL ensaiado em staging **sem divergência** num lote de holerites (bruto/líquido).
+- [ ] ETL ensaiado em staging **sem divergência**: `cutover:verify {export.json} {tenant}`
+      compara o importado com o export (contagens + bruto/líquido por folha) e **falha** se
+      houver qualquer divergência.
 - [ ] `migrate:fresh --seed` limpo; tabelas globais sem `tenant_id`, tenant-tables com `tenant_id`.
 - [ ] Login por tenant, folha (calcular/fechar), holerite, portal (403 alheio) validados no destino.
 - [ ] eSocial S-1200 de uma competência fechada gera XML válido.
