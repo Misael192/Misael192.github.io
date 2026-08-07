@@ -64,8 +64,11 @@ dados (ETL), não um `pg_dump`/`restore` direto:
 > (`App\Services\Cutover\CutoverImporter`). Ele consome um **export portátil JSON por empresa**
 > (tenant/organization/company + employees[contracts,dependents] + periods[payrolls[items,charges]]),
 > gera UUIDs, fixa o `TenantContext`, cifra PII via Eloquent, preserva centavos/fechamentos e
-> **não** toca o catálogo global. Falta ligar a **origem** (gerar o JSON a partir da base do MVP)
-> e **ensaiar em staging** com dados mascarados. O ensaio usa
+> **não** toca o catálogo global. A **origem** também já tem código:
+> **`php mvp/bin/cutover_export.php <company_id> <tenant_slug> [org] > export.json`**
+> (`App\Services\Cutover\CutoverExporter` no MVP, só-leitura) emite o JSON no formato exato do
+> import — matrícula → `registration_number`, `salary_cents` vira contrato CLT, dinheiro em
+> centavos. Falta **ensaiar em staging** com dados mascarados. O ensaio usa
 > **`cutover:import {export.json} --dry-run`**, que conta o que seria importado e aponta
 > inconsistências (ex.: folha referenciando matrícula ausente) **sem gravar nada** — falha
 > com código de erro se houver inconsistência, para travar um Go sobre export quebrado.

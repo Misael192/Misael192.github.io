@@ -204,15 +204,20 @@ superfície funcional do MVP já roda na plataforma (suíte 110/110); resta só 
       centavos e os fechamentos, e **não duplica** o catálogo global; idempotente
       (reexecutável para deltas). 5 feature tests (valores/fechamento, PII
       cifrada em repouso, catálogo intacto, idempotência, comando Artisan).
-      Suíte 115/115. A execução da virada segue operacional (ensaiar em staging
-      com dados mascarados + janela controlada), a cargo da operação.
+      Suíte 115/115. A **origem** também tem código: `mvp/bin/cutover_export.php`
+      (`CutoverExporter`, só-leitura, arquivo NOVO no MVP — nada existente
+      alterado) emite o JSON no formato do import (matrícula→`registration_number`,
+      `salary_cents`→contrato CLT, centavos preservados); testado com SQLite em
+      memória no harness do MVP (12 asserções) e ligado ao CI. E `cutover:verify`
+      reconfere o importado × export (contagens + bruto/líquido) travando o Go em
+      divergência. Ciclo: **export (MVP) → import --dry-run → import → verify**.
+      A execução da virada segue operacional (ensaiar em staging + janela).
 
 ## Próximos passos
 1. **Executar o cutover** (janela controlada): escrever o comando ETL
    `cutover:import`, ensaiar em staging com dados mascarados e seguir o
    [runbook](./CUTOVER.md) — Go/No-Go, freeze só-leitura, flip, monitoramento.
 2. Transmissão eSocial (certificado A1) e S-1210/S-2299 (pagamentos/desligamento)
-3. Conectores prontos (SAP/TOTVS/Conta Azul/…) sobre os webhooks já assinados;
-   exporter no lado MVP para alimentar o `cutover:import`
+3. Conectores prontos (SAP/TOTVS/Conta Azul/…) sobre os webhooks já assinados
 4. Ligar a chave real do LLM em produção (`ANTHROPIC_API_KEY`) — o código já
    está pronto e testado com fallback calculado

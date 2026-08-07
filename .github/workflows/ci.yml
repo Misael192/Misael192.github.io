@@ -22,12 +22,15 @@ jobs:
       - name: Lint de todo o PHP (raiz + mvp)
         run: |
           set -e
-          find app mvp/app mvp/public mvp/tests -name '*.php' -print0 \
+          find app mvp/app mvp/bin mvp/public mvp/tests -name '*.php' -print0 \
             | xargs -0 -n1 -P4 php -l > /dev/null
           echo "Lint OK"
 
       - name: Testes do motor de folha (37 asserções, sem banco)
         run: php mvp/tests/payroll_tests.php
+
+      - name: Teste do exporter do cutover (SQLite em memória)
+        run: php mvp/tests/cutover_export_test.php
 
   laravel:
     name: Plataforma Laravel (Pint + PHPUnit)
