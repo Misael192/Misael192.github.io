@@ -17,9 +17,7 @@ use App\Models\AiMessage;
  */
 class AiEngine
 {
-    public function __construct(private readonly AiManager $manager)
-    {
-    }
+    public function __construct(private readonly AiManager $manager) {}
 
     public function sendMessage(
         string $userId,

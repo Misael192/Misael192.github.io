@@ -4,9 +4,4 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-
-
-class DocumentVersion extends TenantModel
-{
-
-}
+class DocumentVersion extends TenantModel {}

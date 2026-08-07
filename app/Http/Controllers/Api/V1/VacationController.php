@@ -12,6 +12,7 @@ use App\Models\VacationRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 /**
  * Férias. A aprovação demonstra o padrão ABAC sobre RBAC: o middleware
@@ -30,8 +31,8 @@ class VacationController extends Controller
             'sell_days' => ['nullable', 'integer', 'min:0', 'max:10'],
         ]);
 
-        $start = \Illuminate\Support\Carbon::parse($data['start_date']);
-        $end = \Illuminate\Support\Carbon::parse($data['end_date']);
+        $start = Carbon::parse($data['start_date']);
+        $end = Carbon::parse($data['end_date']);
 
         $vacation = VacationRequest::query()->create([
             'employee_id' => $data['employee_id'],

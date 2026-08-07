@@ -65,4 +65,19 @@ class Employee extends TenantModel
     {
         return $this->hasMany(TimeEntry::class);
     }
+
+    public function dependents(): HasMany
+    {
+        return $this->hasMany(EmployeeDependent::class);
+    }
+
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(EmploymentContract::class);
+    }
+
+    public function admissionTasks(): HasMany
+    {
+        return $this->hasMany(AdmissionTask::class);
+    }
 }

@@ -6,6 +6,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -199,7 +200,7 @@ return new class extends Migration
 
         // Auditoria é imutável: bloqueia UPDATE/DELETE no nível do banco (Postgres).
         if (Schema::getConnection()->getDriverName() === 'pgsql') {
-            \Illuminate\Support\Facades\DB::unprepared(<<<'SQL'
+            DB::unprepared(<<<'SQL'
                 CREATE OR REPLACE FUNCTION forbid_audit_mutation() RETURNS trigger AS $$
                 BEGIN RAISE EXCEPTION 'audit_logs é append-only'; END;
                 $$ LANGUAGE plpgsql;
@@ -213,9 +214,9 @@ return new class extends Migration
     public function down(): void
     {
         foreach (['audit_logs', 'invoices', 'subscriptions', 'plans', 'notifications',
-                  'webhook_logs', 'integrations', 'tenant_modules', 'modules', 'feature_flags',
-                  'settings', 'user_roles', 'permission_role', 'roles', 'permissions',
-                  'permission_groups'] as $table) {
+            'webhook_logs', 'integrations', 'tenant_modules', 'modules', 'feature_flags',
+            'settings', 'user_roles', 'permission_role', 'roles', 'permissions',
+            'permission_groups'] as $table) {
             Schema::dropIfExists($table);
         }
     }

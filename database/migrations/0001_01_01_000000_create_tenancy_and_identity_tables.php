@@ -207,8 +207,8 @@ return new class extends Migration
     public function down(): void
     {
         foreach (['api_keys', 'mfa_credentials', 'oauth_accounts', 'refresh_sessions', 'sessions',
-                  'password_reset_tokens', 'users', 'cost_centers', 'positions', 'teams',
-                  'departments', 'branches', 'companies', 'organizations', 'tenants'] as $table) {
+            'password_reset_tokens', 'users', 'cost_centers', 'positions', 'teams',
+            'departments', 'branches', 'companies', 'organizations', 'tenants'] as $table) {
             Schema::dropIfExists($table);
         }
     }

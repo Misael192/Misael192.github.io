@@ -377,11 +377,11 @@ return new class extends Migration
     public function down(): void
     {
         foreach (['recognitions', 'announcements', 'survey_responses', 'surveys',
-                  'training_enrollments', 'trainings', 'performance_reviews', 'goals',
-                  'employee_benefits', 'benefits', 'interviews', 'job_applications',
-                  'candidates', 'job_openings', 'payslips', 'signature_requests',
-                  'document_versions', 'documents', 'vacation_requests', 'time_bank_entries',
-                  'time_entries', 'work_schedules', 'employment_contracts', 'employees'] as $table) {
+            'training_enrollments', 'trainings', 'performance_reviews', 'goals',
+            'employee_benefits', 'benefits', 'interviews', 'job_applications',
+            'candidates', 'job_openings', 'payslips', 'signature_requests',
+            'document_versions', 'documents', 'vacation_requests', 'time_bank_entries',
+            'time_entries', 'work_schedules', 'employment_contracts', 'employees'] as $table) {
             Schema::dropIfExists($table);
         }
     }

@@ -20,9 +20,7 @@ abstract class DomainEvent
 
     public const NAME = 'domain.event';
 
-    public function __construct(public readonly array $payload)
-    {
-    }
+    public function __construct(public readonly array $payload) {}
 
     public static function name(): string
     {

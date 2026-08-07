@@ -12,8 +12,7 @@ class ClaudeProvider implements LlmProvider
     public function __construct(
         private readonly string $apiKey,
         private readonly string $model = 'claude-sonnet-5',
-    ) {
-    }
+    ) {}
 
     public function complete(string $system, array $messages): array
     {

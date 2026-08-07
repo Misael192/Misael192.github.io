@@ -13,8 +13,7 @@ class OllamaProvider implements LlmProvider
     public function __construct(
         private readonly string $baseUrl = 'http://localhost:11434',
         private readonly string $model = 'llama3.1',
-    ) {
-    }
+    ) {}
 
     public function complete(string $system, array $messages): array
     {

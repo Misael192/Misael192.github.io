@@ -1,12 +1,60 @@
 <?php
 
+use App\Livewire\Ai\Assistente;
+use App\Livewire\Auth\Login;
+use App\Livewire\Dashboard;
+use App\Livewire\Esocial\Esocial;
+use App\Livewire\Integrations\Webhooks;
+use App\Livewire\Payroll\Folha;
+use App\Livewire\Payroll\FolhasEspeciais;
+use App\Livewire\Payroll\Holerite;
+use App\Livewire\People\Admissao;
+use App\Livewire\People\Colaboradores;
+use App\Livewire\People\Ferias;
+use App\Livewire\People\Ponto;
+use App\Livewire\Portal\Portal;
+use App\Livewire\Portal\PortalHolerite;
 use Illuminate\Support\Facades\Route;
 
 /**
- * A interface da PeopleFlow vive em public/*.html (HTML5 + Tailwind +
- * Alpine.js), pronta para conversão em Blade. A raiz redireciona para a
- * landing page estática; o fallback cobre links quebrados (404 própria).
+ * Landing e demais páginas de marketing vivem em public/*.html. A aplicação
+ * autenticada é Livewire: o login grava o tenant na sessão e as rotas
+ * autenticadas o resolvem por ela (tenant.session) antes do auth.
  */
 Route::get('/', fn () => redirect('/index.html'));
+
+Route::get('/entrar', Login::class)->name('login');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/painel', Dashboard::class)->name('dashboard');
+
+    // Portal do colaborador (self-service; acesso restrito ao próprio vínculo).
+    Route::get('/portal', Portal::class)->name('portal');
+    Route::get('/portal/holerite/{payroll}', PortalHolerite::class)->name('portal.holerite');
+
+    // Módulo Pessoas & DP (habilitado por tenant + RBAC nas ações).
+    Route::middleware('module:people')->group(function () {
+        Route::get('/colaboradores', Colaboradores::class)->name('colaboradores');
+        Route::get('/admissao', Admissao::class)->name('admissao');
+        Route::get('/ferias', Ferias::class)->name('ferias');
+        Route::get('/ponto', Ponto::class)->name('ponto');
+    });
+
+    // Assistente CLT (módulo ai habilitado por tenant).
+    Route::middleware('module:ai')->group(function () {
+        Route::get('/assistente', Assistente::class)->name('assistente');
+    });
+
+    // Webhooks de saída (configuração + entregas; RBAC nas ações).
+    Route::get('/webhooks', Webhooks::class)->name('webhooks');
+
+    // Módulo Folha (habilitado por tenant + RBAC nas ações do componente).
+    Route::middleware('module:payroll')->group(function () {
+        Route::get('/folha', Folha::class)->name('folha');
+        Route::get('/folha/especiais', FolhasEspeciais::class)->name('folha.especiais');
+        Route::get('/folha/holerite/{payroll}', Holerite::class)->name('folha.holerite');
+        Route::get('/esocial', Esocial::class)->name('esocial');
+    });
+});
 
 Route::fallback(fn () => response()->file(public_path('404.html'), ['Content-Type' => 'text/html']));

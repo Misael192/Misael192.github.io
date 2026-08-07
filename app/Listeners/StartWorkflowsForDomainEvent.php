@@ -15,9 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  */
 class StartWorkflowsForDomainEvent implements ShouldQueue
 {
-    public function __construct(private readonly WorkflowEngine $engine)
-    {
-    }
+    public function __construct(private readonly WorkflowEngine $engine) {}
 
     public function handle(DomainEvent $event): void
     {

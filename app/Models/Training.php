@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Training extends TenantModel
 {
     use SoftDeletes;
+
     protected function casts(): array
     {
         return [

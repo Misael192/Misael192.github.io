@@ -19,9 +19,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class ResolveTenant
 {
-    public function __construct(private readonly TenantContext $context)
-    {
-    }
+    public function __construct(private readonly TenantContext $context) {}
 
     public function handle(Request $request, Closure $next): mixed
     {
